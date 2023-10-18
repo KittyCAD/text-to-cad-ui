@@ -25,6 +25,3 @@ jobs:
       - run: yarn lint
 
       - run: yarn build
-        env:
-          SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
