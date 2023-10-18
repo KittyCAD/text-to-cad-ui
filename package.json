@@ -37,6 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kittycad/lib": "^0.0.44"
+		"@kittycad/lib": "^0.0.44",
+		"xstate": "^4.38.2"
 	}
 }
