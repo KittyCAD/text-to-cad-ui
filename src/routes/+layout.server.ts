@@ -1,6 +1,7 @@
 import { users, Client } from '@kittycad/lib'
 
-export const load = async ({ cookies }) => {
+export const load = async ({ cookies, event }) => {
+	console.log('event', event)
 	let token = cookies.get('__Secure-next-auth.session-token')
 	console.log('token', token)
 

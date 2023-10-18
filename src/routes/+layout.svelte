@@ -4,6 +4,7 @@
 	import type { LayoutData } from './$types'
 
 	export let layoutData: LayoutData
+	console.log(layoutData)
 </script>
 
 <Nav user={layoutData ? layoutData.user : undefined} />

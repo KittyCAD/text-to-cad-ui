@@ -11,12 +11,14 @@
 	<a href="/">
 		<Logo className="h-6 md:h-12" />
 	</a>
-	<a
-		href={import.meta.env.VITE_SITE_BASE_URL +
-			paths.SIGN_IN +
-			'/?callbackUrl=' +
-			encodeURIComponent($page.url.href)}>Sign in</a
-	>
+	{#if user}{:else}
+		<a
+			href={import.meta.env.VITE_SITE_BASE_URL +
+				paths.SIGN_IN +
+				'/?callbackUrl=' +
+				encodeURIComponent($page.url.href)}>Sign in</a
+		>
+	{/if}
 </nav>
 
 <style lang="postcss">
