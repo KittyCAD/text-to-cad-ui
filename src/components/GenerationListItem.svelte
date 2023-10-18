@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { CADFormat, PromptResponse } from '$lib/endpoints'
+	import ModelViewer from './ModelViewer.svelte'
 
 	export let data: PromptResponse
 	let outputFormat: CADFormat = 'step'
@@ -7,8 +8,18 @@
 	$: dataUrl = `data:text/${outputFormat};base64,${data.outputs ? data.outputs[outputFormat] : ''}`
 </script>
 
-<pre class="border p-4 my-12 first-of-type:mt-0 overflow-auto">
-    {JSON.stringify(data, null, 2)}
-</pre>
-<a href={`view/${data.id}`}>View model</a>
-<a href={dataUrl} download>Download model</a>
+<div>
+	<div class="grid md:grid-cols-2 lg:grid-cols-3 border items-stretch">
+		<div class="lg:col-span-2 border-r px-2 py-6 lg:px-4 lg:py-16">
+			<h3>Your Prompt</h3>
+			<p class="text-lg">"{data.prompt}"</p>
+		</div>
+		<div class="relative">
+			<ModelViewer />
+		</div>
+	</div>
+	<ul class="m-0 p-0">
+		<li class="contents"><a href={`view/${data.id}`}>View model</a></li>
+		<li class="contents"><a href={dataUrl} download>Download model</a></li>
+	</ul>
+</div>

@@ -3,11 +3,11 @@
 	import 'styles/app.css'
 	import type { LayoutData } from './$types'
 
-	export let layoutData: LayoutData
-	console.log(layoutData)
+	export let data: LayoutData
+	$: console.log(data)
 </script>
 
-<Nav user={layoutData ? layoutData.user : undefined} />
+<Nav user={data ? data.user : undefined} />
 <main class="mx-5 lg:mx-auto max-w-5xl my-24">
 	<slot />
 </main>

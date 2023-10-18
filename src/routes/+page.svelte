@@ -1,4 +1,5 @@
 <script lang="ts">
+	import GenerationListItem from 'components/GenerationListItem.svelte'
 	import type { PageData } from './$types.js'
 
 	export let data: PageData
@@ -36,11 +37,7 @@
 	<section class="my-24">
 		<h2>Your generations</h2>
 		{#each data.body.items as item}
-			<pre class="border p-4 my-12 first-of-type:mt-0 overflow-auto">{JSON.stringify(
-					item,
-					null,
-					2
-				)}</pre>
+			<GenerationListItem data={item} />
 		{/each}
 	</section>
 {/if}

@@ -1,17 +1,19 @@
 <script lang="ts">
+	import type { Models } from '@kittycad/lib'
 	import Logo from './Logo.svelte'
 	import { page } from '$app/stores'
 	import { paths } from '$lib/paths'
-	import type { User_type } from '@kittycad/lib/dist/types/src/models'
 
-	export let user: User_type | undefined
+	export let user: Models['User_type'] | undefined
 </script>
 
 <nav class="nav">
 	<a href="/">
 		<Logo className="h-6 md:h-12" />
 	</a>
-	{#if user}{:else}
+	{#if user}
+		<p>signed in</p>
+	{:else}
 		<a
 			href={import.meta.env.VITE_SITE_BASE_URL +
 				paths.SIGN_IN +
