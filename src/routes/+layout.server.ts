@@ -3,7 +3,11 @@ import { users, Client } from '@kittycad/lib'
 /** @type {import('./$types').LayoutData} */
 export const load = async ({ cookies }) => {
 	const token = cookies.get('__Secure-next-auth.session-token')
-	console.log('token', token)
+	if (!token) {
+		return {
+			user: undefined
+		}
+	}
 
 	const client = new Client(token || '')
 	const response = await users.get_user_self({ client })
