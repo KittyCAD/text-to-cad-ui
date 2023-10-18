@@ -5,9 +5,11 @@ export default {
 		fontFamily: {
 			mono: '"IBM Plex Mono", monospace',
 			sans: '"Noto Sans", sans-serif',
-			display: '"Visby CF", sans-serif',
+			display: '"Visby CF", sans-serif'
 		},
 		colors: {
+			transparent: 'transparent',
+			currentColor: 'currentColor',
 			chalkboard: {
 				10: 'oklch(99.7% 0.008766 102.8deg / <alpha-value>)',
 				20: 'oklch(91.34% 0.009353 109deg / <alpha-value>)',
@@ -139,4 +141,4 @@ export default {
 		}
 	},
 	plugins: []
-};
+}
