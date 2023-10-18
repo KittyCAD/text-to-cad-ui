@@ -2,6 +2,11 @@
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
+		fontFamily: {
+			mono: '"IBM Plex Mono", monospace',
+			sans: '"Noto Sans", sans-serif',
+			display: '"Visby CF", sans-serif',
+		},
 		colors: {
 			chalkboard: {
 				10: 'oklch(99.7% 0.008766 102.8deg / <alpha-value>)',
