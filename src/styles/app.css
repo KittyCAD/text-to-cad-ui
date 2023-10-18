@@ -1,0 +1,47 @@
+@import 'fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	.text-stroke {
+		-webkit-text-stroke-width: 1px;
+		-webkit-text-stroke-color: inherit;
+		color: transparent;
+	}
+
+	.text-stroke-2 {
+		-webkit-text-stroke-width: 2px;
+		-webkit-text-stroke-color: inherit;
+		color: transparent;
+	}
+
+	.text-stroke- {
+		&chalkboard-20 {
+			-webkit-text-stroke-color: theme('colors.chalkboard.20');
+		}
+		&chalkboard-100 {
+			-webkit-text-stroke-color: theme('colors.chalkboard.100');
+		}
+	}
+}
+
+:root {
+	@apply bg-chalkboard-10 text-chalkboard-100;
+	@apply dark:bg-chalkboard-100 dark:text-chalkboard-20;
+	@apply font-sans;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@apply font-display font-bold;
+}
+
+input {
+	@apply bg-transparent;
+}
