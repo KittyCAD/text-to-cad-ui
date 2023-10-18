@@ -37,6 +37,7 @@ export const load = async ({ cookies }) => {
 export const actions = {
 	default: async (event) => {
 		const token = event.cookies.get('__Secure-next-auth.session-token')
+		console.log(token)
 
 		if (!token) {
 			return {
@@ -45,6 +46,7 @@ export const actions = {
 		}
 		const formData = await event.request.formData()
 		// TODO make a call to the prompt API
+		console.log(formData.get('prompt'))
 
 		const response = await event.fetch(endpoints.prompt(), {
 			method: 'POST',
@@ -58,6 +60,7 @@ export const actions = {
 		})
 
 		const body = await response.json()
+		console.log(body)
 
 		return {
 			status: response.status,

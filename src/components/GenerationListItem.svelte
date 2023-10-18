@@ -3,9 +3,17 @@
 	import ModelViewer from './ModelViewer.svelte'
 
 	export let data: PromptResponse
-	let outputFormat: CADFormat = 'step'
+	let outputFormat: CADFormat = 'gltf'
+	console.log(data)
 
-	$: dataUrl = `data:text/${outputFormat};base64,${data.outputs ? data.outputs[outputFormat] : ''}`
+	let output = ''
+	for (const [key, value] of Object.entries(data.outputs)) {
+		if (key.endsWith('gltf')) {
+			output = value
+		}
+	}
+
+	$: dataUrl = `data:text/${outputFormat};base64,${output}`
 </script>
 
 <div>

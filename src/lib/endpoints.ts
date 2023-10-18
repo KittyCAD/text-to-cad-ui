@@ -9,7 +9,7 @@ interface ListParams {
 }
 
 export const endpoints = {
-	prompt: (output_format: CADFormat = 'step') =>
+	prompt: (output_format: CADFormat = 'gltf') =>
 		`${import.meta.env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
 	list: ({ limit, page_token, sort_by = 'created_at_descending' }: ListParams) =>
 		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?limit=${limit}${
