@@ -1,30 +1,30 @@
 name: CI
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-    types-lint-build:
-        runs-on: ubuntu-latest
+  types-lint-build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-            - uses: actions/setup-node@v3.6.0
-              with:
-                  node-version: '18'
-                  cache: 'yarn'
+      - uses: actions/setup-node@v3.6.0
+        with:
+          node-version: '18'
+          cache: 'yarn'
 
-            - run: yarn install
+      - run: yarn install
 
-            - run: yarn check
+      - run: yarn check
 
-            - run: yarn lint
+      - run: yarn lint
 
-            - run: yarn build
-              env:
-                  SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
-                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: yarn build
+        env:
+          SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

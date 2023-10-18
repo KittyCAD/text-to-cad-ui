@@ -26,6 +26,7 @@ You can preview the production build with `yarn preview`.
 ## Before submitting a PR
 
 Please run the following commands to ensure that your code is as ready for review as it can be:
+
 ```bash
 yarn fmt --fix && yarn test
 ```
