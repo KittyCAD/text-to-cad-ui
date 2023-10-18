@@ -1,4 +1,4 @@
-import { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib'
 
 export type CADFormat = Models['FileExportFormat_type']
 

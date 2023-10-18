@@ -1,5 +1,5 @@
 import { createMachine, assign } from 'xstate'
-import { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib'
 import withBaseURL from '../lib/withBaseURL'
 
 const SKIP_AUTH = import.meta.env.VITE_KC_SKIP_AUTH === 'true' && import.meta.env.DEV
