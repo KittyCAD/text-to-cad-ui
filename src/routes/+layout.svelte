@@ -1,5 +1,7 @@
 <script>
-	import '../app.css';
+	import '../styles/app.css'
 </script>
 
-<slot />
+<main class="mx-5 lg:mx-auto max-w-5xl my-24">
+	<slot />
+</main>
