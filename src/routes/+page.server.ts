@@ -14,8 +14,8 @@ type SubmissionResponse = {
 export const load = async () => {
 	const response = await fetch(endpoints.list({ limit: 10 }), {
 		headers: {
-			'Authorization': `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`,
-		},
+			Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`
+		}
 	})
 
 	const body = await response.json()
@@ -25,7 +25,7 @@ export const load = async () => {
 
 	return {
 		status: response.status,
-		body,
+		body
 	} satisfies LoadResponse
 }
 
@@ -38,11 +38,11 @@ export const actions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`,
+				Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`
 			},
 			body: JSON.stringify({
-				prompt: formData.get('prompt'),
-			}),
+				prompt: formData.get('prompt')
+			})
 		})
 
 		const body = await response.json()
@@ -52,7 +52,7 @@ export const actions = {
 
 		return {
 			status: response.status,
-			body,
+			body
 		} satisfies SubmissionResponse
 	}
 } satisfies Actions
