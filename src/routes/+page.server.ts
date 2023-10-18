@@ -31,6 +31,7 @@ export const load = async ({ cookies }) => {
 
 export const actions = {
 	default: async (event) => {
+        console.log('event', event)
 		const formData = await event.request.formData()
 		// TODO make a call to the prompt API
 
