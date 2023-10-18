@@ -35,8 +35,10 @@ yarn fmt --fix && yarn test
 
 1. Get a dev api token from: https://dev.kittycad.io
 2. Open the dev console and run the following:
+
 ```js
-var CookieDate = new Date;
-CookieDate.setFullYear(CookieDate.getFullYear() +10);
-document.cookie = "__Secure-next-auth.session-token=YOUR_TOKEN;Secure;expires="+CookieDate.toUTCString() + ';';
+var CookieDate = new Date()
+CookieDate.setFullYear(CookieDate.getFullYear() + 10)
+document.cookie =
+	'__Secure-next-auth.session-token=YOUR_TOKEN;Secure;expires=' + CookieDate.toUTCString() + ';'
 ```
