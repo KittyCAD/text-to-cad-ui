@@ -20,9 +20,6 @@ export const load = async () => {
 
 	const body = await response.json()
 
-	console.log('response', response)
-	console.log('body', body)
-
 	return {
 		status: response.status,
 		body
@@ -46,9 +43,6 @@ export const actions = {
 		})
 
 		const body = await response.json()
-
-		console.log('response', response)
-		console.log('body', body)
 
 		return {
 			status: response.status,
