@@ -37,7 +37,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kittycad/lib": "^0.0.44",
-		"@sentry/sveltekit": "^7.74.1"
+		"@kittycad/lib": "^0.0.44"
 	}
 }
