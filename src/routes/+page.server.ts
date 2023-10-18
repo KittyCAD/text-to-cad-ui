@@ -11,10 +11,13 @@ type SubmissionResponse = {
 	body: PromptResponse
 }
 
-export const load = async () => {
+export const load = async ({ cookies }) => {
+	let token = cookies.get('__Secure-next-auth.session-token')
+	console.log('token', token)
+
 	const response = await fetch(endpoints.list({ limit: 10 }), {
 		headers: {
-			Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`
+			Authorization: `Bearer ${token}`
 		}
 	})
 
