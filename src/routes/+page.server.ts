@@ -12,7 +12,7 @@ type SubmissionResponse = {
 }
 
 export const load = async ({ cookies }) => {
-	let token = cookies.get('__Secure-next-auth.session-token')
+	const token = cookies.get('__Secure-next-auth.session-token')
 	console.log('token', token)
 
 	const response = await fetch(endpoints.list({ limit: 10 }), {
@@ -31,7 +31,7 @@ export const load = async ({ cookies }) => {
 
 export const actions = {
 	default: async (event) => {
-        console.log('event', event)
+		const token = event.cookies.get('__Secure-next-auth.session-token')
 		const formData = await event.request.formData()
 		// TODO make a call to the prompt API
 
@@ -39,7 +39,7 @@ export const actions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`
+				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify({
 				prompt: formData.get('prompt')
