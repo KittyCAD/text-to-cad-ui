@@ -1,7 +1,4 @@
 <script lang="ts">
-	//GLTF has a THREE dependency that doesn't get bundled
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	import * as THREE from 'three'
 	import { T } from '@threlte/core'
 	import { GLTF } from '@threlte/extras'
 	export let dataUrl: string
