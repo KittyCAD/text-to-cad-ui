@@ -4,6 +4,7 @@ import type { Actions } from './$types'
 type LoadResponse = {
 	status: number
 	body?: ListResponse
+	previousPage?: string
 }
 
 type SubmissionResponse = {
@@ -11,8 +12,11 @@ type SubmissionResponse = {
 	body?: PromptResponse
 }
 
-export const load = async ({ cookies }) => {
+export const load = async ({ cookies, url }) => {
 	const token = cookies.get('__Secure-next-auth.session-token')
+
+	const previousPage = url.searchParams.get('previous_page') || undefined
+	const page = url.searchParams.get('page') || undefined
 
 	if (!token) {
 		return {
@@ -20,7 +24,7 @@ export const load = async ({ cookies }) => {
 		} satisfies LoadResponse
 	}
 
-	const response = await fetch(endpoints.list({ limit: 10 }), {
+	const response = await fetch(endpoints.list({ limit: 10, page_token: page }), {
 		headers: {
 			Authorization: `Bearer ${token}`
 		}
@@ -30,14 +34,14 @@ export const load = async ({ cookies }) => {
 
 	return {
 		status: response.status,
-		body
+		body,
+		previousPage: previousPage
 	} satisfies LoadResponse
 }
 
 export const actions = {
 	default: async (event) => {
 		const token = event.cookies.get('__Secure-next-auth.session-token')
-		console.log(token)
 
 		if (!token) {
 			return {
@@ -45,8 +49,6 @@ export const actions = {
 			} satisfies SubmissionResponse
 		}
 		const formData = await event.request.formData()
-		// TODO make a call to the prompt API
-		console.log(formData.get('prompt'))
 
 		const response = await event.fetch(endpoints.prompt(), {
 			method: 'POST',
@@ -60,7 +62,6 @@ export const actions = {
 		})
 
 		const body = await response.json()
-		console.log('prompt response', body)
 
 		return {
 			status: response.status,

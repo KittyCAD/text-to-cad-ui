@@ -18,8 +18,6 @@ export const load = async ({ cookies }) => {
 	const client = new Client(token)
 	const response = await users.get_user_self({ client })
 
-	console.log('user', response)
-
 	return {
 		user: 'error_code' in response ? undefined : response
 	}
