@@ -2,9 +2,12 @@
 	import GenerationListItem from 'components/GenerationListItem.svelte'
 	import type { PageData } from './$types.js'
 	import { page } from '$app/stores'
+	import type { PromptResponse } from '$lib/endpoints.js'
 
 	export let data: PageData
 	$: currentPage = $page.url.searchParams.get('page')
+
+	const filterFailures = (item: PromptResponse) => item.status !== 'failed'
 </script>
 
 <section class="mx-auto max-w-3xl mt-24">
@@ -38,7 +41,7 @@
 			>
 		</h2>
 		<ul class="m-0 p-0">
-			{#each data.body.items as item}
+			{#each data.body.items.filter(filterFailures) as item (item.id)}
 				<li class="first-of-type:mt-0 my-12">
 					<GenerationListItem data={item} />
 				</li>
