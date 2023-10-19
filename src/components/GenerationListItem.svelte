@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { CADFormat, PromptResponse } from '$lib/endpoints'
-	import ModelViewer from './ModelViewer.svelte'
+	import { Canvas } from '@threlte/core'
+	import ModelPreviewer from './ModelPreviewer.svelte'
 
 	export let data: PromptResponse
 	let outputFormat: CADFormat = 'gltf'
-	console.log(data)
 
 	let output: string | undefined = ''
 	// Outputs will only be set if the model has completed processing.
@@ -18,31 +18,60 @@
 
 	$: dataUrl = `data:text/${outputFormat};base64,${output}`
 
-	const gltfUrl = `data:application/json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
-	console.log('gltfUrl', gltfUrl)
+	const gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>
 
 <div>
 	<div class="grid md:grid-cols-2 lg:grid-cols-3 border items-stretch">
-		<div class="lg:col-span-2 border-r px-2 py-6 lg:px-4 lg:py-16">
-			<h3>Your Prompt</h3>
-			<p class="text-lg">"{data.prompt}"</p>
-			<p class="text-sm text-gray-500">Submitted {data.created_at}</p>
-			<p class="text-sm text-gray-500">Status: {data.status}</p>
-			{#if data.error}
-				<p class="text-sm text-red-500">Error: {data.error}</p>
-			{/if}
+		<h3 class="font-normal font-mono lg:col-span-2 px-2 py-6 lg:px-4 lg:py-16 border-r">
+			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
+				>Your Prompt</span
+			>
+			<span class="sr-only">: </span>
+			<span class="block text-lg">"{data.prompt}"</span>
+		</h3>
+		<!-- {#if data.outputs && gltfUrl} -->
+		<div class="relative">
+			<Canvas>
+				<ModelPreviewer dataUrl={gltfUrl} />
+			</Canvas>
 		</div>
-		{#if data.outputs && gltfUrl}
-			<div class="relative">
-				<ModelViewer dataUrl={gltfUrl} />
+		<!-- {/if} -->
+	</div>
+	<div class="grid grid-cols-2 lg:grid-cols-3 border border-t-0 items-stretch">
+		<dl
+			class="m-0 px-4 py-1 lg:col-span-2 flex items-center justify-between text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40 border-r"
+		>
+			<div class="flex gap-2">
+				<dt>Submitted</dt>
+				<dd>{data.created_at}</dd>
 			</div>
+			{#if data.status === 'completed'}
+				<div class="flex gap-2">
+					<dt>Completed</dt>
+					<dd>{data.completed_at}</dd>
+				</div>
+			{/if}
+		</dl>
+		{#if data.outputs}
+			<ul class="m-0 p-0 flex items-stretch">
+				<li class="contents">
+					<a href={`view/${data.id}`} class="link flex-auto border-r">View model</a>
+				</li>
+				<li class="contents">
+					<a href={dataUrl} download={`${data.id}.${outputFormat}`} class="link flex-auto"
+						>Download model</a
+					>
+				</li>
+			</ul>
 		{/if}
 	</div>
-	{#if data.outputs}
-		<ul class="m-0 p-0">
-			<li class="contents"><a href={`view/${data.id}`}>View model</a></li>
-			<li class="contents"><a href={dataUrl} download>Download model</a></li>
-		</ul>
-	{/if}
 </div>
+
+<style lang="postcss">
+	.link {
+		@apply text-center;
+		@apply px-2 py-1;
+		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
+	}
+</style>

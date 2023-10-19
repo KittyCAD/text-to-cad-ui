@@ -7,6 +7,6 @@
 </script>
 
 <Nav user={data ? data.user : undefined} />
-<main class="mx-5 lg:mx-auto max-w-5xl my-24">
+<main class="mx-5 lg:mx-auto max-w-5xl">
 	<slot />
 </main>
