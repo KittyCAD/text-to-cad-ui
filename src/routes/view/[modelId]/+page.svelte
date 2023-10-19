@@ -9,16 +9,16 @@
 	let outputFormat: CADFormat = 'gltf'
 
 	let output: string | undefined = ''
-	// // Outputs will only be set if the model has completed processing.
-	// if (data.body.outputs) {
-	// 	for (const [key, value] of Object.entries(data.body.outputs)) {
-	// 		if (key.endsWith('gltf')) {
-	// 			output = value as string | undefined
-	// 		}
-	// 	}
-	// }
+	// Outputs will only be set if the model has completed processing.
+	if (data.body.outputs) {
+		for (const [key, value] of Object.entries(data.body.outputs)) {
+			if (key.endsWith('gltf')) {
+				output = value as string | undefined
+			}
+		}
+	}
 
-	// $: dataUrl = `data:text/${outputFormat};base64,${output}`
+	$: dataUrl = `data:text/${outputFormat};base64,${output}`
 	const gltfUrl = `data:model/gltf+json;base64,${
 		data.body?.outputs ? data.body.outputs['source.gltf'] : ''
 	}`
@@ -35,14 +35,20 @@
 	>⬅ Back to home</a
 >
 <div>
-	<div class="grid grid-cols-2 md:grid-cols-3 border items-stretch">
-		<h1 class="font-normal font-mono lg:col-span-2 border-r px-2 py-6 lg:px-4 lg:py-16">
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border items-stretch">
+		<h1
+			class="font-normal font-mono md:col-span-2 lg:col-span-3 border-r px-2 py-6 lg:px-4 lg:py-16"
+		>
 			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 				>Your Prompt</span
 			>
 			<span class="sr-only">: </span>
 			<span class="block text-lg">"{data.body.prompt}"</span>
 		</h1>
+		{#if data.body.outputs}
+			<a href={dataUrl} download={`${data.body?.id}.${outputFormat}`} class="link">Download model</a
+			>
+		{/if}
 	</div>
 	<div class="relative h-[50vh] min-h-[500px] border border-t-0">
 		<Canvas>
@@ -60,3 +66,11 @@
 	<summary>page data</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>
+
+<style lang="postcss">
+	.link {
+		@apply flex items-center justify-center text-center;
+		@apply px-2 py-1;
+		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
+	}
+</style>

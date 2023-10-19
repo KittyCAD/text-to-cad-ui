@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { T, useFrame } from '@threlte/core'
-	import { interactivity, GLTF } from '@threlte/extras'
-	import { spring } from 'svelte/motion'
+	import { T } from '@threlte/core'
+	import { GLTF } from '@threlte/extras'
 	export let dataUrl: string
-
-	interactivity()
-	const scale = spring(1)
-	let rotation = 0
-
-	useFrame((state, delta) => {
-		rotation += delta
-	})
 </script>
 
 <T.PerspectiveCamera
