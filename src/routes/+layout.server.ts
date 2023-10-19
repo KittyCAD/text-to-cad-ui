@@ -9,6 +9,12 @@ export const load = async ({ cookies }) => {
 		}
 	}
 
+	// We need to tell the client to use the right base URL
+	if (import.meta.env.MODE !== 'production') {
+		// Set the env variable BASE_URL to import.meta.env.VITE_API_BASE_URL.
+		// This will be used by the client to make requests to the API.
+		process.env.BASE_URL = import.meta.env.VITE_API_BASE_URL + '/'
+	}
 	const client = new Client(token)
 	const response = await users.get_user_self({ client })
 
