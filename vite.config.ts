@@ -29,6 +29,6 @@ export default defineConfig(({ mode }) => {
 		},
 		ssr: {
 			noExternal: ['three']
-		},
+		}
 	}
 })
