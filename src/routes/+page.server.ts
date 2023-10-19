@@ -12,7 +12,7 @@ type SubmissionResponse = {
 	body?: PromptResponse
 }
 
-export const load = async ({ cookies, url }) => {
+export const load = async ({ cookies, url }): ListResponse => {
 	const token = cookies.get('__Secure-next-auth.session-token')
 
 	const previousPage = url.searchParams.get('previous_page') || undefined
@@ -30,13 +30,13 @@ export const load = async ({ cookies, url }) => {
 		}
 	})
 
-	const body = await response.json()
+	const body = (await response.json()) as ListResponse
 
 	return {
 		status: response.status,
 		body,
 		previousPage: previousPage
-	} satisfies LoadResponse
+	}
 }
 
 export const actions = {
@@ -61,11 +61,11 @@ export const actions = {
 			})
 		})
 
-		const body = await response.json()
+		const body = (await response.json()) as PromptResponse
 
 		return {
 			status: response.status,
 			body
-		} satisfies SubmissionResponse
+		}
 	}
 } satisfies Actions
