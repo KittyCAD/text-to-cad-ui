@@ -26,6 +26,9 @@
 			<p class="text-lg">"{data.prompt}"</p>
 			<p class="text-sm text-gray-500">Submitted {data.created_at}</p>
 			<p class="text-sm text-gray-500">Status: {data.status}</p>
+			{#if data.error}
+				<p class="text-sm text-red-500">Error: {data.error}</p>
+			{/if}
 		</div>
 		{#if data.outputs}
 			<div class="relative">
