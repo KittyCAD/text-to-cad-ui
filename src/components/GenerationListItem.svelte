@@ -27,9 +27,11 @@
 			<p class="text-sm text-gray-500">Submitted {data.created_at}</p>
 			<p class="text-sm text-gray-500">Status: {data.status}</p>
 		</div>
-		<div class="relative">
-			<ModelViewer />
-		</div>
+		{#if data.outputs}
+			<div class="relative">
+				<ModelViewer />
+			</div>
+		{/if}
 	</div>
 	{#if data.outputs}
 		<ul class="m-0 p-0">
