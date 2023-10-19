@@ -30,13 +30,17 @@
 			<span class="sr-only">: </span>
 			<span class="block text-lg">"{data.prompt}"</span>
 		</h3>
-		<!-- {#if data.outputs && gltfUrl} -->
-		<div class="relative">
-			<Canvas>
-				<ModelPreviewer dataUrl={gltfUrl} />
-			</Canvas>
-		</div>
-		<!-- {/if} -->
+		{#if data.outputs && data.status === 'completed'}
+			<div class="relative">
+				<Canvas>
+					<ModelPreviewer dataUrl={gltfUrl} />
+				</Canvas>
+			</div>
+		{:else}
+			<div class="shimmer-skeleton relative overflow-hidden flex items-center justify-center">
+				<p class="font-mono text-sm text-energy-50">Generating...</p>
+			</div>
+		{/if}
 	</div>
 	<div class="grid grid-cols-2 lg:grid-cols-3 border border-t-0 items-stretch">
 		<dl
@@ -53,7 +57,7 @@
 				</div>
 			{/if}
 		</dl>
-		{#if data.outputs}
+		{#if data.outputs && data.status === 'completed'}
 			<ul class="m-0 p-0 flex items-stretch">
 				<li class="contents">
 					<a href={`view/${data.id}`} class="link flex-auto border-r">View model</a>
@@ -69,6 +73,22 @@
 </div>
 
 <style lang="postcss">
+	.shimmer-skeleton::before {
+		content: '';
+		@apply absolute inset-0 -inset-y-1/2;
+		@apply bg-gradient-to-t from-transparent via-energy-20/20 to-transparent;
+		animation: shimmer 2s ease-in-out infinite;
+	}
+
+	@keyframes shimmer {
+		0% {
+			transform: translateY(100%);
+		}
+		100% {
+			transform: translateY(-100%);
+		}
+	}
+
 	.link {
 		@apply text-center;
 		@apply px-2 py-1;
