@@ -1,18 +1,27 @@
 <script lang="ts">
-	import type { PromptResponse } from '$lib/endpoints'
+	import { endpoints, type PromptResponse } from '$lib/endpoints'
 	import ThumbsUp from './ThumbsUp.svelte'
 
 	export let modelId: string
 	export let feedback: PromptResponse['feedback']
 
-	const giveFeedback = (newFeedback: PromptResponse['feedback']) => async () => {
+	$: console.log('feedback', feedback, modelId)
+
+	const giveFeedback = (newFeedback: PromptResponse['feedback']) => () => {
 		console.log(feedback, modelId, newFeedback)
-		// await fetch(`/api/feedback`, {
-		//     method: 'POST',
-		//     headers: { 'Content-Type': 'application/json' },
-		//     credentials: 'include',
-		//     body: JSON.stringify({ feedback })
-		// })
+		if (feedback !== newFeedback) {
+			fetch(endpoints.localFeedback, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
+				body: JSON.stringify({ feedback: newFeedback, id: modelId })
+			})
+				.then((res) => res.text())
+				.then((text) => console.log(text))
+				.catch((err) => console.error(err))
+			// Optimistically update the UI
+			feedback = newFeedback
+		}
 	}
 </script>
 
@@ -20,11 +29,16 @@
 	Rate
 	<button
 		on:click={giveFeedback('thumbs_down')}
-		class="hover:text-destroy-40 focus:text-destroy-40"
+		class={(feedback === 'thumbs_down' ? 'text-destroy-40 ' : '') +
+			'hover:text-destroy-40 focus:text-destroy-40'}
 	>
 		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100 rotate-180" />
 	</button>
-	<button on:click={giveFeedback('thumbs_up')} class="hover:text-succeed-40 focus:text-succeed-40">
+	<button
+		on:click={giveFeedback('thumbs_up')}
+		class={(feedback === 'thumbs_up' ? 'text-succeed-40 ' : '') +
+			'hover:text-succeed-40 focus:text-succeed-40'}
+	>
 		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100" />
 	</button>
 </div>

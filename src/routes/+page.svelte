@@ -8,6 +8,8 @@
 	$: currentPage = $page.url.searchParams.get('page')
 
 	const filterFailures = (item: PromptResponse) => item.status !== 'failed'
+
+	$: console.log('data', data)
 </script>
 
 <section class="mx-auto max-w-3xl mt-24">
