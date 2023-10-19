@@ -6,17 +6,20 @@
 	let outputFormat: CADFormat = 'gltf'
 	console.log(data)
 
-	let output = ''
+	let output: string | undefined = ''
 	// Outputs will only be set if the model has completed processing.
 	if (data.outputs) {
 		for (const [key, value] of Object.entries(data.outputs)) {
 			if (key.endsWith('gltf')) {
-				output = value
+				output = value as string | undefined
 			}
 		}
 	}
 
 	$: dataUrl = `data:text/${outputFormat};base64,${output}`
+
+	const gltfUrl = `data:application/json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
+	console.log('gltfUrl', gltfUrl)
 </script>
 
 <div>
@@ -30,9 +33,9 @@
 				<p class="text-sm text-red-500">Error: {data.error}</p>
 			{/if}
 		</div>
-		{#if data.outputs}
+		{#if data.outputs && gltfUrl}
 			<div class="relative">
-				<ModelViewer />
+				<ModelViewer dataUrl={gltfUrl} />
 			</div>
 		{/if}
 	</div>

@@ -60,7 +60,7 @@ export const actions = {
 		})
 
 		const body = await response.json()
-		console.log(body)
+		console.log('prompt response', body)
 
 		return {
 			status: response.status,

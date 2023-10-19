@@ -3,7 +3,6 @@
 	import type { PageData } from './$types.js'
 
 	export let data: PageData
-	export let form
 </script>
 
 <section class="mx-auto max-w-3xl">
@@ -28,10 +27,6 @@
 		<button type="submit" class="submit">Submit</button>
 	</form>
 </section>
-
-{#if form}
-	<p>Submission response:</p>
-{/if}
 
 {#if data.body?.items?.length}
 	<section class="my-24">
