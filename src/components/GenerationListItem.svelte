@@ -7,9 +7,12 @@
 	console.log(data)
 
 	let output = ''
-	for (const [key, value] of Object.entries(data.outputs)) {
-		if (key.endsWith('gltf')) {
-			output = value
+	// Outputs will only be set if the model has completed processing.
+	if (data.outputs) {
+		for (const [key, value] of Object.entries(data.outputs)) {
+			if (key.endsWith('gltf')) {
+				output = value
+			}
 		}
 	}
 
@@ -21,13 +24,17 @@
 		<div class="lg:col-span-2 border-r px-2 py-6 lg:px-4 lg:py-16">
 			<h3>Your Prompt</h3>
 			<p class="text-lg">"{data.prompt}"</p>
+			<p class="text-sm text-gray-500">Submitted {data.created_at}</p>
+			<p class="text-sm text-gray-500">Status: {data.status}</p>
 		</div>
 		<div class="relative">
 			<ModelViewer />
 		</div>
 	</div>
-	<ul class="m-0 p-0">
-		<li class="contents"><a href={`view/${data.id}`}>View model</a></li>
-		<li class="contents"><a href={dataUrl} download>Download model</a></li>
-	</ul>
+	{#if data.outputs}
+		<ul class="m-0 p-0">
+			<li class="contents"><a href={`view/${data.id}`}>View model</a></li>
+			<li class="contents"><a href={dataUrl} download>Download model</a></li>
+		</ul>
+	{/if}
 </div>
