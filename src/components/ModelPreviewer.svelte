@@ -1,18 +1,22 @@
 <script lang="ts">
 	import { T } from '@threlte/core'
-	import { GLTF, OrbitControls, interactivity } from '@threlte/extras'
-	interactivity()
+	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
 	export let dataUrl: string
+	export let pausable = true
+	
+	interactivity()
 
 	let shouldAutoRotate = true
 	const AUTO_ROTATE_PAUSE = 5000
 
 	let autorotateTimeout: ReturnType<typeof setTimeout> | undefined
 	const disableAutoRotate = () => {
+		if (!pausable) return
 		shouldAutoRotate = false
 		clearTimeout(autorotateTimeout)
 	}
 	const reenableAutoRotate = () => {
+		if (!pausable) return
 		autorotateTimeout = setTimeout(function () {
 			shouldAutoRotate = true
 		}, AUTO_ROTATE_PAUSE)
