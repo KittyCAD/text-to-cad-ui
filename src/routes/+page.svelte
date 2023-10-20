@@ -3,6 +3,8 @@
 	import GenerationList from 'components/GenerationList.svelte'
 	import type { PromptLoadResponse } from './api/submit-prompt/+server'
 	import type { Models } from '@kittycad/lib'
+	import type { PageData } from './$types'
+	export let data: PageData
 	let promptedGenerations: Models['TextToCad_type'][] = []
 
 	const submitPrompt = async (e: Event) => {
@@ -43,7 +45,9 @@
 		<button type="submit" class="submit">Submit</button>
 	</form>
 </section>
-<GenerationList additionalGenerations={promptedGenerations} />
+{#if Boolean(data.user)}
+	<GenerationList additionalGenerations={promptedGenerations} />
+{/if}
 
 <style lang="postcss">
 	.submit {
