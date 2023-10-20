@@ -19,9 +19,9 @@ export const endpoints = {
 		`${import.meta.env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
 	view: (id: string) => `${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}`,
 	localView: '/api/get-generation',
-  localList: '/api/get-generation-list',
+	localList: '/api/get-generation-list',
 	localFeedback: `/api/submit-feedback`,
-  localPrompt: '/api/submit-prompt',
+	localPrompt: '/api/submit-prompt'
 }
 
 export type PromptResponse = Models['TextToCad_type']
