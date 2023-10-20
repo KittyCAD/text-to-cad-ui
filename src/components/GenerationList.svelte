@@ -16,7 +16,7 @@
 	let isFetching = false
 
 	async function fetchData() {
-		if ($nextPageToken === null || isFetching) return
+		if ($nextPageToken === null) return
 		isFetching = true
 
 		const response = await fetch(endpoints.localList, {
