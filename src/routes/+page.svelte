@@ -41,7 +41,7 @@
 			</p>
 			<a
 				href={paths.SIGN_IN}
-				class="self-stretch bg-energy-10/70 px-4 py-2 dark:bg-energy-40 border-0 border-l font-mono hover:bg-energy-10 dark:hover:bg-energy-20"
+				class="self-stretch flex items-center justify-center text-center bg-energy-10/70 px-4 py-2 dark:bg-energy-40 border-0 border-l font-mono hover:bg-energy-10 dark:hover:bg-energy-20"
 				>Sign in to get started</a
 			>
 		</div>
