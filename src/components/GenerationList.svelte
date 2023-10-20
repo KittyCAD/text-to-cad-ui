@@ -8,7 +8,9 @@
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { browser } from '$app/environment'
 
-	let models: Models['TextToCad_type'][] = []
+	export let additionalGenerations: Models['TextToCad_type'][] = []
+	let generations: Models['TextToCad_type'][] = []
+
 	const filterFailures = (item: Models['TextToCad_type']) => item.status !== 'failed'
 	let PAGE_SIZE = 2
 	let isFetching = false
@@ -38,18 +40,25 @@
 		fetchData()
 	})
 
-	$: models = [...models, ...newBatch]
+	$: generations = [...generations, ...newBatch]
+
+	$: console.log('generations', generations)
 </script>
 
-<section class="my-24">
+<section class="mt-24 mb-48">
 	<h2 class="text-4xl mb-8">
 		Your <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
 			>generations</span
 		>
 	</h2>
-	{#if models.length > 0}
+	{#if generations.length > 0}
 		<ul class="m-0 p-0">
-			{#each models.filter(filterFailures) as item}
+			{#each additionalGenerations as item}
+				<li class="first-of-type:mt-0 my-12">
+					<GenerationListItem data={item} />
+				</li>
+			{/each}
+			{#each generations.filter(filterFailures) as item}
 				<li class="first-of-type:mt-0 my-12">
 					<GenerationListItem data={item} />
 				</li>
@@ -57,8 +66,8 @@
 		</ul>
 	{/if}
 	{#if isFetching}
-		{#each Array(PAGE_SIZE) as i (i)}
-			<div class="first-of-type:mt-0 my-12">
+		{#each Array(PAGE_SIZE) as i}
+			<div class={`item-${i} first-of-type:mt-0 my-12`}>
 				<GenerationalListItemSkeleton />
 			</div>
 		{/each}

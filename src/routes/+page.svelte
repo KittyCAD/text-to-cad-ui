@@ -1,14 +1,33 @@
 <script lang="ts">
+	import { endpoints } from '$lib/endpoints'
 	import GenerationList from 'components/GenerationList.svelte'
+	import type { PromptLoadResponse } from './api/submit-prompt/+server'
+	import type { Models } from '@kittycad/lib'
+	let promptedGenerations: Models['TextToCad_type'][] = []
+
+	const submitPrompt = async (e: Event) => {
+		e.preventDefault()
+		const prompt = (e.target as HTMLFormElement).prompt.value
+		const response = await fetch(endpoints.localPrompt, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify({ prompt })
+		})
+		const data = (await response.json()) as PromptLoadResponse
+		promptedGenerations = data.body ? [data.body, ...promptedGenerations] : promptedGenerations
+		const form = e.target as HTMLFormElement
+		form.reset()
+	}
 </script>
 
-<section class="mx-auto max-w-3xl mt-24">
+<section class="mx-auto max-w-3xl my-48">
 	<h1 class="text-5xl mb-2">
 		Text to <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
 			>CAD</span
 		>
 	</h1>
-	<form method="POST" class="flex w-full">
+	<form on:submit={submitPrompt} class="flex w-full">
 		<label class="flex-1">
 			<span class="sr-only">Enter a text-to-CAD prompt:</span>
 			<input
@@ -24,7 +43,7 @@
 		<button type="submit" class="submit">Submit</button>
 	</form>
 </section>
-<GenerationList />
+<GenerationList additionalGenerations={promptedGenerations} />
 
 <style lang="postcss">
 	.submit {
