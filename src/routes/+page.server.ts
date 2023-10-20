@@ -12,7 +12,7 @@ type SubmissionResponse = {
 	body?: PromptResponse
 }
 
-export const load = async ({ cookies, url }): ListResponse => {
+export const load = async ({ cookies, url }): Promise<LoadResponse> => {
 	const token = cookies.get('__Secure-next-auth.session-token')
 
 	const previousPage = url.searchParams.get('previous_page') || undefined
