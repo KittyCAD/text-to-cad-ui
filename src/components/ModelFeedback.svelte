@@ -5,8 +5,6 @@
 	export let modelId: string
 	export let feedback: PromptResponse['feedback']
 
-	$: console.log('feedback', feedback, modelId)
-
 	const giveFeedback = (newFeedback: PromptResponse['feedback']) => () => {
 		console.log(feedback, modelId, newFeedback)
 		if (feedback !== newFeedback) {
@@ -19,6 +17,7 @@
 				.then((res) => res.text())
 				.then((text) => console.log(text))
 				.catch((err) => console.error(err))
+
 			// Optimistically update the UI
 			feedback = newFeedback
 		}
