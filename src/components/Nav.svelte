@@ -3,6 +3,7 @@
 	import Logo from './Logo.svelte'
 	import { page } from '$app/stores'
 	import { paths } from '$lib/paths'
+	import AccountMenu from './AccountMenu.svelte'
 
 	export let user: Models['User_type'] | undefined
 </script>
@@ -12,9 +13,7 @@
 		<Logo className="h-6 md:h-12" />
 	</a>
 	{#if user}
-		<div class="border border-solid overflow-hidden rounded-full w-8 h-8 md:w-12 md:h-12">
-			<img src={user.image} alt="Avatar" class="object-fill" />
-		</div>
+		<AccountMenu {user} />
 	{:else}
 		<a
 			href={import.meta.env.VITE_SITE_BASE_URL +
