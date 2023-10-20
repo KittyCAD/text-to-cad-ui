@@ -4,6 +4,8 @@ import { users, Client } from '@kittycad/lib'
 import { SIGN_OUT_PARAM } from '$lib/paths'
 const unProtectedRoutes = ['/']
 
+const domain = import.meta.env.DEV ? 'localhost' : '.kittycad.io'
+
 export const handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(AUTH_COOKIE_NAME)
 	if (!token && !unProtectedRoutes.includes(event.url.pathname)) {
@@ -33,7 +35,7 @@ export const handle = async ({ event, resolve }) => {
 	const query = event.url.searchParams.get(SIGN_OUT_PARAM)
 
 	if (Boolean(query) == true) {
-		event.cookies.delete(AUTH_COOKIE_NAME, { path: '/' })
+		event.cookies.delete(AUTH_COOKIE_NAME, { domain, path: '/' })
 		event.url.searchParams.delete(SIGN_OUT_PARAM)
 		throw redirect(303, '/')
 	}

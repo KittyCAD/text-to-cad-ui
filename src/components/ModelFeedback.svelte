@@ -6,17 +6,13 @@
 	export let feedback: PromptResponse['feedback']
 
 	const giveFeedback = (newFeedback: PromptResponse['feedback']) => () => {
-		console.log(feedback, modelId, newFeedback)
 		if (feedback !== newFeedback) {
 			fetch(endpoints.localFeedback, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				credentials: 'include',
 				body: JSON.stringify({ feedback: newFeedback, id: modelId })
-			})
-				.then((res) => res.text())
-				.then((text) => console.log(text))
-				.catch((err) => console.error(err))
+			}).catch((err) => console.error(err))
 
 			// Optimistically update the UI
 			feedback = newFeedback

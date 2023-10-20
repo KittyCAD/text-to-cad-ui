@@ -46,8 +46,6 @@
 		// load first batch onMount
 		fetchData()
 	})
-
-	$: console.log('generations', $generations)
 </script>
 
 <section class="mt-24 mb-48">

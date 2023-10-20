@@ -18,8 +18,6 @@
 
 			if (element === null) throw new Error('Element not found for InfiniteScroll')
 
-			console.log('setting up scroll listener', element)
-
 			element.addEventListener('scroll', onScroll)
 			element.addEventListener('resize', onScroll)
 		}
