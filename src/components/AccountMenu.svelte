@@ -15,15 +15,13 @@
 
 <div class={'relative ' + (open ? 'open' : '')}>
 	<button
-		class="toggle"
+		class="toggle border border-solid overflow-hidden rounded-full w-8 h-8 md:w-12 md:h-12"
 		on:click={() => {
 			open = !open
 		}}
 		on:keydown={dismiss}
 	>
-		<div class="border border-solid overflow-hidden rounded-full w-8 h-8 md:w-12 md:h-12">
-			<img src={user.image} alt="Avatar" class="object-fill" />
-		</div>
+		<img src={user.image} alt="Avatar" class="object-fill" />
 		<span class="sr-only">Open menu</span>
 	</button>
 	<dialog class="menu">
