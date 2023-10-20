@@ -1,4 +1,5 @@
 import { endpoints, type PromptResponse } from '$lib/endpoints'
+import type { Models } from '@kittycad/lib'
 import { redirect } from '@sveltejs/kit'
 
 type LoadResponse = {
@@ -23,7 +24,7 @@ export const load = async ({ cookies, params }) => {
 		}
 	})
 
-	const body = await response.json()
+	const body = (await response.json()) as Models['TextToCad_type']
 
 	return {
 		status: response.status,

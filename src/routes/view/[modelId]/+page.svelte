@@ -3,6 +3,7 @@
 	import type { PageData } from './$types'
 	import ModelPreviewer from 'components/ModelPreviewer.svelte'
 	import type { CADFormat } from '$lib/endpoints'
+	import ModelFeedback from 'components/ModelFeedback.svelte'
 
 	export let data: PageData
 
@@ -46,8 +47,12 @@
 			<span class="block text-lg">"{data.body.prompt}"</span>
 		</h1>
 		{#if data.body.outputs}
-			<a href={dataUrl} download={`${data.body?.id}.${outputFormat}`} class="link">Download model</a
-			>
+			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
+				<a href={dataUrl} download={`${data.body?.id}.${outputFormat}`} class="link border-b"
+					>Download model</a
+				>
+				<ModelFeedback modelId={data.body.id} feedback={data.body.feedback} />
+			</div>
 		{/if}
 	</div>
 	<div class="relative h-[50vh] min-h-[500px] border border-t-0">
