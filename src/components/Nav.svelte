@@ -8,7 +8,7 @@
 </script>
 
 <nav class="nav">
-	<a href={Boolean(user) ? paths.DASHBOARD : paths.HOME}>
+	<a href={user ? paths.DASHBOARD : paths.HOME}>
 		<Logo className="h-6 md:h-12" />
 	</a>
 	{#if user}

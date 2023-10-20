@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { T } from '@threlte/core'
-	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
+	import { GLTF, OrbitControls, interactivity } from '@threlte/extras'
 	export let dataUrl: string
 	export let pausable = true
-	
+
 	interactivity()
 
 	let shouldAutoRotate = true

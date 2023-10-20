@@ -28,7 +28,10 @@
 		<div
 			class="w-full flex items-center justify-start col-span-2 text-4xl font-mono border py-4 px-6"
 		>
-			<div class="typing-animation block text-chalkboard-70 dark:text-chalkboard-40" style={`--steps: ${examples[0].prompt.length - 1}`}>
+			<div
+				class="typing-animation block text-chalkboard-70 dark:text-chalkboard-40"
+				style={`--steps: ${examples[0].prompt.length - 1}`}
+			>
 				<div class="block w-fit">{examples[0].prompt}</div>
 			</div>
 		</div>
@@ -52,8 +55,7 @@
 		border-right: var(--_cursor-width) solid theme('colors.energy.40'); /* The typwriter cursor */
 		white-space: nowrap; /* Keeps the content on a single line */
 		letter-spacing: var(--_cursor-width); /* Adjust as needed */
-		animation: typing calc(var(--step-timing, 0.1s) * var(--steps, 20))
-				steps(var(--steps, 20), end),
+		animation: typing calc(var(--step-timing, 0.1s) * var(--steps, 20)) steps(var(--steps, 20), end),
 			blink-caret 0.85s step-end infinite;
 	}
 
