@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Models } from '@kittycad/lib'
 	import Logo from './Logo.svelte'
+	import { page } from '$app/stores'
 	import { paths } from '$lib/paths'
 	import AccountMenu from './AccountMenu.svelte'
 
@@ -14,12 +15,7 @@
 	{#if user}
 		<AccountMenu {user} />
 	{:else}
-		<a
-			href={import.meta.env.VITE_SITE_BASE_URL +
-				paths.SIGN_IN +
-				'/?callbackUrl=' +
-				encodeURIComponent(paths.DASHBOARD)}>Sign in</a
-		>
+		<a href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}>Sign in</a>
 	{/if}
 </nav>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { paths } from '$lib/paths'
 	import { Canvas } from '@threlte/core'
 	import ModelPreviewer from 'components/ModelPreviewer.svelte'
@@ -40,7 +41,7 @@
 				Create B-Rep CAD files and meshes from natural language prompts. Powered by KittyCAD.
 			</p>
 			<a
-				href={paths.SIGN_IN}
+				href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}
 				class="self-stretch flex items-center justify-center text-center bg-energy-10/70 px-4 py-2 dark:bg-energy-40 border-0 border-l font-mono hover:bg-energy-10 dark:hover:bg-energy-20"
 				>Sign in to get started</a
 			>
