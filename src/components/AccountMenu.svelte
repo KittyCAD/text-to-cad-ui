@@ -3,7 +3,6 @@
 	import { paths } from '$lib/paths'
 
 	export let user: Models['User_type']
-	let dialog: HTMLDialogElement
 	let open = false
 
 	function dismiss(e: KeyboardEvent) {
