@@ -37,7 +37,7 @@
 			.then((res) => res.json())
 			.catch((err) => console.error(err))
 
-		data = newResponse.status === 200 ? newResponse.body : data
+		data = newResponse.body ? newResponse.body : data
 	}
 
 	$: if (browser && data.status !== 'completed') {
@@ -106,7 +106,7 @@
 <style lang="postcss">
 	.shimmer-skeleton::before {
 		content: '';
-		@apply absolute inset-0 -inset-y-1/2;
+		@apply absolute z-0 inset-0 -inset-y-1/2;
 		@apply bg-gradient-to-t from-transparent via-energy-20/20 to-transparent;
 		animation: shimmer 2s ease-in-out infinite;
 	}
