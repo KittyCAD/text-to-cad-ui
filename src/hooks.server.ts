@@ -33,8 +33,9 @@ export const handle = async ({ event, resolve }) => {
 	const query = event.url.searchParams.get(SIGN_OUT_PARAM)
 
 	if (Boolean(query) == true) {
-		await event.cookies.delete(AUTH_COOKIE_NAME, { path: '/' })
-		throw redirect(300, '/')
+		event.cookies.delete(AUTH_COOKIE_NAME, { path: '/' })
+		event.url.searchParams.delete(SIGN_OUT_PARAM)
+		throw redirect(303, '/')
 	}
 	return resolve(event)
 }
