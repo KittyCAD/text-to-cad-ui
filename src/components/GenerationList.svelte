@@ -14,33 +14,36 @@
 	const filterFailures = (item: Models['TextToCad_type']) => item.status !== 'failed'
 	let PAGE_SIZE = 2
 	let isFetching = false
-
-	// but most likely, you'll have to store a token to fetch the next page
-	let nextUrl: string | null = ''
-	// store the new batch of data here.
-	let newBatch: Models['TextToCad_type'][] = []
+	let nextPageToken: string | null = ''
 
 	async function fetchData() {
-		console.log('fetching data', nextUrl)
 		isFetching = true
+
 		const response = await fetch(endpoints.localList, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			credentials: 'include',
-			body: JSON.stringify({ page_token: nextUrl })
+			body: JSON.stringify({ page_token: nextPageToken })
 		})
-		const newData = (await response.json()) as ListLoadResponse
+		const nextBatchPayload = (await response.json()) as ListLoadResponse
+		nextPageToken = nextBatchPayload?.body?.next_page ?? null
 		isFetching = false
-		newBatch = newData?.body?.items ?? []
-		nextUrl = newData?.body?.next_page ?? null
+
+		updateGenerations(nextBatchPayload)
+	}
+
+	function updateGenerations(payload: ListLoadResponse) {
+		const nextBatch = payload?.body?.items ?? []
+		const newGenerations = [...generations, ...nextBatch]
+		generations = Array.from(new Set(newGenerations.map((item) => item.id))).map((id) =>
+			newGenerations.find((item) => item.id === id)
+		) as Models['TextToCad_type'][]
 	}
 
 	onMount(() => {
 		// load first batch onMount
 		fetchData()
 	})
-
-	$: generations = [...generations, ...newBatch]
 
 	$: console.log('generations', generations)
 </script>
@@ -72,12 +75,12 @@
 			</div>
 		{/each}
 	{/if}
-	{#if nextUrl === null}
+	{#if nextPageToken === null}
 		<p class="text-center text-chalkboard-70 dark:text-chalkboard-40">You're all caught up! 🎉</p>
 	{/if}
 </section>
 <InfiniteScroll
-	hasMore={newBatch.length > 0}
+	hasMore={nextPageToken !== null}
 	threshold={200}
 	on:loadMore={fetchData}
 	elementScroll={browser ? document : undefined}
