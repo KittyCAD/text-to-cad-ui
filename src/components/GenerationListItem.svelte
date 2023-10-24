@@ -63,7 +63,7 @@
 			{#if data.outputs && data.status === 'completed'}
 				<div class="relative">
 					<Canvas>
-						<ModelPreviewer dataUrl={gltfUrl}  />
+						<ModelPreviewer dataUrl={gltfUrl} />
 					</Canvas>
 				</div>
 			{:else}
