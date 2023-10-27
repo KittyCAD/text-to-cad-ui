@@ -4,12 +4,13 @@
 	import type { PromptLoadResponse } from '../api/submit-prompt/+server'
 	import type { Models } from '@kittycad/lib'
 	import type { PageData } from './$types'
+	import type { GenerationEvents } from '$lib/types'
 	export let data: PageData
 	let promptedGenerations: Models['TextToCad_type'][] = []
+	let form = null as HTMLFormElement | null
+	let input = null as HTMLInputElement | null
 
-	const submitPrompt = async (e: Event) => {
-		e.preventDefault()
-		const prompt = (e.target as HTMLFormElement).prompt.value
+	const submitPrompt = async (prompt: string) => {
 		const response = await fetch(endpoints.localPrompt, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -18,8 +19,20 @@
 		})
 		const data = (await response.json()) as PromptLoadResponse
 		promptedGenerations = data.body ? [data.body, ...promptedGenerations] : promptedGenerations
+	}
+
+	const submitForm = async (e: Event) => {
+		e.preventDefault()
+		const prompt = (e.target as HTMLFormElement).prompt.value
+		await submitPrompt(prompt)
 		const form = e.target as HTMLFormElement
 		form.reset()
+	}
+
+	const retryPrompt = (e: CustomEvent<GenerationEvents['retryprompt']>) => {
+		if (input === null || form === null) return
+		input.scrollIntoView({ behavior: 'smooth', block: 'center' })
+		input.value = e.detail
 	}
 </script>
 
@@ -29,7 +42,7 @@
 			>CAD</span
 		>
 	</h1>
-	<form on:submit={submitPrompt} class="flex w-full">
+	<form on:submit={submitForm} class="flex w-full" bind:this={form}>
 		<label class="flex-1">
 			<span class="sr-only">Enter a text-to-CAD prompt:</span>
 			<input
@@ -40,13 +53,14 @@
 				spellcheck="false"
 				type="text"
 				class="w-full px-4 py-1 border"
+				bind:this={input}
 			/>
 		</label>
 		<button type="submit" class="submit">Submit</button>
 	</form>
 </section>
 {#if Boolean(data.user)}
-	<GenerationList additionalGenerations={promptedGenerations} />
+	<GenerationList additionalGenerations={promptedGenerations} on:retryprompt={retryPrompt} />
 {/if}
 
 <style lang="postcss">

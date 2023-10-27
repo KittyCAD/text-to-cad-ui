@@ -11,7 +11,6 @@
 
 	export let additionalGenerations: Models['TextToCad_type'][] = []
 
-	const filterFailures = (item: Models['TextToCad_type']) => item.status !== 'failed'
 	let PAGE_SIZE = 2
 	let isFetching = false
 
@@ -40,6 +39,8 @@
 				newGenerations.find((item) => item.id === id)
 			) as Models['TextToCad_type'][]
 		})
+
+		console.log($generations)
 	}
 
 	onMount(() => {
@@ -58,12 +59,12 @@
 		<ul class="m-0 p-0">
 			{#each additionalGenerations as item}
 				<li class="first-of-type:mt-0 my-12">
-					<GenerationListItem data={item} />
+					<GenerationListItem data={item} on:retryprompt />
 				</li>
 			{/each}
-			{#each $generations.filter(filterFailures) as item}
+			{#each $generations as item}
 				<li class="first-of-type:mt-0 my-12">
-					<GenerationListItem data={item} />
+					<GenerationListItem data={item} on:retryprompt />
 				</li>
 			{/each}
 		</ul>
