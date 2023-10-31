@@ -3,6 +3,7 @@
 	import { base64ToBlob } from '$lib/base64ToBlob'
 	import type { ConvertResponse } from '../routes/api/convert/[output_format]/+server'
 	import { toKebabCase } from '$lib/toKebabCase'
+	import LoadingIndicator from './LoadingIndicator.svelte'
 
 	export let prompt: string = ''
 	export let outputs: PromptResponse['outputs']
@@ -46,26 +47,32 @@
 
 <div class={`split-button ${status}${status === 'loading' ? ' shimmer ' : ' '}${className}`}>
 	{#if status == 'ready'}
-		<a href={dataUrl} download={fileName}> Download </a>
+		<a href={dataUrl} download={fileName}>Download</a>
 	{:else if status == 'loading'}
-		<button disabled> Loading... </button>
+		<button disabled>Loading&nbsp;</button>
 	{:else}
-		<button disabled> Failed </button>
+		<button disabled>Failed</button>
 	{/if}
 
-	{#if status !== 'loading'}
-		<select class="gui-popup" bind:value={currentOutput} on:change={updateOutput}>
+	<div class="relative">
+		<select
+			class={status === 'loading' ? 'opacity-0 pointer-events-none' : ''}
+			bind:value={currentOutput}
+			on:change={updateOutput}
+		>
 			{#each Object.keys(CADMIMETypes) as format}
 				<option value={format} selected={format == currentOutput}>
 					{format}
 				</option>
 			{/each}
 		</select>
-	{:else}
-		<div class="py-1">
-			<div class="w-5 h-5 rounded-full border-2 border-l-0 animate-spin" />
-		</div>
-	{/if}
+		<LoadingIndicator
+			size="24px"
+			color="currentColor"
+			className={'!absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' +
+				(status !== 'loading' ? ' opacity-0 pointer-events-none' : '')}
+		/>
+	</div>
 </div>
 
 <style lang="postcss">
