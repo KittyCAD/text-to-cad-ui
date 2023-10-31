@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-	import { endpoints, type CADFormat, type PromptResponse } from '$lib/endpoints'
+	import { endpoints, type PromptResponse } from '$lib/endpoints'
 	import { Canvas } from '@threlte/core'
 	import ModelPreviewer from './ModelPreviewer.svelte'
 	import type { LoadResponse } from '../routes/api/get-generation/+server'
@@ -10,18 +10,6 @@
 	const dispatch = createEventDispatcher<GenerationEvents>()
 
 	export let data: PromptResponse
-	let outputFormat: CADFormat = 'gltf'
-
-	let output: string | undefined = ''
-	// Outputs will only be set if the model has completed processing.
-	if (data.outputs) {
-		for (const [key, value] of Object.entries(data.outputs)) {
-			if (key.endsWith('gltf')) {
-				output = value as string | undefined
-			}
-		}
-	}
-
 	let poller: ReturnType<typeof setInterval> | undefined
 
 	const setupPoller = (id: string) => {
@@ -109,7 +97,7 @@
 						>View</a
 					>
 				</li>
-				<DownloadButton className="link flex-auto" outputs={data.outputs} id={data.id} />
+				<DownloadButton className="link flex-auto" outputs={data.outputs} prompt={data.prompt} />
 			</ul>
 		{:else if data.error}
 			<button

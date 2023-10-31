@@ -2,8 +2,9 @@
 	import { CADMIMETypes, type CADFormat, type PromptResponse, endpoints } from '$lib/endpoints'
 	import { base64ToBlob } from '$lib/base64ToBlob'
 	import type { ConvertResponse } from '../routes/api/convert/[output_format]/+server'
+	import { toKebabCase } from '$lib/toKebabCase'
 
-	export let id: string = ''
+	export let prompt: string = ''
 	export let outputs: PromptResponse['outputs']
 	export let className: string = ''
 	let currentOutput: CADFormat = 'gltf'
@@ -12,7 +13,7 @@
 
 	$: currentMimeType = CADMIMETypes[currentOutput]
 	$: dataUrl = `data:${currentMimeType};base64,${outputData}`
-	$: fileName = `${id}.${currentOutput}`
+	$: fileName = `${toKebabCase(prompt)}.${currentOutput}`
 
 	async function updateOutput(e: Event) {
 		const currentTarget = e.currentTarget as HTMLSelectElement
