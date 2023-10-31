@@ -2,24 +2,11 @@
 	import { Canvas } from '@threlte/core'
 	import type { PageData } from './$types'
 	import ModelPreviewer from 'components/ModelPreviewer.svelte'
-	import type { CADFormat } from '$lib/endpoints'
 	import ModelFeedback from 'components/ModelFeedback.svelte'
+	import DownloadButton from 'components/DownloadButton.svelte'
 
 	export let data: PageData
 
-	let outputFormat: CADFormat = 'gltf'
-
-	let output: string | undefined = ''
-	// Outputs will only be set if the model has completed processing.
-	if (data.body.outputs) {
-		for (const [key, value] of Object.entries(data.body.outputs)) {
-			if (key.endsWith('gltf')) {
-				output = value as string | undefined
-			}
-		}
-	}
-
-	$: dataUrl = `data:text/${outputFormat};base64,${output}`
 	const gltfUrl = `data:model/gltf+json;base64,${
 		data.body?.outputs ? data.body.outputs['source.gltf'] : ''
 	}`
@@ -44,13 +31,11 @@
 				>Your Prompt</span
 			>
 			<span class="sr-only">: </span>
-			<span class="block text-lg">"{data.body.prompt}"</span>
+			<span class="block text-lg">"{data.body?.prompt}"</span>
 		</h1>
-		{#if data.body.outputs}
+		{#if data.body?.outputs}
 			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-				<a href={dataUrl} download={`${data.body?.id}.${outputFormat}`} class="link border-b"
-					>Download model</a
-				>
+				<DownloadButton className="w-full" outputs={data.body.outputs} prompt={data.body.prompt} />
 				<ModelFeedback modelId={data.body.id} feedback={data.body.feedback} />
 			</div>
 		{/if}
@@ -63,19 +48,11 @@
 	<div
 		class="w-full flex items-center justify-between px-2 lg:px-4 py-1 border border-t-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 	>
-		<p>Submitted {data.body.created_at}</p>
-		<p>Completed {data.body.completed_at}</p>
+		<p>Submitted {data.body?.created_at}</p>
+		<p>Completed {data.body?.completed_at}</p>
 	</div>
 </div>
 <details>
 	<summary>page data</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>
-
-<style lang="postcss">
-	.link {
-		@apply flex items-center justify-center text-center;
-		@apply px-2 py-1;
-		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
-	}
-</style>
