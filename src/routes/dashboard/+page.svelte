@@ -36,19 +36,19 @@
 	}
 </script>
 
-<section class="mx-auto max-w-3xl my-48">
+<section class="mx-auto max-w-2xl my-48">
 	<h1 class="text-5xl mb-2">
 		Text to <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
 			>CAD</span
 		>
 	</h1>
-	<form on:submit={submitForm} class="flex w-full" bind:this={form}>
+	<form on:submit={submitForm} class="flex w-full text-xl" bind:this={form}>
 		<label class="flex-1">
 			<span class="sr-only">Enter a text-to-CAD prompt:</span>
 			<input
 				autocapitalize="false"
 				name="prompt"
-				placeholder="Enter a text-to-CAD prompt:"
+				placeholder="e.g. Create a plate with 4 holes and rounded corners"
 				required
 				spellcheck="false"
 				type="text"
@@ -65,7 +65,7 @@
 
 <style lang="postcss">
 	.submit {
-		@apply px-4 py-1 border border-l-0;
+		@apply px-4 lg:px-6 py-1 border border-l-0;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
 		@apply bg-energy-10 text-energy-100;
 		@apply dark:bg-energy-90 dark:text-energy-10;

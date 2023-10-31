@@ -1,26 +1,15 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-	import { endpoints, type CADFormat, type PromptResponse } from '$lib/endpoints'
+	import { endpoints, type PromptResponse } from '$lib/endpoints'
 	import { Canvas } from '@threlte/core'
 	import ModelPreviewer from './ModelPreviewer.svelte'
 	import type { LoadResponse } from '../routes/api/get-generation/+server'
 	import { createEventDispatcher } from 'svelte'
 	import type { GenerationEvents } from '$lib/types'
+	import DownloadButton from './DownloadButton.svelte'
 	const dispatch = createEventDispatcher<GenerationEvents>()
 
 	export let data: PromptResponse
-	let outputFormat: CADFormat = 'gltf'
-
-	let output: string | undefined = ''
-	// Outputs will only be set if the model has completed processing.
-	if (data.outputs) {
-		for (const [key, value] of Object.entries(data.outputs)) {
-			if (key.endsWith('gltf')) {
-				output = value as string | undefined
-			}
-		}
-	}
-
 	let poller: ReturnType<typeof setInterval> | undefined
 
 	const setupPoller = (id: string) => {
@@ -49,7 +38,7 @@
 		clearInterval(poller)
 	}
 
-	$: dataUrl = `data:text/${outputFormat};base64,${output}`
+	// For displaying the THREE.js model
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 
 	function retry(prompt: string) {
@@ -102,13 +91,13 @@
 		{#if data.outputs && data.status === 'completed'}
 			<ul class="m-0 p-0 flex items-stretch">
 				<li class="contents">
-					<a href={`view/${data.id}`} class="link flex-auto border-r">View model</a>
-				</li>
-				<li class="contents">
-					<a href={dataUrl} download={`${data.id}.${outputFormat}`} class="link flex-auto"
-						>Download model</a
+					<a
+						href={`view/${data.id}`}
+						class="link flex-auto border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						>View</a
 					>
 				</li>
+				<DownloadButton className="link flex-auto" outputs={data.outputs} prompt={data.prompt} />
 			</ul>
 		{:else if data.error}
 			<button
@@ -150,5 +139,8 @@
 		@apply text-center;
 		@apply px-2 py-1;
 		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
+	}
+	.link:global(.reverse) {
+		@apply hover:bg-chalkboard-90 dark:hover:bg-chalkboard-20;
 	}
 </style>
