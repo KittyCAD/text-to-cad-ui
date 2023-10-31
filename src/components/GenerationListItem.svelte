@@ -103,7 +103,11 @@
 		{#if data.outputs && data.status === 'completed'}
 			<ul class="m-0 p-0 flex items-stretch">
 				<li class="contents">
-					<a href={`view/${data.id}`} class="link flex-auto border-r">View model</a>
+					<a
+						href={`view/${data.id}`}
+						class="link flex-auto border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						>View</a
+					>
 				</li>
 				<DownloadButton className="link flex-auto" outputs={data.outputs} id={data.id} />
 			</ul>
@@ -147,5 +151,8 @@
 		@apply text-center;
 		@apply px-2 py-1;
 		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
+	}
+	.link:global(.reverse) {
+		@apply hover:bg-chalkboard-90 dark:hover:bg-chalkboard-20;
 	}
 </style>

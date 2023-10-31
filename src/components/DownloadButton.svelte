@@ -45,11 +45,11 @@
 
 <div class={'split-button ' + className}>
 	{#if status == 'ready'}
-		<a href={dataUrl} download={fileName} class="w-full"> Download </a>
+		<a href={dataUrl} download={fileName}> Download </a>
 	{:else if status == 'loading'}
-		<button disabled class="w-full"> Loading... </button>
+		<button disabled> Loading... </button>
 	{:else}
-		<button disabled class="w-full"> Failed </button>
+		<button disabled> Failed </button>
 	{/if}
 
 	{#if status !== 'loading'}
@@ -67,20 +67,15 @@
 
 <style lang="postcss">
 	.split-button {
-		@apply inline-flex items-center px-2 py-0.5 gap-2 relative;
-		@apply text-energy-100 bg-energy-10;
-
-		@media (--dark) {
-			@apply text-energy-10 bg-energy-100;
-		}
+		@apply inline-flex justify-center items-center px-2 py-1 gap-4 relative;
+		@apply font-mono text-energy-100 bg-energy-20 hover:bg-energy-10;
 	}
 
-	.split-button > button,
-	.split-button > a {
-		@apply border-0 border-r;
-	}
-
-	svg {
-		@apply w-4 h-4;
+	select {
+		@apply bg-energy-10 border-0;
+		@apply uppercase text-sm font-mono text-energy-100;
+		@apply shadow-inner;
+		@apply pl-2 pr-3 py-1 rounded-sm;
+		@apply border-transparent hover:border-energy-100 border-solid border;
 	}
 </style>

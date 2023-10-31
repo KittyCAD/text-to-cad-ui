@@ -33,6 +33,11 @@
 	@apply font-sans;
 }
 
+.reverse {
+	@apply bg-chalkboard-100 text-chalkboard-10;
+	@apply dark:bg-chalkboard-10 dark:text-chalkboard-100;
+}
+
 h1,
 h2,
 h3,
