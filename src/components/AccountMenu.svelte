@@ -57,12 +57,14 @@
 		min-inline-size: 150px;
 		@apply shadow-md;
 		/* These will transition in */
+		pointer-events: none;
 		opacity: 0;
 		translate: 1px 10px;
 		transition: transform 0.2s ease-out, opacity 0.1s ease-out;
 	}
 
 	.open .menu {
+		pointer-events: auto;
 		opacity: 1;
 		translate: 1px 0px;
 	}
