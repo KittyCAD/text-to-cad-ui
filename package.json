@@ -26,6 +26,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
 		"postcss": "^8.4.31",
+		"postcss-custom-media": "^10.0.2",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^4.0.5",
@@ -39,7 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kittycad/lib": "^0.0.44",
+		"@kittycad/lib": "^0.0.45",
 		"@threlte/core": "^6.1.0",
 		"@threlte/extras": "^7.3.0",
 		"three": "^0.157.0"

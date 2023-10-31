@@ -6,6 +6,7 @@
 	import type { LoadResponse } from '../routes/api/get-generation/+server'
 	import { createEventDispatcher } from 'svelte'
 	import type { GenerationEvents } from '$lib/types'
+	import DownloadButton from './DownloadButton.svelte'
 	const dispatch = createEventDispatcher<GenerationEvents>()
 
 	export let data: PromptResponse
@@ -49,7 +50,7 @@
 		clearInterval(poller)
 	}
 
-	$: dataUrl = `data:text/${outputFormat};base64,${output}`
+	// For displaying the THREE.js model
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 
 	function retry(prompt: string) {
@@ -104,11 +105,7 @@
 				<li class="contents">
 					<a href={`view/${data.id}`} class="link flex-auto border-r">View model</a>
 				</li>
-				<li class="contents">
-					<a href={dataUrl} download={`${data.id}.${outputFormat}`} class="link flex-auto"
-						>Download model</a
-					>
-				</li>
+				<DownloadButton className="link flex-auto" outputs={data.outputs} id={data.id} />
 			</ul>
 		{:else if data.error}
 			<button
