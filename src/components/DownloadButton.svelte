@@ -44,7 +44,7 @@
 	}
 </script>
 
-<div class={'split-button ' + className}>
+<div class={`split-button ${status}${status === 'loading' ? ' shimmer ' : ' '}${className}`}>
 	{#if status == 'ready'}
 		<a href={dataUrl} download={fileName}> Download </a>
 	{:else if status == 'loading'}
@@ -62,7 +62,9 @@
 			{/each}
 		</select>
 	{:else}
-		<div class="w-4 h-4 rounded-full border-2 border-l-0 animate-spin" />
+		<div class="py-1">
+			<div class="w-5 h-5 rounded-full border-2 border-l-0 animate-spin" />
+		</div>
 	{/if}
 </div>
 
@@ -72,11 +74,40 @@
 		@apply font-mono text-energy-100 bg-energy-20 hover:bg-energy-10;
 	}
 
+	.split-button:global(.loading),
+	:global(.loading) > select {
+		@apply bg-transparent;
+	}
+	.split-button:global(.failed),
+	:global(.failed) > select {
+		@apply bg-destroy-10 text-destroy-80;
+	}
+
 	select {
 		@apply bg-energy-10 border-0;
 		@apply uppercase text-sm font-mono text-energy-100;
 		@apply shadow-inner;
 		@apply pl-2 pr-3 py-1 rounded-sm;
 		@apply border-transparent hover:border-energy-100 border-solid border;
+	}
+
+	.shimmer {
+		@apply relative overflow-hidden;
+	}
+
+	.shimmer::before {
+		content: '';
+		@apply absolute z-0 inset-0 -inset-y-1/2;
+		@apply bg-gradient-to-t from-transparent via-energy-20/40 to-transparent;
+		animation: shimmer 1s ease-in-out infinite;
+	}
+
+	@keyframes shimmer {
+		0% {
+			transform: translateY(100%);
+		}
+		100% {
+			transform: translateY(-100%);
+		}
 	}
 </style>

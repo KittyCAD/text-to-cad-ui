@@ -42,7 +42,7 @@
 			>CAD</span
 		>
 	</h1>
-	<form on:submit={submitForm} class="flex w-full text-xl" bind:this={form}>
+	<form on:submit={submitForm} class="flex w-full text-lg" bind:this={form}>
 		<label class="flex-1">
 			<span class="sr-only">Enter a text-to-CAD prompt:</span>
 			<input
