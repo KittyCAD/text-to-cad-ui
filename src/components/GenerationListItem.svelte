@@ -93,7 +93,7 @@
 				<li class="contents">
 					<a
 						href={`view/${data.id}`}
-						class="link flex-auto border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						class="link font-mono flex-auto border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
 						>View</a
 					>
 				</li>
@@ -136,7 +136,7 @@
 	}
 
 	.link {
-		@apply text-center;
+		@apply text-center flex items-center justify-center;
 		@apply px-2 py-1;
 		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
 	}
