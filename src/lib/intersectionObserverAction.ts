@@ -31,8 +31,8 @@ export const childrenObserverAction: Action<
 	childrenArray.forEach((elem) => observer.observe(elem))
 
 	return {
-        //  We have to tell the action when the number of children changes,
-        // if more are appended, for example.
+		//  We have to tell the action when the number of children changes,
+		// if more are appended, for example.
 		update(newOptions: ObserverActionOptions) {
 			if (newOptions.numChildren !== options.numChildren) {
 				options.numChildren = newOptions.numChildren
