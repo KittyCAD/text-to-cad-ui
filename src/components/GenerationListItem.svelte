@@ -10,6 +10,7 @@
 	const dispatch = createEventDispatcher<GenerationEvents>()
 
 	export let data: PromptResponse
+	export let shouldRenderModel = true
 	let poller: ReturnType<typeof setInterval> | undefined
 
 	const setupPoller = (id: string) => {
@@ -59,9 +60,11 @@
 		</h3>
 		{#if data.outputs && data.status === 'completed'}
 			<div class="relative">
-				<Canvas>
-					<ModelPreviewer dataUrl={gltfUrl} />
-				</Canvas>
+				{#if shouldRenderModel}
+					<Canvas>
+						<ModelPreviewer dataUrl={gltfUrl} />
+					</Canvas>
+				{/if}
 			</div>
 		{:else if data.status === 'failed'}
 			<div class="failed dark:dark relative overflow-hidden flex items-center justify-center p-2">

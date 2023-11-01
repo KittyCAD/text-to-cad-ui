@@ -8,11 +8,21 @@
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { browser } from '$app/environment'
 	import { generations, nextPageToken } from '$lib/stores'
+	import {
+		childrenObserverAction,
+		type ObserverActionPayload
+	} from '$lib/intersectionObserverAction'
 
 	export let additionalGenerations: Models['TextToCad_type'][] = []
 
+	const RENDER_THRESHOLD = 0.05
 	let PAGE_SIZE = 2
 	let isFetching = false
+	let intersectionInfo: IntersectionObserverEntry['intersectionRatio'][] = []
+	let intersectionOptions = {
+		numChildren: PAGE_SIZE,
+		threshold: new Array(20).fill(0).map((_, i) => (i + 1) / 20)
+	}
 
 	async function fetchData() {
 		if ($nextPageToken === null) return
@@ -35,18 +45,30 @@
 		const nextBatch = payload?.body?.items ?? []
 		generations.update((g) => {
 			const newGenerations = [...g, ...nextBatch]
+			// Update the number of child elements to observe
+			intersectionOptions = {
+				...intersectionOptions,
+				numChildren: newGenerations.length
+			}
 			return Array.from(new Set(newGenerations.map((item) => item.id))).map((id) =>
 				newGenerations.find((item) => item.id === id)
 			) as Models['TextToCad_type'][]
 		})
-
-		console.log($generations)
 	}
 
 	onMount(() => {
 		// load first batch onMount
 		fetchData()
 	})
+
+	function updateIntersectionInfo(e: CustomEvent<ObserverActionPayload[]>) {
+		// We have to replace the whole array to trigger a re-render
+		const tempInfo = [...intersectionInfo]
+		e.detail.forEach((entry) => {
+			tempInfo[entry.index] = entry.intersectionRatio
+		})
+		intersectionInfo = tempInfo
+	}
 </script>
 
 <section class="mt-24 mb-48">
@@ -56,15 +78,32 @@
 		>
 	</h2>
 	{#if $generations.length > 0}
-		<ul class="m-0 p-0">
-			{#each additionalGenerations as item}
-				<li class="first-of-type:mt-0 my-12">
-					<GenerationListItem data={item} on:retryprompt />
+		<ul
+			class="m-0 p-0"
+			use:childrenObserverAction={intersectionOptions}
+			on:emit={updateIntersectionInfo}
+		>
+			{#each additionalGenerations as item, i}
+				<li id={item.id} class="first-of-type:mt-0 my-12" style={`opacity: ${intersectionInfo[i]}`}>
+					<GenerationListItem
+						data={item}
+						shouldRenderModel={intersectionInfo[i] > RENDER_THRESHOLD}
+						on:retryprompt
+					/>
 				</li>
 			{/each}
-			{#each $generations as item}
-				<li class="first-of-type:mt-0 my-12">
-					<GenerationListItem data={item} on:retryprompt />
+			{#each $generations as item, i}
+				<li
+					id={item.id}
+					class="first-of-type:mt-0 my-12"
+					style={`opacity: ${intersectionInfo[i + additionalGenerations.length]}`}
+				>
+					<GenerationListItem
+						data={item}
+						shouldRenderModel={intersectionInfo[i + additionalGenerations.length] >
+							RENDER_THRESHOLD}
+						on:retryprompt
+					/>
 				</li>
 			{/each}
 		</ul>
