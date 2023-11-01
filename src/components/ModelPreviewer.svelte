@@ -33,7 +33,6 @@
 		boundingBox.setFromObject($loadedModel.scene)
 		boundingBox.getSize(size)
 		maxDistance = Math.max(size.x, size.y, size.z)
-		console.log(maxDistance)
 	}
 </script>
 
