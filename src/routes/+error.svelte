@@ -19,9 +19,9 @@
 </div>
 
 <style lang="postcss">
-    a,
-    button {
-        @apply border border-solid font-mono;
-        @apply px-6 py-2 text-center;
-    }
+	a,
+	button {
+		@apply border border-solid font-mono;
+		@apply px-6 py-2 text-center;
+	}
 </style>

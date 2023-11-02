@@ -24,13 +24,15 @@ export const load = async ({ cookies, params }) => {
 		}
 	})
 
-	
 	const body = (await response.json()) as Models['TextToCad_type']
-	
+
 	if (response.status >= 400 && response.status < 500) {
-		throw error(response.status, 'Model could not be found or you do not have permission to view it')
+		throw error(
+			response.status,
+			'Model could not be found or you do not have permission to view it'
+		)
 	}
-	
+
 	return {
 		status: response.status,
 		body
