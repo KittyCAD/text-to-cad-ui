@@ -12,7 +12,7 @@
 	}`
 </script>
 
-<p class="font-display font-bold text-3xl ml-4 mb-16">
+<p class="font-display font-bold text-3xl ml-4 mb-8 md:mb-16">
 	Text to <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
 		>CAD</span
 	>
@@ -23,7 +23,7 @@
 	>⬅ Back to home</a
 >
 <div>
-	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border items-stretch">
+	<div class="grid md:grid-cols-3 lg:grid-cols-4 border items-stretch">
 		<h1
 			class="font-normal font-mono md:col-span-2 lg:col-span-3 border-r px-2 py-6 lg:px-4 lg:py-16"
 		>
@@ -46,7 +46,7 @@
 		</Canvas>
 	</div>
 	<div
-		class="w-full flex items-center justify-between px-2 lg:px-4 py-1 border border-t-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
+		class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-t-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 	>
 		<p>Submitted {data.body?.created_at}</p>
 		<p>Completed {data.body?.completed_at}</p>
