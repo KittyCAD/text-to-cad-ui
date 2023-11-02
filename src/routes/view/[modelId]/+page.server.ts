@@ -1,6 +1,6 @@
 import { endpoints, type PromptResponse } from '$lib/endpoints'
 import type { Models } from '@kittycad/lib'
-import { redirect } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 
 type LoadResponse = {
 	status: number
@@ -25,6 +25,13 @@ export const load = async ({ cookies, params }) => {
 	})
 
 	const body = (await response.json()) as Models['TextToCad_type']
+
+	if (response.status >= 400 && response.status < 500) {
+		throw error(
+			response.status,
+			'Model could not be found or you do not have permission to view it'
+		)
+	}
 
 	return {
 		status: response.status,
