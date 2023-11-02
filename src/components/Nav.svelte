@@ -24,6 +24,6 @@
 		@apply bg-chalkboard-10 dark:bg-chalkboard-100;
 		@apply mx-5 lg:mx-auto mt-2 lg:mt-4 max-w-5xl;
 		@apply sticky z-10 top-0 flex justify-between items-center;
-		@apply border px-4 py-1;
+		@apply border px-2 md:px-4 py-1;
 	}
 </style>
