@@ -51,7 +51,7 @@
 
 <div>
 	<div class="grid md:grid-cols-2 lg:grid-cols-3 border items-stretch">
-		<h3 class="font-normal font-mono lg:col-span-2 px-2 py-6 lg:px-4 lg:py-16 border-r">
+		<h3 class="font-normal font-mono lg:col-span-2 px-2 py-6 lg:px-4 lg:py-16 border-r box-border">
 			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 				>Your Prompt</span
 			>
@@ -59,26 +59,30 @@
 			<span class="block text-lg">"{data.prompt}"</span>
 		</h3>
 		{#if data.outputs && data.status === 'completed'}
-			<div class="relative">
+			<div class="relative min-h-[33vh] border-t md:border-t-0">
 				{#if shouldRenderModel}
 					<Canvas>
-						<ModelPreviewer dataUrl={gltfUrl} />
+						<ModelPreviewer dataUrl={gltfUrl} enableZoom={false} />
 					</Canvas>
 				{/if}
 			</div>
 		{:else if data.status === 'failed'}
-			<div class="failed dark:dark relative overflow-hidden flex items-center justify-center p-2">
+			<div
+				class="failed dark:dark relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center p-2"
+			>
 				<p class="font-mono text-xs text-destroy-50">{data.error}</p>
 			</div>
 		{:else}
-			<div class="shimmer-skeleton relative overflow-hidden flex items-center justify-center">
+			<div
+				class="shimmer-skeleton relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center"
+			>
 				<p class="font-mono text-sm text-energy-50">Generating...</p>
 			</div>
 		{/if}
 	</div>
-	<div class="grid grid-cols-2 lg:grid-cols-3 border border-t-0 items-stretch">
+	<div class="grid md:grid-cols-2 lg:grid-cols-3 border border-t-0 items-stretch">
 		<dl
-			class="m-0 px-4 py-1 lg:col-span-2 flex items-center justify-between text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40 border-r"
+			class="m-0 px-2 md:px-4 py-1 lg:col-span-2 flex flex-col md:flex-row md:items-center order-1 md:order-none justify-between text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40 border-r"
 		>
 			<div class="flex gap-2">
 				<dt>Submitted</dt>
@@ -92,11 +96,11 @@
 			{/if}
 		</dl>
 		{#if data.outputs && data.status === 'completed'}
-			<ul class="m-0 p-0 flex items-stretch">
+			<ul class="m-0 p-0 flex flex-col md:flex-row items-stretch">
 				<li class="contents">
 					<a
 						href={`view/${data.id}`}
-						class="link font-mono flex-auto border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						class="link font-mono flex-auto md:border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
 						>View</a
 					>
 				</li>
@@ -105,7 +109,8 @@
 		{:else if data.error}
 			<button
 				on:click={retry(data.prompt)}
-				class="link w-full justify-center flex items-center text-center">Retry Prompt</button
+				class="link w-full justify-center flex items-center text-center border-b md:border-b-0"
+				>Retry Prompt</button
 			>
 		{/if}
 	</div>

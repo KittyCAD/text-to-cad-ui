@@ -2,8 +2,10 @@
 	import * as THREE from 'three'
 	import { T, useThrelte } from '@threlte/core'
 	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
+
 	export let dataUrl: string
 	export let pausable = true
+	export let enableZoom = true
 
 	const { size: threlteSize } = useThrelte()
 
@@ -49,6 +51,7 @@
 	<OrbitControls
 		enableDamping
 		autoRotate={shouldAutoRotate}
+		{enableZoom}
 		on:start={disableAutoRotate}
 		on:end={reenableAutoRotate}
 	/>
