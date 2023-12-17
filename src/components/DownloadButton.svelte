@@ -78,7 +78,7 @@
 <style lang="postcss">
 	.split-button {
 		@apply inline-flex justify-center items-center px-2 py-1 gap-4 relative;
-		@apply font-mono text-energy-100 bg-energy-20 hover:bg-energy-10;
+		@apply font-mono text-chalkboard-120 bg-green hover:hue-rotate-15;
 	}
 
 	.split-button:global(.loading),
@@ -91,11 +91,11 @@
 	}
 
 	select {
-		@apply bg-energy-10 border-0;
-		@apply uppercase text-sm font-mono text-energy-100;
+		@apply bg-green text-chalkboard-120 border-0;
+		@apply uppercase text-sm font-mono;
 		@apply shadow-inner;
 		@apply pl-2 pr-3 py-1 rounded-sm;
-		@apply border-transparent hover:border-energy-100 border-solid border;
+		@apply border-transparent hover:border-chalkboard-120 border-solid border;
 	}
 
 	.shimmer {
@@ -105,7 +105,7 @@
 	.shimmer::before {
 		content: '';
 		@apply absolute z-0 inset-0 -inset-y-1/2;
-		@apply bg-gradient-to-t from-transparent via-energy-20/40 to-transparent;
+		@apply bg-gradient-to-t from-transparent via-green/80 to-transparent;
 		animation: shimmer 1s ease-in-out infinite;
 	}
 

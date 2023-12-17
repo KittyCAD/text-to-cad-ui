@@ -100,7 +100,7 @@
 				<li class="contents">
 					<a
 						href={`view/${data.id}`}
-						class="link font-mono flex-auto md:border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						class="link font-mono flex-auto md:border-r reverse hover:!bg-green border-chalkboard-70 dark:border-chalkboard-40"
 						>View</a
 					>
 				</li>

@@ -34,7 +34,7 @@
 			<a
 				data-sveltekit-reload
 				href={paths.SIGN_OUT}
-				class="text-sm font-mono hover:bg-energy-10 dark:hover:bg-energy-80 text-center px-4 py-2 border-t"
+				class="text-sm font-mono hover:bg-green hover:text-chalkboard-120 text-center px-4 py-2 border-t"
 				on:keydown={dismiss}
 			>
 				Sign Out
@@ -47,8 +47,8 @@
 	.menu {
 		@apply absolute top-full -right-4;
 		@apply z-10 mt-1 mr-0;
-		@apply text-chalkboard-100 dark:text-chalkboard-20;
-		@apply bg-chalkboard-10 dark:bg-chalkboard-90;
+		@apply text-chalkboard-120 dark:text-chalkboard-10;
+		@apply bg-white dark:bg-chalkboard-90;
 		@apply border-solid border-2 border-chalkboard-100;
 		@apply border border-chalkboard-100 dark:border-chalkboard-20;
 		@apply flex flex-col gap-5;

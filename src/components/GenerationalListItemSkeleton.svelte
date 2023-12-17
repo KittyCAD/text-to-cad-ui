@@ -20,7 +20,7 @@
 	.shimmer-skeleton::before {
 		content: '';
 		@apply absolute z-0 inset-0 -inset-y-1/2;
-		@apply bg-gradient-to-t from-transparent via-energy-20/20 to-transparent;
+		@apply bg-gradient-to-t from-transparent via-green/80 to-transparent;
 		animation: shimmer 2s ease-in-out infinite;
 	}
 

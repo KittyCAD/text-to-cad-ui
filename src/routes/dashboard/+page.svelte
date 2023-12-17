@@ -67,7 +67,6 @@
 	.submit {
 		@apply px-4 lg:px-6 py-1 border border-l-0;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
-		@apply bg-energy-10 text-energy-100;
-		@apply dark:bg-energy-90 dark:text-energy-10;
+		@apply bg-green text-chalkboard-120 hover:hue-rotate-15;
 	}
 </style>
