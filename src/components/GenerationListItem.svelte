@@ -100,7 +100,7 @@
 				<li class="contents">
 					<a
 						href={`view/${data.id}`}
-						class="link font-mono flex-auto md:border-r reverse border-chalkboard-70 dark:border-chalkboard-40"
+						class="link font-mono uppercase text-sm tracking-[1px] flex-auto md:border-r reverse hover:text-chalkboard-120 hover:!bg-green border-chalkboard-70 dark:border-chalkboard-40"
 						>View</a
 					>
 				</li>
@@ -109,7 +109,7 @@
 		{:else if data.error}
 			<button
 				on:click={retry(data.prompt)}
-				class="link w-full justify-center flex items-center text-center border-b md:border-b-0"
+				class="font-mono uppercase tracking-[1px] text-sm link w-full justify-center flex items-center text-center border-b md:border-b-0"
 				>Retry Prompt</button
 			>
 		{/if}

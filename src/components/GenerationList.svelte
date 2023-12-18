@@ -73,9 +73,7 @@
 
 <section class="mt-24 mb-48">
 	<h2 class="text-4xl mb-8">
-		Your <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
-			>generations</span
-		>
+		Your <span class="text-green">generations</span>
 	</h2>
 	{#if $generations.length > 0}
 		<ul
@@ -85,11 +83,7 @@
 		>
 			{#each additionalGenerations as item, i}
 				<li id={item.id} class="first-of-type:mt-0 my-12" style={`opacity: ${intersectionInfo[i]}`}>
-					<GenerationListItem
-						data={item}
-						shouldRenderModel={intersectionInfo[i] > RENDER_THRESHOLD}
-						on:retryprompt
-					/>
+					<GenerationListItem data={item} on:retryprompt />
 				</li>
 			{/each}
 			{#each $generations as item, i}

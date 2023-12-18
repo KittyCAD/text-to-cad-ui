@@ -38,9 +38,7 @@
 
 <section class="mx-auto max-w-2xl my-48">
 	<h1 class="text-5xl mb-2">
-		Text to <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
-			>CAD</span
-		>
+		Text-to-<span class="text-green">CAD</span>
 	</h1>
 	<form on:submit={submitForm} class="flex w-full text-lg" bind:this={form}>
 		<label class="flex-1">
@@ -66,8 +64,8 @@
 <style lang="postcss">
 	.submit {
 		@apply px-4 lg:px-6 py-1 border border-l-0;
+		@apply font-mono uppercase tracking-[1px] text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
-		@apply bg-energy-10 text-energy-100;
-		@apply dark:bg-energy-90 dark:text-energy-10;
+		@apply bg-green text-chalkboard-120 hover:hue-rotate-15;
 	}
 </style>

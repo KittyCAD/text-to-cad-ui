@@ -13,8 +13,8 @@
 </script>
 
 <p class="font-display font-bold text-3xl ml-4 mb-8 md:mb-16">
-	Text to <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
-		>CAD</span
+	Text-to-CAD <span class="text-stroke text-stroke-chalkboard-100 dark:text-stroke-chalkboard-20"
+		>UI</span
 	>
 </p>
 <a
@@ -22,7 +22,7 @@
 	class="block w-fit text-xs px-2 py-1 mb-4 hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90"
 	>⬅ Back to home</a
 >
-<div>
+<div class="mb-24">
 	<div class="grid md:grid-cols-3 lg:grid-cols-4 border items-stretch">
 		<h1
 			class="font-normal font-mono md:col-span-2 lg:col-span-3 border-r px-2 py-6 lg:px-4 lg:py-16"
@@ -52,7 +52,3 @@
 		<p>Completed {data.body?.completed_at}</p>
 	</div>
 </div>
-<details>
-	<summary>page data</summary>
-	<pre>{JSON.stringify(data, null, 2)}</pre>
-</details>

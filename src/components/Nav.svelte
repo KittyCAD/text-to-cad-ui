@@ -10,20 +10,24 @@
 
 <nav class="nav">
 	<a href={user ? paths.DASHBOARD : paths.HOME}>
-		<Logo className="h-6 md:h-12" />
+		<Logo className="h-6 lg:h-8 hover:text-green" />
 	</a>
 	{#if user}
 		<AccountMenu {user} />
 	{:else}
-		<a href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}>Sign in</a>
+		<a href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))} class="sign-in">Sign in</a>
 	{/if}
 </nav>
 
 <style lang="postcss">
 	.nav {
-		@apply bg-chalkboard-10 dark:bg-chalkboard-100;
+		@apply bg-white dark:bg-chalkboard-120;
 		@apply mx-5 lg:mx-auto mt-2 lg:mt-4 max-w-5xl;
 		@apply sticky z-10 top-0 flex justify-between items-center;
 		@apply border px-2 md:px-4 py-1;
+	}
+
+	.sign-in {
+		@apply font-mono uppercase tracking-[1px] px-2 py-1 hover:bg-green hover:text-chalkboard-120;
 	}
 </style>
