@@ -3,9 +3,9 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		fontFamily: {
-			mono: '"IBM Plex Mono", monospace',
-			sans: '"Noto Sans", sans-serif',
-			display: '"Visby CF", sans-serif'
+			mono: '"OCR A Tribute Pro Monospaced", monospace',
+			sans: '"owners", sans-serif',
+			display: '"owners", sans-serif'
 		},
 		colors: {
 			transparent: 'transparent',

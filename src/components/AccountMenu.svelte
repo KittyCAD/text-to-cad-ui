@@ -27,14 +27,14 @@
 		<menu class="contents">
 			<div class="p-4 pb-2">
 				<p class="font-mono">{user?.name || 'Unnamed User'}</p>
-				<p class="text-xs text-chalkboard-70 dark:text-chalkboard-40">
+				<p class="font-mono text-sm text-chalkboard-70 dark:text-chalkboard-40">
 					{user?.email || 'someone@somewhere.com'}
 				</p>
 			</div>
 			<a
 				data-sveltekit-reload
 				href={paths.SIGN_OUT}
-				class="text-sm font-mono hover:bg-green hover:text-chalkboard-120 text-center px-4 py-2 border-t"
+				class="text-sm font-mono uppercase tracking-[1px] hover:bg-green hover:text-chalkboard-120 text-center px-4 py-2 border-t"
 				on:keydown={dismiss}
 			>
 				Sign Out

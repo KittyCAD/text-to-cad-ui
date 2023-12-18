@@ -1,48 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @tailwind base;
 
 @layer base {
+	/**
+    * @license
+    * MyFonts Webfont Build ID 3867246, 2020-12-16T11:57:38-0500
+    * 
+    * The fonts listed in this notice are subject to the End User License
+    * Agreement(s) entered into by the website owner. All other parties are 
+    * explicitly restricted from using the Licensed Webfonts(s).
+    * 
+    * You may obtain a valid license at the URLs below.
+    * 
+    * Webfont: undefined by undefined
+    * URL: https://www.myfonts.comundefined
+    * Copyright: Copyright © 2023 Monotype Imaging Inc. All rights reserved.
+    *
+    * Webfont: undefined by undefined
+    * URL: https://www.myfonts.comundefined
+    * Copyright: Copyright © 2023 Monotype Imaging Inc. All rights reserved.
+    * 
+    * © 2023 MyFonts Inc. */
 	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-Regular.otf') format('opentype');
-		text-rendering: optimizeLegibility;
-		font-display: swap;
+		font-family: 'OCR A Tribute Pro Monospaced';
+		src: url('/fonts/ocr-a-tribute/regular.woff2') format('woff2'),
+			url('/fonts/ocr-a-tribute/regular.woff') format('woff');
+		font-weight: normal;
 	}
 	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-RegularOblique.otf') format('opentype');
-		font-style: italic;
-		text-rendering: optimizeLegibility;
-		font-display: swap;
-	}
-	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-Bold.otf') format('opentype');
+		font-family: 'OCR A Tribute Pro Monospaced';
+		src: url('/fonts/ocr-a-tribute/bold.woff2') format('woff2'),
+			url('/fonts/ocr-a-tribute/bold.woff') format('woff');
 		font-weight: bold;
-		text-rendering: optimizeLegibility;
-		font-display: swap;
-	}
-	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-BoldOblique.otf') format('opentype');
-		font-weight: bold;
-		font-style: italic;
-		text-rendering: optimizeLegibility;
-		font-display: swap;
-	}
-	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-Heavy.otf') format('opentype');
-		font-weight: 900;
-		text-rendering: optimizeLegibility;
-		font-display: swap;
-	}
-	@font-face {
-		font-family: 'Visby CF';
-		src: url('/fonts/visby-cf/VisbyCF-BoldOblique.otf') format('opentype');
-		font-weight: 900;
-		font-style: italic;
-		text-rendering: optimizeLegibility;
-		font-display: swap;
 	}
 }
