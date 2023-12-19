@@ -4,7 +4,7 @@ import { users, Client } from '@kittycad/lib'
 import { SIGN_OUT_PARAM } from '$lib/paths'
 const unProtectedRoutes = ['/']
 
-const domain = import.meta.env.DEV ? 'localhost' : '.kittycad.io'
+const domain = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
 export const handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(AUTH_COOKIE_NAME)
