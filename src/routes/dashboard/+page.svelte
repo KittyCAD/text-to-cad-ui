@@ -5,10 +5,12 @@
 	import type { Models } from '@kittycad/lib'
 	import type { PageData } from './$types'
 	import type { GenerationEvents } from '$lib/types'
+	import { EXAMPLE_PROMPTS } from '$lib/consts'
 	export let data: PageData
 	let promptedGenerations: Models['TextToCad_type'][] = []
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLInputElement | null
+	const threeRandomExamples = [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
 
 	const submitPrompt = async (prompt: string) => {
 		const response = await fetch(endpoints.localPrompt, {
@@ -56,6 +58,22 @@
 		</label>
 		<button type="submit" class="submit">Submit</button>
 	</form>
+	<div class="prompt-buttons">
+		<span class="font-mono pt-1 text-xs uppercase text-chalkboard-70 dark:text-chalkboard-40"
+			>Example prompts:</span
+		>
+		{#each threeRandomExamples as prompt, i (prompt)}
+			<button
+				class="submit"
+				on:click={() => {
+					if (input) {
+						input.value = prompt
+						input.focus()
+					}
+				}}>{prompt}</button
+			>
+		{/each}
+	</div>
 </section>
 {#if Boolean(data.user)}
 	<GenerationList additionalGenerations={promptedGenerations} on:retryprompt={retryPrompt} />
@@ -67,5 +85,17 @@
 		@apply font-mono uppercase tracking-[1px] text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
 		@apply bg-green text-chalkboard-120 hover:hue-rotate-15;
+	}
+
+	.prompt-buttons {
+		@apply flex flex-wrap gap-2 mt-4;
+	}
+
+	.prompt-buttons button {
+		@apply text-xs rounded-full border pt-0.5 pb-0 px-3;
+		@apply bg-transparent hover:bg-green/50;
+		@apply text-chalkboard-70 dark:text-chalkboard-50 hover:text-chalkboard-120 dark:hover:text-chalkboard-10;
+		@apply border-chalkboard-30 dark:border-chalkboard-70;
+		@apply hover:border-chalkboard-120 dark:hover:border-chalkboard-10;
 	}
 </style>
