@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 	if (!body) {
 		throw error(
 			422,
-			`Please include a body that meets the spec listed here: https://kittycad.io/docs/api/list-text-to-cad-models-you've-generated`
+			`Please include a body that meets the spec listed here: https://zoo.dev/docs/api/list-text-to-cad-models-you've-generated`
 		)
 	}
 

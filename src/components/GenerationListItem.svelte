@@ -70,13 +70,17 @@
 			<div
 				class="failed dark:dark relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center p-2"
 			>
-				<p class="font-mono text-xs text-destroy-50">{data.error}</p>
+				<p class="font-mono text-xs text-destroy-50">
+					{data.error?.match(/4\d\d/)?.length
+						? 'The prompt must clearly describe a CAD model.'
+						: 'CAD model generation failed, try again later'}
+				</p>
 			</div>
 		{:else}
 			<div
 				class="shimmer-skeleton relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center"
 			>
-				<p class="font-mono text-sm text-energy-50">Generating...</p>
+				<p class="font-mono text-sm text-green">Generating...</p>
 			</div>
 		{/if}
 	</div>
@@ -130,7 +134,7 @@
 	.shimmer-skeleton::before {
 		content: '';
 		@apply absolute z-0 inset-0 -inset-y-1/2;
-		@apply bg-gradient-to-t from-transparent via-energy-20/20 to-transparent;
+		@apply bg-gradient-to-t from-transparent via-green/80 to-transparent;
 		animation: shimmer 2s ease-in-out infinite;
 	}
 

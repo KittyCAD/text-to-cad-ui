@@ -33,7 +33,7 @@ yarn fmt --fix && yarn test
 
 ### Setting a cookie for local host
 
-1. Get a dev api token from: https://dev.kittycad.io
+1. Get a dev api token from: https://dev.zoo.dev
 2. Open the dev console and run the following:
 
 ```js

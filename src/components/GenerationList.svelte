@@ -14,6 +14,7 @@
 	} from '$lib/intersectionObserverAction'
 
 	export let additionalGenerations: Models['TextToCad_type'][] = []
+	$: combinedGenerations = [...additionalGenerations, ...$generations]
 
 	const RENDER_THRESHOLD = 0.05
 	let PAGE_SIZE = 2
@@ -81,22 +82,13 @@
 			use:childrenObserverAction={intersectionOptions}
 			on:emit={updateIntersectionInfo}
 		>
-			{#each additionalGenerations as item, i}
+			{#each combinedGenerations as item, i}
 				<li id={item.id} class="first-of-type:mt-0 my-12" style={`opacity: ${intersectionInfo[i]}`}>
-					<GenerationListItem data={item} on:retryprompt />
-				</li>
-			{/each}
-			{#each $generations as item, i}
-				<li
-					id={item.id}
-					class="first-of-type:mt-0 my-12"
-					style={`opacity: ${intersectionInfo[i + additionalGenerations.length]}`}
-				>
 					<GenerationListItem
 						data={item}
+						on:retryprompt
 						shouldRenderModel={intersectionInfo[i + additionalGenerations.length] >
 							RENDER_THRESHOLD}
-						on:retryprompt
 					/>
 				</li>
 			{/each}
