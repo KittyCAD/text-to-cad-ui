@@ -10,7 +10,8 @@
 	let promptedGenerations: Models['TextToCad_type'][] = []
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLInputElement | null
-	const threeRandomExamples = [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
+	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
+	let examplePrompts = getExammplePrompts()
 
 	const submitPrompt = async (prompt: string) => {
 		const response = await fetch(endpoints.localPrompt, {
@@ -62,13 +63,14 @@
 		<span class="font-mono pt-1 text-xs uppercase text-chalkboard-70 dark:text-chalkboard-40"
 			>Example prompts:</span
 		>
-		{#each threeRandomExamples as prompt, i (prompt)}
+		{#each examplePrompts as prompt, i (prompt)}
 			<button
 				class="submit"
 				on:click={() => {
 					if (input) {
 						input.value = prompt
 						input.focus()
+						examplePrompts = getExammplePrompts()
 					}
 				}}>{prompt}</button
 			>
