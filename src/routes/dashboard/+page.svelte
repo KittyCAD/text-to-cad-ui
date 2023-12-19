@@ -63,7 +63,7 @@
 		<span class="font-mono pt-1 text-xs uppercase text-chalkboard-70 dark:text-chalkboard-40"
 			>Example prompts:</span
 		>
-		{#each examplePrompts as prompt, i (prompt)}
+		{#each examplePrompts as prompt, _ (prompt)}
 			<button
 				class="submit"
 				on:click={() => {
