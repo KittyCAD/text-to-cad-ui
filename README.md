@@ -1,6 +1,6 @@
-# KittyCAD Text-to-CAD UI
+# Zoo Text-to-CAD UI
 
-This repository is an open-source example of how to quickly get up and running with KittyCAD's Text-to-CAD API endpoints. It is built using [SvelteKit](https://kit.svelte.dev/).
+This repository is an open-source example of how to quickly get up and running with Zoo's Text-to-CAD API endpoints. It is built using [SvelteKit](https://kit.svelte.dev/).
 
 ## Developing
 
