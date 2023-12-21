@@ -4,12 +4,30 @@
 	import ModelPreviewer from 'components/ModelPreviewer.svelte'
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
+	import type { Models } from '@kittycad/lib'
+	import { onMount } from 'svelte'
+	import { endpoints } from '$lib/endpoints'
+	import { error } from '@sveltejs/kit'
 
-	export let data: PageData
+	export let params: { modelId: string }
+	export let data: Models['TextToCad_type']
 
-	const gltfUrl = `data:model/gltf+json;base64,${
-		data.body?.outputs ? data.body.outputs['source.gltf'] : ''
-	}`
+	onMount(async () => {
+		const response = await fetch(endpoints.view(params.modelId), {
+			credentials: 'include'
+		})
+
+		if (response.status >= 400 && response.status < 500) {
+			throw error(
+				response.status,
+				'Model could not be found or you do not have permission to view it'
+			)
+		}
+
+		data = (await response.json()) as Models['TextToCad_type']
+	})
+
+	const gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>
 
 <p class="font-display font-bold text-3xl ml-4 mb-8 md:mb-16">
@@ -31,12 +49,12 @@
 				>Your Prompt</span
 			>
 			<span class="sr-only">: </span>
-			<span class="block text-lg">"{data.body?.prompt}"</span>
+			<span class="block text-lg">"{data.prompt}"</span>
 		</h1>
-		{#if data.body?.outputs}
+		{#if data.outputs}
 			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-				<DownloadButton className="w-full" outputs={data.body.outputs} prompt={data.body.prompt} />
-				<ModelFeedback modelId={data.body.id} feedback={data.body.feedback} />
+				<DownloadButton className="w-full" outputs={data.outputs} prompt={data.prompt} />
+				<ModelFeedback modelId={data.id} feedback={data.feedback} />
 			</div>
 		{/if}
 	</div>
@@ -48,7 +66,7 @@
 	<div
 		class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-t-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 	>
-		<p>Submitted {data.body?.created_at}</p>
-		<p>Completed {data.body?.completed_at}</p>
+		<p>Submitted {data.created_at}</p>
+		<p>Completed {data.completed_at}</p>
 	</div>
 </div>
