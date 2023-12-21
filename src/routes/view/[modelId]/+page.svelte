@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core'
-	import type { PageData } from './$types'
 	import ModelPreviewer from 'components/ModelPreviewer.svelte'
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
@@ -22,6 +21,10 @@
 				response.status,
 				'Model could not be found or you do not have permission to view it'
 			)
+		}
+
+		if (!response.ok) {
+			throw error(response.status, 'Failed to fetch model')
 		}
 
 		data = (await response.json()) as Models['TextToCad_type']
