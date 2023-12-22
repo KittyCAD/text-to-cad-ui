@@ -4,9 +4,9 @@
 	import { onMount } from 'svelte'
 	import InfiniteScroll from './InfiniteScroll.svelte'
 	import { endpoints } from '$lib/endpoints'
-	import type { ListLoadResponse } from '../routes/api/get-generation-list/+server'
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { browser } from '$app/environment'
+	import { page } from '$app/stores'
 	import { generations, nextPageToken } from '$lib/stores'
 	import {
 		childrenObserverAction,
@@ -19,6 +19,7 @@
 	const RENDER_THRESHOLD = 0.05
 	let PAGE_SIZE = 2
 	let isFetching = false
+	let error: string | null = null
 	let intersectionInfo: IntersectionObserverEntry['intersectionRatio'][] = []
 	let intersectionOptions = {
 		numChildren: PAGE_SIZE,
@@ -29,21 +30,27 @@
 		if ($nextPageToken === null) return
 		isFetching = true
 
-		const response = await fetch(endpoints.localList, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			credentials: 'include',
-			body: JSON.stringify({ page_token: $nextPageToken })
+		const response = await fetch(endpoints.list({ limit: 3, page_token: $nextPageToken }), {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + $page.data.token
+			}
 		})
-		const nextBatchPayload = (await response.json()) as ListLoadResponse
-		$nextPageToken = nextBatchPayload?.body?.next_page ?? null
+
+		if (!response.ok) {
+			isFetching = false
+			return
+		}
+
+		const nextBatchPayload = (await response.json()) as Models['TextToCadResultsPage_type']
+		$nextPageToken = nextBatchPayload?.next_page ?? null
 		isFetching = false
 
 		updateGenerations(nextBatchPayload)
 	}
 
-	function updateGenerations(payload: ListLoadResponse) {
-		const nextBatch = payload?.body?.items ?? []
+	function updateGenerations(payload: Models['TextToCadResultsPage_type']) {
+		const nextBatch = payload?.items ?? []
 		generations.update((g) => {
 			const newGenerations = [...g, ...nextBatch]
 			// Update the number of child elements to observe
@@ -100,6 +107,9 @@
 				<GenerationalListItemSkeleton />
 			</div>
 		{/each}
+	{/if}
+	{#if error}
+		<p class="text-red mt-2">{error}</p>
 	{/if}
 	{#if $nextPageToken === null}
 		<p class="text-center text-chalkboard-70 dark:text-chalkboard-40">You're all caught up! 🎉</p>

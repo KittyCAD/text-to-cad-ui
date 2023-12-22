@@ -40,7 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kittycad/lib": "^0.0.45",
+		"@kittycad/lib": "^0.0.48",
 		"@threlte/core": "^6.1.0",
 		"@threlte/extras": "^7.3.0",
 		"three": "^0.157.0"

@@ -12,6 +12,7 @@
 	export let data: PromptResponse
 	export let shouldRenderModel = true
 	let poller: ReturnType<typeof setInterval> | undefined
+	let error: { message: string; status: number }
 
 	const setupPoller = (id: string) => {
 		if (poller) {
@@ -21,14 +22,16 @@
 	}
 
 	const doPoll = (id: string) => async () => {
-		const newResponse: LoadResponse = await fetch(endpoints.localView, {
+		const res = await fetch(endpoints.localView, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			credentials: 'include',
 			body: JSON.stringify({ id })
 		})
-			.then((res) => res.json())
-			.catch((err) => console.error(err))
+		const newResponse: LoadResponse = await res.json().catch((err) => {
+			console.error(err)
+			error = { message: 'Failed to poll for generation status', status: res.status }
+		})
 
 		data = newResponse.body ? newResponse.body : data
 	}
@@ -66,12 +69,15 @@
 					</Canvas>
 				{/if}
 			</div>
-		{:else if data.status === 'failed'}
+		{:else if data.status === 'failed' || error}
 			<div
 				class="failed dark:dark relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center p-2"
 			>
 				<p class="font-mono text-xs text-destroy-50">
-					{data.error?.match(/4\d\d/)?.length
+					{error?.status
+						? `Error ${error.status}: ${error.message}`
+						: 'CAD model generation failed, try again later'}
+					{data?.error?.match(/4\d\d/)?.length
 						? 'The prompt must clearly describe a CAD model.'
 						: 'CAD model generation failed, try again later'}
 				</p>

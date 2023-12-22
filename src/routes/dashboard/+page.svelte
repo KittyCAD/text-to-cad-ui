@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { endpoints } from '$lib/endpoints'
 	import GenerationList from 'components/GenerationList.svelte'
-	import type { PromptLoadResponse } from '../api/submit-prompt/+server'
 	import type { Models } from '@kittycad/lib'
 	import type { PageData } from './$types'
 	import type { GenerationEvents } from '$lib/types'
@@ -12,16 +11,28 @@
 	let input = null as HTMLInputElement | null
 	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
 	let examplePrompts = getExammplePrompts()
+	let error: string | null = null
 
 	const submitPrompt = async (prompt: string) => {
-		const response = await fetch(endpoints.localPrompt, {
+		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
+		const response = await fetch(endpoints.prompt(OUTPUT_FORMAT), {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + data.token
+			},
 			body: JSON.stringify({ prompt })
 		})
-		const data = (await response.json()) as PromptLoadResponse
-		promptedGenerations = data.body ? [data.body, ...promptedGenerations] : promptedGenerations
+
+		if (!response.ok) {
+			error = 'Failed to submit prompt'
+			return
+		}
+
+		const responseData = (await response.json()) as Models['TextToCad_type']
+		promptedGenerations = responseData
+			? [responseData, ...promptedGenerations]
+			: promptedGenerations
 	}
 
 	const submitForm = async (e: Event) => {
@@ -59,6 +70,9 @@
 		</label>
 		<button type="submit" class="submit">Submit</button>
 	</form>
+	{#if error}
+		<p class="text-red mt-2">{error}</p>
+	{/if}
 	<div class="prompt-buttons">
 		<span class="font-mono pt-1 text-xs uppercase text-chalkboard-70 dark:text-chalkboard-40"
 			>Example prompts:</span
