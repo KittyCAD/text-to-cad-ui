@@ -18,7 +18,7 @@
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
-		"@types/three": "^0.157.2",
+		"@types/three": "^0.159.0",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
@@ -43,6 +43,6 @@
 		"@kittycad/lib": "^0.0.48",
 		"@threlte/core": "^6.1.0",
 		"@threlte/extras": "^7.3.0",
-		"three": "^0.157.0"
+		"three": "^0.159.0"
 	}
 }
