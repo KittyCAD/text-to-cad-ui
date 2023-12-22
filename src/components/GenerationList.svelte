@@ -16,7 +16,7 @@
 	export let additionalGenerations: Models['TextToCad_type'][] = []
 	$: combinedGenerations = [...additionalGenerations, ...$generations]
 
-	const RENDER_THRESHOLD = 0.05
+	const RENDER_THRESHOLD = -0.1
 	let PAGE_SIZE = 2
 	let isFetching = false
 	let error: string | null = null

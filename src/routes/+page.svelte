@@ -47,7 +47,7 @@
 					href="https://zoo.dev/machine-learning-api"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="bg-chalkboard-120 rounded-sm dark:bg-transparent"
+					class="bg-chalkboard-120 rounded-sm dark:bg-transparent pt-0.5"
 					><LogoMLephant
 						className="h-[0.8em] text-green mx-[0.5ch] inline-block align-baseline"
 					/><span class="sr-only">ML-ephant</span></a

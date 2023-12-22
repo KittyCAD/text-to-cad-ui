@@ -4,6 +4,7 @@
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
+	import ArrowLeft from 'components/Icons/ArrowLeft.svelte'
 
 	export let data: Models['TextToCad_type']
 
@@ -15,11 +16,10 @@
 		>UI</span
 	>
 </p>
-<a
-	href="/"
-	class="block w-fit text-xs px-2 py-1 mb-4 hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90"
-	>⬅ Back to home</a
->
+<a href="/" class="w-fit flex gap-2 text-sm px-2 py-1 mb-4 hover:bg-green/40"
+	><ArrowLeft class="w-5 h-5" />
+	<span class="pb-0.5">Back to dashboard</span>
+</a>
 <div class="mb-24">
 	<div class="grid md:grid-cols-3 lg:grid-cols-4 border items-stretch">
 		<h1
