@@ -15,9 +15,12 @@
 
 	const submitPrompt = async (prompt: string) => {
 		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
-		const response = await fetch(endpoints.convert(OUTPUT_FORMAT), {
+		const response = await fetch(endpoints.prompt(OUTPUT_FORMAT), {
 			method: 'POST',
-			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + data.token
+			},
 			body: JSON.stringify({ prompt })
 		})
 
@@ -26,8 +29,10 @@
 			return
 		}
 
-		const data = (await response.json()) as Models['TextToCad_type']
-		promptedGenerations = data ? [data, ...promptedGenerations] : promptedGenerations
+		const responseData = (await response.json()) as Models['TextToCad_type']
+		promptedGenerations = responseData
+			? [responseData, ...promptedGenerations]
+			: promptedGenerations
 	}
 
 	const submitForm = async (e: Event) => {

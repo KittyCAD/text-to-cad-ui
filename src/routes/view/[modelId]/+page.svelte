@@ -4,31 +4,8 @@
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
-	import { onMount } from 'svelte'
-	import { endpoints } from '$lib/endpoints'
-	import { error } from '@sveltejs/kit'
 
-	export let params: { modelId: string }
 	export let data: Models['TextToCad_type']
-
-	onMount(async () => {
-		const response = await fetch(endpoints.view(params.modelId), {
-			credentials: 'include'
-		})
-
-		if (response.status >= 400 && response.status < 500) {
-			throw error(
-				response.status,
-				'Model could not be found or you do not have permission to view it'
-			)
-		}
-
-		if (!response.ok) {
-			throw error(response.status, 'Failed to fetch model')
-		}
-
-		data = (await response.json()) as Models['TextToCad_type']
-	})
 
 	const gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>

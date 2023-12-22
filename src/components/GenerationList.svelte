@@ -6,6 +6,7 @@
 	import { endpoints } from '$lib/endpoints'
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { browser } from '$app/environment'
+	import { page } from '$app/stores'
 	import { generations, nextPageToken } from '$lib/stores'
 	import {
 		childrenObserverAction,
@@ -30,7 +31,10 @@
 		isFetching = true
 
 		const response = await fetch(endpoints.list({ limit: 3, page_token: $nextPageToken }), {
-			credentials: 'include'
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + $page.data.token
+			}
 		})
 
 		if (!response.ok) {

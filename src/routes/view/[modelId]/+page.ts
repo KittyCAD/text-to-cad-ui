@@ -1,0 +1,33 @@
+import { endpoints } from '$lib/endpoints.js'
+import type { Models } from '@kittycad/lib'
+import { error, redirect } from '@sveltejs/kit'
+
+export const csr = true
+
+/** @type {import('./$types').PageLoad} */
+export async function load({ params, parent, fetch }) {
+	const data = await parent()
+
+	if (!data.token) {
+		throw redirect(301, '/')
+	}
+
+	const response = await fetch(endpoints.view(params.modelId), {
+		headers: {
+			Authorization: 'Bearer ' + data.token
+		}
+	})
+
+	if (response.status >= 400 && response.status < 500) {
+		throw error(
+			response.status,
+			'Model could not be found or you do not have permission to view it'
+		)
+	}
+
+	if (!response.ok) {
+		throw error(response.status, 'Failed to fetch model')
+	}
+
+	return (await response.json()) as Models['TextToCad_type']
+}
