@@ -7,6 +7,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import type { GenerationEvents } from '$lib/types'
 	import DownloadButton from './DownloadButton.svelte'
+	import ArrowRight from './Icons/ArrowRight.svelte'
 	const dispatch = createEventDispatcher<GenerationEvents>()
 
 	export let data: PromptResponse
@@ -54,7 +55,9 @@
 
 <div>
 	<div class="grid md:grid-cols-2 lg:grid-cols-3 border items-stretch">
-		<h3 class="font-normal font-mono lg:col-span-2 px-2 py-6 lg:px-4 lg:py-16 border-r box-border">
+		<h3
+			class="font-normal font-mono lg:col-span-2 px-2 py-6 lg:px-4 lg:py-16 md:border-r box-border"
+		>
 			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 				>Your Prompt</span
 			>
@@ -71,20 +74,19 @@
 			</div>
 		{:else if data.status === 'failed' || error}
 			<div
-				class="failed dark:dark relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center p-2"
+				class="failed dark:dark relative overflow-hidden min-h-[33vh] border-t md:border-t-0 flex items-center justify-center p-4"
 			>
 				<p class="font-mono text-xs text-destroy-50">
-					{error?.status
+					{data?.error
+						? data.error
+						: error?.status
 						? `Error ${error.status}: ${error.message}`
-						: 'CAD model generation failed, try again later'}
-					{data?.error?.match(/4\d\d/)?.length
-						? 'The prompt must clearly describe a CAD model.'
 						: 'CAD model generation failed, try again later'}
 				</p>
 			</div>
 		{:else}
 			<div
-				class="shimmer-skeleton relative overflow-hidden min-h-[33vh] border-t flex items-center justify-center"
+				class="shimmer-skeleton relative overflow-hidden min-h-[33vh] border-t md:border-t-0 flex items-center justify-center"
 			>
 				<p class="font-mono text-sm text-green">Generating...</p>
 			</div>
@@ -92,7 +94,7 @@
 	</div>
 	<div class="grid md:grid-cols-2 lg:grid-cols-3 border border-t-0 items-stretch">
 		<dl
-			class="m-0 px-2 md:px-4 py-1 lg:col-span-2 flex flex-col md:flex-row md:items-center order-1 md:order-none justify-between text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40 border-r"
+			class="m-0 px-2 md:px-4 py-1 lg:col-span-2 flex flex-col md:flex-row md:items-center order-1 md:order-none justify-between text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40 md:border-r"
 		>
 			<div class="flex gap-2">
 				<dt>Submitted</dt>
@@ -107,14 +109,16 @@
 		</dl>
 		{#if data.outputs && data.status === 'completed'}
 			<ul class="m-0 p-0 flex flex-col md:flex-row items-stretch">
+				<DownloadButton className="link flex-auto" outputs={data.outputs} prompt={data.prompt} />
 				<li class="contents">
 					<a
 						href={`view/${data.id}`}
-						class="link font-mono uppercase text-sm tracking-[1px] flex-auto md:border-r reverse hover:text-chalkboard-120 hover:!bg-green border-chalkboard-70 dark:border-chalkboard-40"
-						>View</a
+						class="link font-mono uppercase text-sm tracking-[1px] flex-auto md:border-l reverse hover:text-chalkboard-120 hover:!bg-green border-chalkboard-70 dark:border-chalkboard-40"
 					>
+						<span class="mt-1">View</span>
+						<ArrowRight class="w-4 h-4 ml-2" />
+					</a>
 				</li>
-				<DownloadButton className="link flex-auto" outputs={data.outputs} prompt={data.prompt} />
 			</ul>
 		{:else if data.error}
 			<button
@@ -128,12 +132,15 @@
 
 <style lang="postcss">
 	.failed {
-		--_rim-color: theme('colors.destroy.10');
-		background: radial-gradient(circle at center, transparent 80%, var(--_rim-color));
+		@apply bg-destroy-10/20;
+		@apply text-destroy-80;
+		@apply border-chalkboard-70;
 	}
 	@media (prefers-color-scheme: dark) {
 		.failed {
-			--_rim-color: theme('colors.destroy.80' / 25%);
+			@apply bg-destroy-80/10;
+			@apply text-destroy-10;
+			@apply border-chalkboard-40;
 		}
 	}
 
@@ -155,7 +162,7 @@
 
 	.link {
 		@apply text-center flex items-center justify-center;
-		@apply px-2 py-1;
+		@apply px-2 py-4;
 		@apply hover:bg-chalkboard-20 dark:hover:bg-chalkboard-90;
 	}
 	.link:global(.reverse) {
