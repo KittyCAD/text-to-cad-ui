@@ -47,11 +47,11 @@
 
 <div class={`split-button ${status}${status === 'loading' ? ' shimmer ' : ' '}${className}`}>
 	{#if status == 'ready'}
-		<a href={dataUrl} download={fileName}>Download</a>
+		<a href={dataUrl} download={fileName} class="mt-1">Download</a>
 	{:else if status == 'loading'}
-		<button disabled>Loading&nbsp;</button>
+		<button disabled class="mt-1">Loading&nbsp;</button>
 	{:else}
-		<button disabled>Failed</button>
+		<button disabled class="mt-1">Failed</button>
 	{/if}
 
 	<div class="relative">
@@ -91,11 +91,11 @@
 	}
 
 	select {
-		@apply bg-green text-chalkboard-120 border-0;
+		@apply bg-green text-chalkboard-120;
 		@apply uppercase text-sm font-mono;
 		@apply shadow-inner;
 		@apply pl-2 pr-3 py-1 rounded-sm;
-		@apply border-transparent hover:border-chalkboard-120 border-solid border;
+		@apply brightness-95 border border-transparent hover:border-chalkboard-120 hover:brightness-100;
 	}
 
 	.shimmer {

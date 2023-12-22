@@ -5,5 +5,6 @@ export const paths = {
 		import.meta.env.VITE_SITE_BASE_URL + '/signin/?callbackUrl=' + encodeURIComponent(callbackUrl),
 	HOME: '/',
 	DASHBOARD: '/dashboard',
-	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`
+	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`,
+	ZOO_SITE: 'https://zoo.dev'
 } as const
