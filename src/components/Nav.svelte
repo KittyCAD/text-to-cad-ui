@@ -24,10 +24,10 @@
 		@apply bg-white dark:bg-chalkboard-120;
 		@apply mx-2 md:mx-5 lg:mx-auto mt-2 lg:mt-4 max-w-5xl;
 		@apply sticky z-10 top-0 flex justify-between items-center;
-		@apply border px-2 md:px-4 py-1 z-20;
+		@apply border px-2 py-1 z-20;
 	}
 
 	.sign-in {
-		@apply font-mono uppercase tracking-[1px] px-2 py-1 hover:bg-green hover:text-chalkboard-120;
+		@apply font-mono text-sm uppercase tracking-[1px] px-2 pt-1 pb-0.5 hover:bg-green hover:text-chalkboard-120;
 	}
 </style>
