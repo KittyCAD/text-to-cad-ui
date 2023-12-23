@@ -12,6 +12,7 @@
 	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
 	let examplePrompts = getExammplePrompts()
 	let error: string | null = null
+	let isSubmitting = false
 	let showSuccessMessage: boolean = false
 	let isCoolingDown = false
 	let listSection = null as HTMLDivElement | null
@@ -40,6 +41,7 @@
 
 	const submitForm = async (e: Event) => {
 		e.preventDefault()
+		isSubmitting = true
 		const prompt = (e.target as HTMLFormElement).prompt.value
 		await submitPrompt(prompt)
 		const form = e.target as HTMLFormElement
@@ -50,6 +52,7 @@
 			isCoolingDown = false
 		}, 3000)
 		listSection?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+		isSubmitting = false
 	}
 
 	const retryPrompt = (e: CustomEvent<GenerationEvents['retryprompt']>) => {
@@ -72,6 +75,7 @@
 				placeholder="e.g. Create a plate with 4 holes and rounded corners"
 				required
 				spellcheck="false"
+				disabled={isSubmitting}
 				type="text"
 				class="w-full px-4 py-1 border border-r-0 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
 				bind:this={input}
@@ -81,7 +85,13 @@
 				}}
 			/>
 		</label>
-		<button type="submit" class="submit" disabled={isCoolingDown}>Submit</button>
+		<button type="submit" class="submit" disabled={isCoolingDown || isSubmitting}>
+			{#if isSubmitting}
+				Submitting
+			{:else}
+				Submit
+			{/if}
+		</button>
 	</form>
 	{#if error}
 		<p class="text-red mt-2">{error}</p>
@@ -119,6 +129,7 @@
 		@apply font-mono uppercase tracking-[1px] text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
 		@apply hover:bg-green/50;
+		@apply disabled:bg-chalkboard-40 dark:disabled:bg-chalkboard-70;
 	}
 
 	.prompt-buttons {
