@@ -78,7 +78,7 @@
 <style lang="postcss">
 	.split-button {
 		@apply inline-flex justify-center items-center px-2 py-1 gap-4 relative;
-		@apply font-mono uppercase tracking-[1px] text-chalkboard-120 bg-green hover:hue-rotate-15;
+		@apply font-mono uppercase text-sm tracking-[1px] text-chalkboard-120 bg-green hover:hue-rotate-15;
 	}
 
 	.split-button:global(.loading),

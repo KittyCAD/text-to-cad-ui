@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { Models } from '@kittycad/lib'
+	import Person from 'components/Icons/Person.svelte'
 	import { paths } from '$lib/paths'
 
 	export let user: Models['User_type']
 	let open = false
+	let displayImage = true
 
 	function dismiss(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -14,13 +16,26 @@
 
 <div class={'relative flex justify-center items-center ' + (open ? 'open' : '')}>
 	<button
-		class="toggle border border-solid overflow-hidden rounded-full w-8 h-8 md:w-12 md:h-12"
+		class={'toggle border border-solid hover:border-green overflow-hidden bg-currentColor w-8 h-8 md:w-12 md:h-12 ' +
+			(displayImage ? 'rounded-full' : '')}
 		on:click={() => {
 			open = !open
 		}}
 		on:keydown={dismiss}
 	>
-		<img src={user.image} alt="Avatar" class="object-fill" />
+		{#if displayImage}
+			<img
+				src={user.image}
+				alt="Avatar"
+				class="object-fill"
+				referrerpolicy="no-referrer"
+				on:error={() => {
+					displayImage = false
+				}}
+			/>
+		{:else}
+			<Person class="object-fill p-1 block text-chalkboard-10 dark:text-chalkboard-120" />
+		{/if}
 		<span class="sr-only">Open menu</span>
 	</button>
 	<dialog class="menu">
