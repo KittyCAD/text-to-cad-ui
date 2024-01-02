@@ -77,7 +77,7 @@
 				spellcheck="false"
 				disabled={isSubmitting}
 				type="text"
-				class="w-full px-4 py-1 border border-r-0 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
+				class="w-full tracking-wide px-4 py-1 border border-r-0 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
 				bind:this={input}
 				on:input={() => {
 					showSuccessMessage = false
@@ -137,7 +137,7 @@
 	}
 
 	.prompt-buttons button {
-		@apply text-sm rounded-full border pt-0.5 pb-0 px-3;
+		@apply text-sm tracking-wider rounded-full border pt-0.5 pb-0 px-3;
 		@apply bg-transparent hover:bg-green/50;
 		@apply text-chalkboard-70 dark:text-chalkboard-50 hover:text-chalkboard-120 dark:hover:text-chalkboard-10;
 		@apply border-chalkboard-30 dark:border-chalkboard-70;
