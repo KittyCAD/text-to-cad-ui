@@ -2,7 +2,7 @@
 	import { endpoints } from '$lib/endpoints'
 	import GenerationList from 'components/GenerationList.svelte'
 	import type { Models } from '@kittycad/lib'
-	import type { PageData } from './$types'
+	import type { PageData } from '../view/$types'
 	import type { GenerationEvents } from '$lib/types'
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
 	export let data: PageData
