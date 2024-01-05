@@ -31,18 +31,20 @@
 		<img
 			src={user.image}
 			alt="Avatar"
-			class={'object-fill ' + (shouldDisplayImage ? 'block' : 'hidden')}
+			class="object-fill"
+			style={`display: ${shouldDisplayImage ? 'block' : 'none'}`}
 			referrerpolicy="no-referrer"
 		/>
 		{#if shouldDisplayInitial}
 			<span
 				class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
-				>{user.name[0] ||
-					user.first_name[0] ||
-					user.email[0]}</span
+				data-testid="initial">{user.name[0] || user.first_name[0] || user.email[0]}</span
 			>
 		{:else if !shouldDisplayImage}
-			<Person class="w-full text-chalkboard-10 dark:text-chalkboard-120" />
+			<Person
+				data-testid="person-icon"
+				class="w-full text-chalkboard-10 dark:text-chalkboard-120"
+			/>
 		{/if}
 		<span class="sr-only">Open menu</span>
 	</button>

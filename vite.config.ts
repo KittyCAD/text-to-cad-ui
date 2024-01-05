@@ -25,7 +25,11 @@ export default defineConfig(({ mode }) => {
 			https: mode === 'development'
 		},
 		test: {
-			include: ['src/**/*.{test,spec}.{js,ts}']
+			globals: true,
+			include: ['src/**/*.{test,spec}.{js,ts}'],
+			environment: 'jsdom',
+			// Extend jest-dom matchers
+			setupFiles: ['./vitest-setup.ts']
 		},
 		ssr: {
 			noExternal: ['three']
