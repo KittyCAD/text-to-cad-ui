@@ -6,7 +6,7 @@
 </script>
 
 <div class="pane-layout">
-	<Sidebar user={data ? data.user : undefined} className="w-full" />
+	<Sidebar user={data ? data.user : undefined} className="max-w-xs" />
 	<main>
 		<div class="main-content">
 			<slot />
@@ -20,11 +20,11 @@
 	}
 
 	.pane-layout {
-		@apply h-screen overflow-hidden grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5;
+		@apply h-screen overflow-hidden flex;
 	}
 
 	main {
-		@apply md:col-span-2 lg:col-span-4 max-h-full overflow-auto;
+		@apply flex-auto max-h-full overflow-auto;
 	}
 
 	.main-content {

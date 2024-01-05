@@ -61,16 +61,16 @@
 	}
 </script>
 
-<section class="overflow-y-auto max-h-full">
+<section class="overflow-y-auto max-h-full px-2 lg:pr-4 pt-6">
 	{#if Object.keys($generations).length > 0}
 		{#each Object.entries($generations).toSorted(sortTimeBuckets) as [category, items], i}
-			<div>
-				<h2>{category}</h2>
+			<div class="first-of-type:mt-0 mt-12">
+				<h2 class="pl-2 lg:pl-4">{category}</h2>
 				<ul class="m-0 p-0">
 					{#each items as item, j}
 						<li
 							id={item.id}
-							class="first-of-type:mt-0 my-12"
+							class="first-of-type:mt-2 my-4"
 							style={`opacity: ${intersectionInfo[j]}`}
 						>
 							<GenerationListItem data={item} />

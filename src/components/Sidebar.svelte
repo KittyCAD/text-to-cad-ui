@@ -10,13 +10,20 @@
 </script>
 
 <nav class={'sidebar ' + className}>
-	<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
-		<Logo className="h-6 lg:h-8 hover:text-green" />
-	</a>
+	<header>
+		<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
+			<Logo className="h-4 lg:h-6 hover:text-green" />
+		</a>
+		<a href={paths.DASHBOARD} rel="noopener noreferrer" target="_blank" class="new-prompt">
+			New prompt +
+		</a>
+	</header>
 	<div class="flex-auto overflow-hidden border-y">
 		<GenerationList />
 	</div>
-	<AccountMenu {user} />
+	<footer>
+		<AccountMenu {user} />
+	</footer>
 </nav>
 
 <style lang="postcss">
@@ -28,5 +35,17 @@
 
 	.sign-in {
 		@apply font-mono text-sm uppercase tracking-[1px] px-2 pt-1 pb-0.5 hover:bg-green hover:text-chalkboard-120;
+	}
+
+	header,
+	footer {
+		@apply flex items-center justify-between;
+		@apply px-2 py-1 lg:px-4 lg:py-2;
+	}
+
+	.new-prompt {
+		@apply flex items-center justify-center;
+		@apply font-mono text-sm uppercase tracking-[1px] px-2 py-1 pt-1.5;
+		@apply rounded-sm border border-green hover:bg-green/10;
 	}
 </style>
