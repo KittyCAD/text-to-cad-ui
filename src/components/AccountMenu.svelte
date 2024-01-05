@@ -11,6 +11,14 @@
 		((user?.name && user.name.length > 0) ||
 			(user?.first_name && user.first_name.length > 0) ||
 			(user?.email && user.email.length > 0))
+	let displayName =
+		user?.first_name && user.first_name.length > 0
+			? (user.first_name + (user.last_name ? ' ' + user.last_name : '')).trim()
+			: user?.name && user.name.length > 0
+			? user.name
+			: user?.email && user.email.length > 0
+			? user.email
+			: 'Unnamed User'
 
 	function dismiss(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -19,34 +27,38 @@
 	}
 </script>
 
-<div class={'relative flex justify-center items-center ' + (open ? 'open' : '')}>
+<div class={'relative flex ' + (open ? 'open' : '')}>
 	<button
-		class={'toggle grid place-content-center border border-solid hover:border-green overflow-hidden bg-currentColor w-8 h-8 md:w-12 md:h-12 ' +
-			(shouldDisplayInitial || shouldDisplayImage ? 'rounded-full' : 'rounded')}
+		class="flex flex-auto items-center gap-1"
 		on:click={() => {
 			open = !open
 		}}
 		on:keydown={dismiss}
 	>
-		<img
-			src={user.image}
-			alt="Avatar"
-			class="object-fill"
-			style={`display: ${shouldDisplayImage ? 'block' : 'none'}`}
-			referrerpolicy="no-referrer"
-		/>
-		{#if shouldDisplayInitial}
-			<span
-				class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
-				data-testid="initial">{user.name[0] || user.first_name[0] || user.email[0]}</span
-			>
-		{:else if !shouldDisplayImage}
-			<Person
-				data-testid="person-icon"
-				class="w-full text-chalkboard-10 dark:text-chalkboard-120"
+		<div
+			class={'toggle grid place-content-center border border-solid hover:border-green overflow-hidden bg-currentColor w-8 h-8 md:w-12 md:h-12 ' +
+				(shouldDisplayInitial || shouldDisplayImage ? 'rounded-full' : 'rounded')}
+		>
+			<img
+				src={user.image}
+				alt="Avatar"
+				class="object-fill"
+				style={`display: ${shouldDisplayImage ? 'block' : 'none'}`}
+				referrerpolicy="no-referrer"
 			/>
-		{/if}
-		<span class="sr-only">Open menu</span>
+			{#if shouldDisplayInitial}
+				<span
+					class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
+					data-testid="initial">{user.name[0] || user.first_name[0] || user.email[0]}</span
+				>
+			{:else if !shouldDisplayImage}
+				<Person
+					data-testid="person-icon"
+					class="w-full text-chalkboard-10 dark:text-chalkboard-120"
+				/>
+			{/if}
+		</div>
+		<span>{displayName}</span>
 	</button>
 	<dialog class="menu">
 		<menu class="contents">
@@ -74,28 +86,28 @@
 
 <style lang="postcss">
 	.menu {
-		@apply absolute top-full -right-4;
-		@apply z-10 mt-1 mr-0;
+		@apply absolute bottom-full left-0;
+		@apply z-10 mb-2;
 		@apply text-chalkboard-120 dark:text-chalkboard-10;
 		@apply bg-white dark:bg-chalkboard-90;
 		@apply border-solid border-2 border-chalkboard-100;
 		@apply border border-chalkboard-100 dark:border-chalkboard-20;
 		@apply flex flex-col gap-5;
-		@apply w-screen text-right;
+		@apply w-screen;
 		max-inline-size: min(90vw, 250px);
 		min-inline-size: 150px;
 		@apply shadow-md;
 		/* These will transition in */
 		pointer-events: none;
 		opacity: 0;
-		translate: 1px 10px;
+		translate: -1px 10px;
 		transition: transform 0.2s ease-out, opacity 0.1s ease-out;
 	}
 
 	.open .menu {
 		pointer-events: auto;
 		opacity: 1;
-		translate: 1px 0px;
+		translate: -1px 0px;
 	}
 
 	.open .toggle::after {

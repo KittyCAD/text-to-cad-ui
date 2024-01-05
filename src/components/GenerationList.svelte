@@ -7,14 +7,11 @@
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { browser } from '$app/environment'
 	import { page } from '$app/stores'
-	import { generations, nextPageToken } from '$lib/stores'
+	import { fetchedGenerations, generations, nextPageToken } from '$lib/stores'
 	import {
 		childrenObserverAction,
 		type ObserverActionPayload
 	} from '$lib/intersectionObserverAction'
-
-	export let additionalGenerations: Models['TextToCad_type'][] = []
-	$: combinedGenerations = [...additionalGenerations, ...$generations]
 
 	const RENDER_THRESHOLD = -0.1
 	let PAGE_SIZE = 2
@@ -46,12 +43,12 @@
 		$nextPageToken = nextBatchPayload?.next_page ?? null
 		isFetching = false
 
-		updateGenerations(nextBatchPayload)
+		updateFetchedGenerations(nextBatchPayload)
 	}
 
-	function updateGenerations(payload: Models['TextToCadResultsPage_type']) {
+	function updateFetchedGenerations(payload: Models['TextToCadResultsPage_type']) {
 		const nextBatch = payload?.items ?? []
-		generations.update((g) => {
+		fetchedGenerations.update((g) => {
 			const newGenerations = [...g, ...nextBatch]
 			// Update the number of child elements to observe
 			intersectionOptions = {
@@ -79,7 +76,7 @@
 	}
 </script>
 
-<section class="mt-24 mb-48">
+<section class="overflow-y-auto max-h-full">
 	<h2 class="text-4xl mb-8">
 		Your <span class="text-green">generations</span>
 	</h2>
@@ -89,13 +86,12 @@
 			use:childrenObserverAction={intersectionOptions}
 			on:emit={updateIntersectionInfo}
 		>
-			{#each combinedGenerations as item, i}
+			{#each $generations as item, i}
 				<li id={item.id} class="first-of-type:mt-0 my-12" style={`opacity: ${intersectionInfo[i]}`}>
 					<GenerationListItem
 						data={item}
 						on:retryprompt
-						shouldRenderModel={intersectionInfo[i + additionalGenerations.length] >
-							RENDER_THRESHOLD}
+						shouldRenderModel={intersectionInfo[i] > RENDER_THRESHOLD}
 					/>
 				</li>
 			{/each}

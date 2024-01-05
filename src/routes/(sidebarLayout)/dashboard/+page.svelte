@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { endpoints } from '$lib/endpoints'
-	import GenerationList from 'components/GenerationList.svelte'
 	import type { Models } from '@kittycad/lib'
 	import type { PageData } from '../view/$types'
 	import type { GenerationEvents } from '$lib/types'
+	import { localGenerations } from '$lib/stores'
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
 	export let data: PageData
-	let promptedGenerations: Models['TextToCad_type'][] = []
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLInputElement | null
 	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
@@ -34,9 +33,9 @@
 		}
 
 		const responseData = (await response.json()) as Models['TextToCad_type']
-		promptedGenerations = responseData
-			? [responseData, ...promptedGenerations]
-			: promptedGenerations
+		$localGenerations = responseData
+			? [responseData, ...$localGenerations]
+			: $localGenerations
 	}
 
 	const submitForm = async (e: Event) => {
@@ -117,11 +116,6 @@
 		{/each}
 	</div>
 </section>
-{#if Boolean(data.user)}
-	<div bind:this={listSection}>
-		<GenerationList additionalGenerations={promptedGenerations} on:retryprompt={retryPrompt} />
-	</div>
-{/if}
 
 <style lang="postcss">
 	.submit {
