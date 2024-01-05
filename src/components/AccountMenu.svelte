@@ -5,8 +5,12 @@
 
 	export let user: Models['User_type']
 	let open = false
-	let shouldDisplayImage = Boolean(user.image && user.image !== '')
-	let shouldDisplayInitial = !shouldDisplayImage && user.name && user.name.length > 0
+	let shouldDisplayImage = Boolean(user?.image && user.image !== '')
+	let shouldDisplayInitial =
+		!shouldDisplayImage &&
+		((user?.name && user.name.length > 0) ||
+			(user?.first_name && user.first_name.length > 0) ||
+			(user?.email && user.email.length > 0))
 
 	function dismiss(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -18,7 +22,7 @@
 <div class={'relative flex justify-center items-center ' + (open ? 'open' : '')}>
 	<button
 		class={'toggle grid place-content-center border border-solid hover:border-green overflow-hidden bg-currentColor w-8 h-8 md:w-12 md:h-12 ' +
-			(shouldDisplayInitial || shouldDisplayImage ? 'rounded-full' : 'rounded-sm')}
+			(shouldDisplayInitial || shouldDisplayImage ? 'rounded-full' : 'rounded')}
 		on:click={() => {
 			open = !open
 		}}
@@ -33,7 +37,9 @@
 		{#if shouldDisplayInitial}
 			<span
 				class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
-				>{user.name[0]}</span
+				>{user.name[0] ||
+					user.first_name[0] ||
+					user.email[0]}</span
 			>
 		{:else if !shouldDisplayImage}
 			<Person class="w-full text-chalkboard-10 dark:text-chalkboard-120" />
@@ -43,7 +49,11 @@
 	<dialog class="menu">
 		<menu class="contents">
 			<div class="p-4 pb-2">
-				<p class="font-mono">{user?.name || 'Unnamed User'}</p>
+				<p class="font-mono">
+					{user?.first_name
+						? user.first_name + (user.last_name ? user.last_name : '')
+						: user?.name || 'Unnamed User'}
+				</p>
 				<p class="font-mono text-sm text-chalkboard-70 dark:text-chalkboard-40">
 					{user?.email || 'someone@somewhere.com'}
 				</p>
