@@ -1,17 +1,12 @@
 <script lang="ts">
 	import type { Models } from '@kittycad/lib'
 	import GenerationListItem from './GenerationListItem.svelte'
-	import { onMount } from 'svelte'
-	import InfiniteScroll from './InfiniteScroll.svelte'
 	import { endpoints } from '$lib/endpoints'
 	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
-	import { browser } from '$app/environment'
 	import { page } from '$app/stores'
 	import { fetchedGenerations, generations, nextPageToken } from '$lib/stores'
-	import {
-		childrenObserverAction,
-		type ObserverActionPayload
-	} from '$lib/intersectionObserverAction'
+	import { sortTimeBuckets } from '$lib/time'
+	import { browser } from '$app/environment'
 
 	const RENDER_THRESHOLD = -0.1
 	let PAGE_SIZE = 2
@@ -23,11 +18,15 @@
 		threshold: new Array(20).fill(0).map((_, i) => (i + 1) / 20)
 	}
 
+	$: if (browser && $nextPageToken !== null) {
+		fetchData()
+	}
+
 	async function fetchData() {
 		if ($nextPageToken === null) return
 		isFetching = true
 
-		const response = await fetch(endpoints.list({ limit: 3, page_token: $nextPageToken }), {
+		const response = await fetch(endpoints.list({ page_token: $nextPageToken }), {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + $page.data.token
@@ -60,42 +59,26 @@
 			) as Models['TextToCad_type'][]
 		})
 	}
-
-	onMount(() => {
-		// load first batch onMount
-		fetchData()
-	})
-
-	function updateIntersectionInfo(e: CustomEvent<ObserverActionPayload[]>) {
-		// We have to replace the whole array to trigger a re-render
-		const tempInfo = [...intersectionInfo]
-		e.detail.forEach((entry) => {
-			tempInfo[entry.index] = entry.intersectionRatio
-		})
-		intersectionInfo = tempInfo
-	}
 </script>
 
 <section class="overflow-y-auto max-h-full">
-	<h2 class="text-4xl mb-8">
-		Your <span class="text-green">generations</span>
-	</h2>
-	{#if $generations.length > 0}
-		<ul
-			class="m-0 p-0"
-			use:childrenObserverAction={intersectionOptions}
-			on:emit={updateIntersectionInfo}
-		>
-			{#each $generations as item, i}
-				<li id={item.id} class="first-of-type:mt-0 my-12" style={`opacity: ${intersectionInfo[i]}`}>
-					<GenerationListItem
-						data={item}
-						on:retryprompt
-						shouldRenderModel={intersectionInfo[i] > RENDER_THRESHOLD}
-					/>
-				</li>
-			{/each}
-		</ul>
+	{#if Object.keys($generations).length > 0}
+		{#each Object.entries($generations).toSorted(sortTimeBuckets) as [category, items], i}
+			<div>
+				<h2>{category}</h2>
+				<ul class="m-0 p-0">
+					{#each items as item, j}
+						<li
+							id={item.id}
+							class="first-of-type:mt-0 my-12"
+							style={`opacity: ${intersectionInfo[j]}`}
+						>
+							<GenerationListItem data={item} />
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/each}
 	{/if}
 	{#if isFetching}
 		{#each Array(PAGE_SIZE) as i}
@@ -107,13 +90,4 @@
 	{#if error}
 		<p class="text-red mt-2">{error}</p>
 	{/if}
-	{#if $nextPageToken === null}
-		<p class="text-center text-chalkboard-70 dark:text-chalkboard-40">You're all caught up! 🎉</p>
-	{/if}
 </section>
-<InfiniteScroll
-	hasMore={$nextPageToken !== null}
-	threshold={200}
-	on:loadMore={fetchData}
-	elementScroll={browser ? document : undefined}
-/>

@@ -33,9 +33,7 @@
 		}
 
 		const responseData = (await response.json()) as Models['TextToCad_type']
-		$localGenerations = responseData
-			? [responseData, ...$localGenerations]
-			: $localGenerations
+		$localGenerations = responseData ? [responseData, ...$localGenerations] : $localGenerations
 	}
 
 	const submitForm = async (e: Event) => {
