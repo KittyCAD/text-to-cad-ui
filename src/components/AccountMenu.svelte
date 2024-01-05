@@ -38,8 +38,10 @@
 		{#if shouldDisplayInitial}
 			<span
 				class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
-				data-testid="initial">{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}</span
+				data-testid="initial"
 			>
+				{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
+			</span>
 		{:else if !shouldDisplayImage}
 			<Person
 				data-testid="person-icon"
