@@ -2,9 +2,10 @@
 	import { browser } from '$app/environment'
 	import { endpoints, type PromptResponse } from '$lib/endpoints'
 	import type { LoadResponse } from '../routes/api/get-generation/+server'
-	import { createEventDispatcher } from 'svelte'
-	import type { GenerationEvents } from '$lib/types'
-	const dispatch = createEventDispatcher<GenerationEvents>()
+	import { page } from '$app/stores'
+	import Checkmark from 'components/Icons/Checkmark.svelte'
+	import Close from 'components/Icons/Close.svelte'
+	import Spinner from 'components/Icons/Spinner.svelte'
 
 	export let data: PromptResponse
 	let poller: ReturnType<typeof setInterval> | undefined
@@ -37,32 +38,41 @@
 	} else if (browser && data.status === 'completed' && poller) {
 		clearInterval(poller)
 	}
-
-	function retry(prompt: string) {
-		return () => {
-			dispatch('retryprompt', prompt)
-		}
-	}
 </script>
 
-<a href={`/view/${data.id}`} class="generation-item">
-	<span class="pt-0.5 flex-1">{data.prompt}</span>
+<a
+	href={`/view/${data.id}`}
+	class={'generation-item' + ($page.url.pathname.includes(data.id) ? ' current' : '')}
+>
+	<span class="text">{data.prompt}</span>
 	{#if data.status === 'completed'}
-		<span>✅</span>
+		<Checkmark class="w-5 h-5" />
 	{:else if data.status === 'failed'}
-		<span>❌</span>
+		<Close class="w-5 h-5" />
 	{:else}
-		<span>⏳</span>
+		<Spinner class="w-5 h-5 animate-spin" />
 	{/if}
 </a>
 
 <style lang="postcss">
 	.generation-item {
-		@apply font-mono flex items-center px-4 py-2 text-sm rounded border-transparent;
+		@apply font-mono flex px-4 py-2 text-sm rounded border border-transparent gap-4;
 		@apply transition-colors duration-200 ease-in-out;
 	}
 
 	.generation-item:hover {
 		@apply bg-green/10 dark:bg-green/20;
+	}
+
+	.generation-item.current {
+		@apply border-green bg-green/10;
+	}
+
+	.text {
+		@apply pt-0.5 flex-1;
+		-webkit-line-clamp: 2;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 </style>

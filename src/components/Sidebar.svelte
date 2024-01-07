@@ -4,6 +4,7 @@
 	import { paths } from '$lib/paths'
 	import AccountMenu from './AccountMenu.svelte'
 	import GenerationList from './GenerationList.svelte'
+	import { page } from '$app/stores'
 
 	export let user: Models['User_type']
 	export let className = ''
@@ -14,9 +15,11 @@
 		<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
 			<Logo className="h-4 lg:h-6 hover:text-green" />
 		</a>
-		<a href={paths.DASHBOARD} rel="noopener noreferrer" target="_blank" class="new-prompt">
-			New prompt +
-		</a>
+		{#if $page.url.pathname !== paths.DASHBOARD}
+			<a href={paths.DASHBOARD} rel="noopener noreferrer" target="_blank" class="new-prompt">
+				New prompt +
+			</a>
+		{/if}
 	</header>
 	<div class="flex-auto overflow-hidden border-y">
 		<GenerationList />
@@ -40,7 +43,7 @@
 	header,
 	footer {
 		@apply flex items-center justify-between;
-		@apply px-2 py-1 lg:px-4 lg:py-2;
+		@apply px-2 py-1 md:px-4 lg:px-6 lg:py-4;
 	}
 
 	.new-prompt {

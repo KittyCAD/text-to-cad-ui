@@ -2,13 +2,12 @@
 	import type { Models } from '@kittycad/lib'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { endpoints } from '$lib/endpoints'
-	import GenerationalListItemSkeleton from './GenerationalListItemSkeleton.svelte'
 	import { page } from '$app/stores'
 	import { fetchedGenerations, generations, nextPageToken } from '$lib/stores'
 	import { sortTimeBuckets } from '$lib/time'
 	import { browser } from '$app/environment'
+	import Spinner from 'components/Icons/Spinner.svelte'
 
-	const RENDER_THRESHOLD = -0.1
 	let PAGE_SIZE = 2
 	let isFetching = false
 	let error: string | null = null
@@ -65,7 +64,7 @@
 	{#if Object.keys($generations).length > 0}
 		{#each Object.entries($generations).toSorted(sortTimeBuckets) as [category, items], i}
 			<div class="first-of-type:mt-0 mt-12">
-				<h2 class="pl-2 lg:pl-4">{category}</h2>
+				<h2 class="pl-2 lg:pl-4 text-xl">{category}</h2>
 				<ul class="m-0 p-0">
 					{#each items as item, j}
 						<li
@@ -81,11 +80,15 @@
 		{/each}
 	{/if}
 	{#if isFetching}
-		{#each Array(PAGE_SIZE) as i}
-			<div class={`item-${i} first-of-type:mt-0 my-12`}>
-				<GenerationalListItemSkeleton />
-			</div>
-		{/each}
+		<p
+			class={'flex gap-4 m-2 text-sm tracking-wide text-chalkboard-100 dark:text-chalkboard-30' +
+				(Object.keys($generations).length > 0 ? ' pt-8 border-t' : '')}
+		>
+			<span class="flex-grow">Fetching your creations</span>
+			<Spinner class="w-5 h-5 animate-spin inline-block mr-2" />
+		</p>
+	{:else if Object.keys($generations).length === 0}
+		<p>You'll see your creations here once you submit your first prompt</p>
 	{/if}
 	{#if error}
 		<p class="text-red mt-2">{error}</p>

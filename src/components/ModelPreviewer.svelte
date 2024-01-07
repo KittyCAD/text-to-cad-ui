@@ -7,7 +7,7 @@
 	export let pausable = true
 	export let enableZoom = true
 
-	const { size: threlteSize } = useThrelte()
+	const { size: threlteSize, invalidate } = useThrelte()
 
 	interactivity()
 

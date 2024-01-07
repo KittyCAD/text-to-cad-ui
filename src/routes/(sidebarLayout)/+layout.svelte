@@ -6,7 +6,7 @@
 </script>
 
 <div class="pane-layout">
-	<Sidebar user={data ? data.user : undefined} className="max-w-xs" />
+	<Sidebar user={data ? data.user : undefined} className="w-80" />
 	<main>
 		<div class="main-content">
 			<slot />
