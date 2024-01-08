@@ -58,7 +58,7 @@
 	class={'generation-item' + ($page.url.pathname.includes(data.id) ? ' current' : '')}
 >
 	<span class="text">{data.prompt}</span>
-	{#if data.status === 'completed' || data.completed_at}
+	{#if data.status === 'completed'}
 		<Checkmark class="w-5 h-5" />
 	{:else if data.status === 'failed'}
 		<Close class="w-5 h-5" />
