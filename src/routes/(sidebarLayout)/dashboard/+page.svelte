@@ -5,6 +5,7 @@
 	import type { GenerationEvents } from '$lib/types'
 	import { localGenerations } from '$lib/stores'
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
+	import { page } from '$app/stores'
 	export let data: PageData
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLInputElement | null
@@ -15,6 +16,7 @@
 	let showSuccessMessage: boolean = false
 	let isCoolingDown = false
 	let listSection = null as HTMLDivElement | null
+	let inputValue = $page.url.searchParams.get('prompt') ?? ''
 
 	const submitPrompt = async (prompt: string) => {
 		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
@@ -76,6 +78,7 @@
 				type="text"
 				class="w-full tracking-wide px-4 py-1 border border-r-0 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
 				bind:this={input}
+				bind:value={inputValue}
 				on:input={() => {
 					showSuccessMessage = false
 					error = null

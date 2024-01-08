@@ -13,6 +13,7 @@ export async function load({ params, parent, fetch }) {
 	const response = await fetch(endpoints.view(params.modelId), {
 		headers: {
 			Authorization: 'Bearer ' + data.token
+			// "Cache-Control": "max-age=604800, must-revalidate"
 		}
 	})
 

@@ -15,11 +15,12 @@
 		<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
 			<Logo className="h-4 lg:h-6 hover:text-green" />
 		</a>
-		{#if $page.url.pathname !== paths.DASHBOARD}
-			<a href={paths.DASHBOARD} rel="noopener noreferrer" target="_blank" class="new-prompt">
-				New prompt +
-			</a>
-		{/if}
+		<a
+			href={paths.DASHBOARD}
+			class={'new-prompt' + ($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
+		>
+			New prompt +
+		</a>
 	</header>
 	<div class="flex-auto overflow-hidden border-y">
 		<GenerationList />

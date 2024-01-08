@@ -4,6 +4,7 @@
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
+	import { page } from '$app/stores'
 
 	export let data: Models['TextToCad_type']
 
@@ -21,22 +22,72 @@
 			<span class="sr-only">: </span>
 			<span class="block text-lg">"{data.prompt}"</span>
 		</h1>
-		{#if data.outputs}
-			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
+		<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
+			{#if data.outputs}
 				<DownloadButton className="w-full" outputs={data.outputs} prompt={data.prompt} />
 				<ModelFeedback modelId={data.id} feedback={data.feedback} />
+			{:else if data.status === 'failed'}
+				<a
+					href={`/dashboard?prompt=${data.prompt}`}
+					class="w-full flex items-center justify-center border-b link-text bg-green hover:hue-rotate-15"
+				>
+					Retry prompt</a
+				>
+				<a
+					href={`https://github.com/KittyCAD/text-to-cad-ui/issues/new?title=${encodeURIComponent(
+						`Failed to generate model for prompt "${data.prompt}"`
+					)}&body=${encodeURIComponent(
+						`- Prompt: ${data.prompt}\n- Error: ${data.error}\n- Model ID: ${data.id}`
+					)}"&labels=help+wanted,bug`}
+					class="w-full flex items-center justify-center link-text hover:bg-green hover:hue-rotate-15"
+				>
+					Report on GitHub
+				</a>
+			{:else if data.status !== 'completed'}
+				<p class="text-center text-chalkboard-70 dark:text-chalkboard-40">
+					Waiting for model to generate...
+				</p>
+			{/if}
+		</div>
+	</div>
+	{#if data.outputs && data.status === 'completed'}
+		<div class="relative flex-grow min-h-[500px]">
+			<Canvas>
+				<ModelPreviewer dataUrl={gltfUrl} />
+			</Canvas>
+		</div>
+	{:else if data.status === 'failed' && data.error}
+		<div class="grid flex-grow place-content-center p-4">
+			<div class="error-card">
+				<p class="error-tag font-mono text-sm">An error occurred:</p>
+				<p class="font-mono text-lg">
+					{data.error}
+				</p>
 			</div>
-		{/if}
-	</div>
-	<div class="relative flex-grow min-h-[500px]">
-		<Canvas>
-			<ModelPreviewer dataUrl={gltfUrl} />
-		</Canvas>
-	</div>
+		</div>
+	{/if}
 	<footer
 		class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 	>
 		<p>Submitted {data.created_at}</p>
-		<p>Completed {data.completed_at}</p>
+		{#if data.outputs && data.status === 'completed'}
+			<p>Generated {data.completed_at}</p>
+		{:else if data.status === 'failed'}
+			<p>Failed {data.completed_at}</p>
+		{:else if data.status !== 'completed'}
+			<p>Generating...</p>
+		{/if}
 	</footer>
 </section>
+
+<style lang="postcss">
+	.error-card {
+		@apply max-w-xl p-4 md:p-16 rounded-md;
+		@apply bg-destroy-10/20 dark:bg-destroy-80/20 text-destroy-80 dark:text-destroy-10;
+		@apply border border-destroy-80;
+	}
+
+	.error-card .errror-tag {
+		@apply text-destroy-70 dark:text-destroy-20;
+	}
+</style>
