@@ -8,9 +8,11 @@
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
 	import { page } from '$app/stores'
 	import { paths } from '$lib/paths'
+	import autosize from 'svelte-autosize'
+	import ArrowRight from 'components/Icons/ArrowRight.svelte'
 	export let data: PageData
 	let form = null as HTMLFormElement | null
-	let input = null as HTMLInputElement | null
+	let input = null as HTMLTextAreaElement | null
 	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
 	let examplePrompts = getExammplePrompts()
 	let error: string | null = null
@@ -56,44 +58,41 @@
 		listSection?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 		isSubmitting = false
 	}
-
-	const retryPrompt = (e: CustomEvent<GenerationEvents['retryprompt']>) => {
-		if (input === null || form === null) return
-		input.scrollIntoView({ behavior: 'smooth', block: 'center' })
-		input.value = e.detail
-	}
 </script>
 
 <section class="mx-auto max-w-2xl my-16 md:my-24 lg:my-48">
 	<h1 class="text-4xl md:text-5xl mb-2">
 		Text-to-<span class="text-green">CAD</span>
 	</h1>
-	<form on:submit={submitForm} class="flex text-lg" bind:this={form}>
-		<label class="flex-1">
+	<form on:submit={submitForm} class="flex border items-stretch text-lg" bind:this={form}>
+		<label class="flex-1 grid place-items-center">
 			<span class="sr-only">Enter a text-to-CAD prompt:</span>
-			<input
+			<textarea
 				autocapitalize="false"
 				name="prompt"
 				placeholder="e.g. Create a plate with 4 holes and rounded corners"
 				required
 				spellcheck="false"
 				disabled={isSubmitting}
-				type="text"
-				class="w-full tracking-wide px-4 py-1 border border-r-0 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
+				class="w-full tracking-wide px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
 				bind:this={input}
 				bind:value={inputValue}
 				on:input={() => {
 					showSuccessMessage = false
 					error = null
 				}}
+				use:autosize
 			/>
 		</label>
 		<button type="submit" class="submit" disabled={isCoolingDown || isSubmitting}>
-			{#if isSubmitting}
-				Submitting
-			{:else}
-				Submit
-			{/if}
+			<span class="sr-only md:not-sr-only md:pt-0.5">
+				{#if isSubmitting}
+					Submitting
+				{:else}
+					Submit
+				{/if}
+			</span>
+			<ArrowRight class="w-8 h-8 md:w-5 md:h-5" />
 		</button>
 	</form>
 	{#if error}
@@ -123,10 +122,11 @@
 
 <style lang="postcss">
 	.submit {
-		@apply px-4 lg:px-6 pt-1 pb-0.5 border;
+		@apply m-1 md:px-4 lg:px-6 md:pt-1 border;
+		@apply self-end flex items-center justify-center gap-2;
 		@apply font-mono uppercase tracking-[1px] text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
-		@apply hover:bg-green/50;
+		@apply bg-green;
 		@apply disabled:bg-chalkboard-40 dark:disabled:bg-chalkboard-70;
 	}
 

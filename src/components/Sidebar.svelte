@@ -35,18 +35,18 @@
 			<span class="sr-only">Open menu</span>
 		</button>
 		<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
-			<Logo className="h-4 lg:h-6 hover:text-green" />
+			<Logo className="h-6 hover:text-green" />
 		</a>
 		<a
 			href={paths.DASHBOARD}
-			class={'new-prompt border-transparent md:border-green bg-green md:bg-transparentmd:hover:bg-green/10 ' +
+			class={'new-prompt border-transparent md:border-green bg-green md:bg-transparent md:hover:bg-green/10 ' +
 				($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
 		>
-			<span class="sr-only md:not-sr-only pt-0.5">New prompt</span>
+			<span class="text-sm sr-only md:not-sr-only md:pt-1">New prompt</span>
 			<Plus class="w-8 h-8 md:w-5 md:h-5" />
 		</a>
 	</header>
-	<div class="mobile-contents hidden md:block">
+	<div class="mobile-contents hidden md:contents">
 		<div class="flex-auto overflow-hidden border-y">
 			<GenerationList />
 		</div>
@@ -60,7 +60,7 @@
 	.sidebar {
 		@apply bg-white dark:bg-chalkboard-120;
 		@apply flex flex-col md:max-h-full overflow-hidden;
-		@apply flex-none md:flex-auto;
+		@apply flex-none;
 		@apply justify-between md:justify-start;
 		@apply border-b md:border-b-0 md:border-r;
 	}
@@ -80,8 +80,8 @@
 	}
 
 	.new-prompt {
-		@apply flex items-center justify-center;
-		@apply font-mono text-sm uppercase tracking-[1px] px-2 py-1;
+		@apply flex items-center justify-center gap-2;
+		@apply font-mono uppercase tracking-[1px] px-2 py-1;
 		@apply rounded-sm border;
 	}
 

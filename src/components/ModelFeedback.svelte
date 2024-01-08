@@ -27,13 +27,13 @@
 		class={(feedback === 'thumbs_down' ? 'text-destroy-40 ' : '') +
 			'hover:text-destroy-40 focus:text-destroy-40'}
 	>
-		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100 rotate-180" />
+		<ThumbsUp class="w-6 h-auto -scale-x-100 rotate-180" />
 	</button>
 	<button
 		on:click={giveFeedback('thumbs_up')}
 		class={(feedback === 'thumbs_up' ? 'text-green ' : '') +
 			'hover:text-green/80 focus:text-green/80'}
 	>
-		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100" />
+		<ThumbsUp class="w-6 h-auto -scale-x-100" />
 	</button>
 </div>

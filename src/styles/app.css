@@ -25,7 +25,9 @@
 			-webkit-text-stroke-color: theme('colors.chalkboard.120');
 		}
 	}
+}
 
+@layer utilities {
 	.link-text {
 		@apply font-mono uppercase tracking-wide;
 	}

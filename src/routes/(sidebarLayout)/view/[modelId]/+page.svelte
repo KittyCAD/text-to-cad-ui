@@ -45,9 +45,9 @@
 </script>
 
 <section class="min-h-screen flex flex-col">
-	<div class="mt-16 grid md:grid-cols-3 lg:grid-cols-4 border items-stretch">
+	<div class="md:mt-16 grid md:grid-cols-3 lg:grid-cols-4 md:border items-stretch">
 		<h1
-			class="font-normal font-mono md:col-span-2 lg:col-span-3 border-r px-2 py-6 lg:px-4 lg:py-16"
+			class="font-normal font-mono md:col-span-2 lg:col-span-3 md:border-r px-2 py-6 lg:px-4 lg:py-16"
 		>
 			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 				>Your Prompt</span
@@ -60,10 +60,7 @@
 				<DownloadButton className="w-full" outputs={data.outputs} prompt={data.prompt} />
 				<ModelFeedback modelId={data.id} feedback={data.feedback} />
 			{:else if data.status === 'failed'}
-				<a
-					href={`/dashboard?prompt=${data.prompt}`}
-					class="w-full flex items-center justify-center border-b link-text bg-green hover:hue-rotate-15"
-				>
+				<a href={`/dashboard?prompt=${data.prompt}`} class="link-text fallback-button bg-green">
 					Retry prompt</a
 				>
 				<a
@@ -72,7 +69,7 @@
 					)}&body=${encodeURIComponent(
 						`- Prompt: ${data.prompt}\n- Error: ${data.error}\n- Model ID: ${data.id}`
 					)}"&labels=help+wanted,bug`}
-					class="w-full flex items-center justify-center link-text hover:bg-green hover:hue-rotate-15"
+					class="link-text fallback-button"
 				>
 					Report on GitHub
 				</a>
@@ -124,5 +121,10 @@
 
 	.error-card .errror-tag {
 		@apply text-destroy-70 dark:text-destroy-20;
+	}
+
+	.fallback-button {
+		@apply w-full flex items-center justify-center;
+		@apply hover:bg-green hover:hue-rotate-15 py-4 md:py-1;
 	}
 </style>

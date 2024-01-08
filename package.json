@@ -54,6 +54,7 @@
 		"@types/core-js": "^2.5.8",
 		"core-js-pure": "^3.35.0",
 		"object.groupby": "^1.0.1",
+		"svelte-autosize": "^1.1.0",
 		"three": "^0.157.0"
 	}
 }
