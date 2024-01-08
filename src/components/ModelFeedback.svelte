@@ -31,8 +31,8 @@
 	</button>
 	<button
 		on:click={giveFeedback('thumbs_up')}
-		class={(feedback === 'thumbs_up' ? 'text-succeed-40 ' : '') +
-			'hover:text-succeed-40 focus:text-succeed-40'}
+		class={(feedback === 'thumbs_up' ? 'text-green ' : '') +
+			'hover:text-green/80 focus:text-green/80'}
 	>
 		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100" />
 	</button>

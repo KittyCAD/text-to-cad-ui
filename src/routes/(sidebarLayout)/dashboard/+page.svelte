@@ -4,8 +4,10 @@
 	import type { PageData } from '../view/$types'
 	import type { GenerationEvents } from '$lib/types'
 	import { localGenerations } from '$lib/stores'
+	import { goto } from '$app/navigation'
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
 	import { page } from '$app/stores'
+	import { paths } from '$lib/paths'
 	export let data: PageData
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLInputElement | null
@@ -36,6 +38,7 @@
 
 		const responseData = (await response.json()) as Models['TextToCad_type']
 		$localGenerations = responseData ? [responseData, ...$localGenerations] : $localGenerations
+		goto(paths.VIEW(responseData.id))
 	}
 
 	const submitForm = async (e: Event) => {
