@@ -8,14 +8,8 @@
 	import { browser } from '$app/environment'
 	import Spinner from 'components/Icons/Spinner.svelte'
 
-	let PAGE_SIZE = 2
 	let isFetching = false
 	let error: string | null = null
-	let intersectionInfo: IntersectionObserverEntry['intersectionRatio'][] = []
-	let intersectionOptions = {
-		numChildren: PAGE_SIZE,
-		threshold: new Array(20).fill(0).map((_, i) => (i + 1) / 20)
-	}
 
 	$: if (browser && $nextPageToken !== null) {
 		fetchData()
@@ -38,25 +32,34 @@
 		}
 
 		const nextBatchPayload = (await response.json()) as Models['TextToCadResultsPage_type']
-		$nextPageToken = nextBatchPayload?.next_page ?? null
-		isFetching = false
 
-		updateFetchedGenerations(nextBatchPayload)
+		// If we see that one of fetched generations has an id that matches one of the
+		// generations in the store, we know we can stop fetching
+		const shouldKeepFetching = updateFetchedGenerations(nextBatchPayload)
+		$nextPageToken = shouldKeepFetching ? nextBatchPayload?.next_page ?? null : null
+		console.log({
+			shouldKeepFetching,
+			nextPageToken: $nextPageToken
+		})
+		isFetching = false
 	}
 
-	function updateFetchedGenerations(payload: Models['TextToCadResultsPage_type']) {
+	function updateFetchedGenerations(payload: Models['TextToCadResultsPage_type']): boolean {
 		const nextBatch = payload?.items ?? []
+		let shouldKeepFetching = true
 		fetchedGenerations.update((g) => {
 			const newGenerations = [...g, ...nextBatch]
-			// Update the number of child elements to observe
-			intersectionOptions = {
-				...intersectionOptions,
-				numChildren: newGenerations.length
-			}
-			return Array.from(new Set(newGenerations.map((item) => item.id))).map((id) =>
-				newGenerations.find((item) => item.id === id)
-			) as Models['TextToCad_type'][]
+			const newGenerationsDeduplicated = Array.from(
+				new Set(newGenerations.map((item) => item.id))
+			).map((id) => newGenerations.find((item) => item.id === id)) as Models['TextToCad_type'][]
+
+			shouldKeepFetching =
+				newGenerationsDeduplicated.length !== g.length &&
+				newGenerations.length === newGenerationsDeduplicated.length
+			return newGenerationsDeduplicated
 		})
+		console.log('shouldKeepFetching', shouldKeepFetching)
+		return shouldKeepFetching
 	}
 </script>
 
@@ -67,11 +70,7 @@
 				<h2 class="pl-2 lg:pl-4 text-xl">{category}</h2>
 				<ul class="m-0 p-0">
 					{#each items as item, j}
-						<li
-							id={item.id}
-							class="first-of-type:mt-2 my-4"
-							style={`opacity: ${intersectionInfo[j]}`}
-						>
+						<li id={item.id} class="first-of-type:mt-2 my-4">
 							<GenerationListItem data={item} />
 						</li>
 					{/each}

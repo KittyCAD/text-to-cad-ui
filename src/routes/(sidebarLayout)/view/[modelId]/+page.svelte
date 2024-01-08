@@ -5,8 +5,42 @@
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
 	import { page } from '$app/stores'
+	import type { LoadResponse } from '../../../api/get-generation/+server'
+	import Spinner from 'components/Icons/Spinner.svelte'
+	import { browser } from '$app/environment'
+	import { endpoints } from '$lib/endpoints'
 
 	export let data: Models['TextToCad_type']
+	let poller: ReturnType<typeof setInterval> | undefined
+	let error: { message: string; status: number }
+
+	const setupPoller = (id: string) => {
+		if (poller) {
+			clearInterval(poller)
+		}
+		poller = setInterval(doPoll(id), 8000)
+	}
+
+	const doPoll = (id: string) => async () => {
+		const res = await fetch(endpoints.localView, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify({ id })
+		})
+		const newResponse: LoadResponse = await res.json().catch((err) => {
+			console.error(err)
+			error = { message: 'Failed to poll for generation status', status: res.status }
+		})
+
+		data = newResponse.body ? newResponse.body : data
+	}
+
+	$: if (browser && data.status !== 'completed') {
+		setupPoller(data.id)
+	} else if (browser && data.status === 'completed' && poller) {
+		clearInterval(poller)
+	}
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>
@@ -43,10 +77,8 @@
 				>
 					Report on GitHub
 				</a>
-			{:else if data.status !== 'completed'}
-				<p class="text-center text-chalkboard-70 dark:text-chalkboard-40">
-					Waiting for model to generate...
-				</p>
+			{:else}
+				<p class="link-text w-full flex items-center justify-center row-span-2">Generating...</p>
 			{/if}
 		</div>
 	</div>
@@ -64,6 +96,10 @@
 					{data.error}
 				</p>
 			</div>
+		</div>
+	{:else}
+		<div class="flex-grow flex items-center justify-center">
+			<Spinner class="w-10 h-10 animate-spin" />
 		</div>
 	{/if}
 	<footer

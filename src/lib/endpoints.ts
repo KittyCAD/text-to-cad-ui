@@ -24,7 +24,7 @@ export const endpoints = {
 	feedback: (id: string, feedback: Models['TextToCad_type']['feedback']) =>
 		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
 	list: ({ limit = 5, page_token }: ListParams) =>
-		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?no_models=false&limit=${limit}${
+		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
 			page_token ? `&page_token=${page_token}` : ''
 		}`,
 	prompt: (output_format: CADFormat = 'gltf') =>

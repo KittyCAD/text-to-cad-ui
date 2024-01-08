@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-	import { endpoints, type PromptResponse } from '$lib/endpoints'
+	import { endpoints } from '$lib/endpoints'
 	import type { LoadResponse } from '../routes/api/get-generation/+server'
 	import { page } from '$app/stores'
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 	import Close from 'components/Icons/Close.svelte'
 	import Spinner from 'components/Icons/Spinner.svelte'
+	import type { Models } from '@kittycad/lib'
+	import { fetchedGenerations, localGenerations, type GenerationWithSource } from '$lib/stores'
 
-	export let data: PromptResponse
+	export let data: GenerationWithSource
 	let poller: ReturnType<typeof setInterval> | undefined
 	let error: { message: string; status: number }
 
@@ -16,6 +18,15 @@
 			clearInterval(poller)
 		}
 		poller = setInterval(doPoll(id), 8000)
+	}
+
+	function updateGenerationItem(newItem: GenerationWithSource) {
+		const store = newItem.source === 'local' ? localGenerations : fetchedGenerations
+		store.update((g) => {
+			const foundIndex = g.findIndex((item) => item.id === newItem.id)
+
+			return [...g.slice(0, foundIndex), newItem, ...g.slice(foundIndex + 1)]
+		})
 	}
 
 	const doPoll = (id: string) => async () => {
@@ -30,10 +41,12 @@
 			error = { message: 'Failed to poll for generation status', status: res.status }
 		})
 
-		data = newResponse.body ? newResponse.body : data
+		data = newResponse.body ? { ...newResponse.body, source: data.source } : data
+
+		updateGenerationItem(data)
 	}
 
-	$: if (browser && data.status !== 'completed') {
+	$: if (browser && data.status !== 'completed' && data.status !== 'failed' && !poller) {
 		setupPoller(data.id)
 	} else if (browser && data.status === 'completed' && poller) {
 		clearInterval(poller)

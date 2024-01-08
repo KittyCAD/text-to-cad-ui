@@ -5,6 +5,8 @@ import {
 	msSinceStartOfYear
 } from './time'
 
+export const PERSIST_KEY_GENERATIONS = 'TEXT_TO_CAD_GENERATIONS'
+
 export const EXAMPLE_PROMPTS = [
 	'Draw me a 1/2 inch gear with 12 teeth',
 	'a 9 pointed star',
