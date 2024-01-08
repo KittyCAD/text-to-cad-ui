@@ -6,7 +6,7 @@
 </script>
 
 <div class="pane-layout">
-	<Sidebar user={data ? data.user : undefined} className="w-80" />
+	<Sidebar user={data ? data.user : undefined} className="md:w-80" />
 	<main>
 		<div class="main-content">
 			<slot />
@@ -20,7 +20,7 @@
 	}
 
 	.pane-layout {
-		@apply h-screen overflow-hidden flex;
+		@apply h-screen overflow-hidden flex flex-col md:flex-row;
 	}
 
 	main {
