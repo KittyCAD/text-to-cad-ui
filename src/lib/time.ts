@@ -5,8 +5,8 @@ export function msSinceStartOfDay(date: Date) {
 	return date.getTime() - startOfDay.getTime()
 }
 
-export function msSinceStartOfWeek(date: Date) {
-	const startOfWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay())
+export function msSinceAWeekAgo(date: Date) {
+	const startOfWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7)
 	return date.getTime() - startOfWeek.getTime()
 }
 

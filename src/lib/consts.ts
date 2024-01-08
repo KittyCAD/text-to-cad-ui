@@ -1,9 +1,4 @@
-import {
-	msSinceStartOfDay,
-	msSinceStartOfMonth,
-	msSinceStartOfWeek,
-	msSinceStartOfYear
-} from './time'
+import { msSinceStartOfDay, msSinceStartOfMonth, msSinceAWeekAgo, msSinceStartOfYear } from './time'
 
 export const PERSIST_KEY_GENERATIONS = 'TEXT_TO_CAD_GENERATIONS'
 
@@ -26,8 +21,8 @@ export const TIME_BUCKETS = [
 		test: (then: Date, now: Date) => now.getTime() - then.getTime() < msSinceStartOfDay(now)
 	},
 	{
-		name: 'This Week',
-		test: (then: Date, now: Date) => now.getTime() - then.getTime() < msSinceStartOfWeek(now)
+		name: 'Past 7 Days',
+		test: (then: Date, now: Date) => now.getTime() - then.getTime() < msSinceAWeekAgo(now)
 	},
 	{
 		name: 'This Month',
