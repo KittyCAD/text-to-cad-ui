@@ -48,7 +48,7 @@
 
 	$: if (browser && data.status !== 'completed' && data.status !== 'failed' && !poller) {
 		setupPoller(data.id)
-	} else if (browser && data.status === 'completed' && poller) {
+	} else if (browser && (data.status === 'completed' || data.status === 'failed') && poller) {
 		clearInterval(poller)
 	}
 </script>
@@ -58,7 +58,7 @@
 	class={'generation-item' + ($page.url.pathname.includes(data.id) ? ' current' : '')}
 >
 	<span class="text">{data.prompt}</span>
-	{#if data.status === 'completed'}
+	{#if data.status === 'completed' || data.completed_at}
 		<Checkmark class="w-5 h-5" />
 	{:else if data.status === 'failed'}
 		<Close class="w-5 h-5" />

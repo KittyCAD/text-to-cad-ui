@@ -2,12 +2,19 @@
 	import * as THREE from 'three'
 	import { T, useThrelte } from '@threlte/core'
 	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
+	import { page } from '$app/stores'
 
 	export let dataUrl: string
 	export let pausable = true
 	export let enableZoom = true
 
 	const { size: threlteSize, invalidate } = useThrelte()
+
+	// We want to clear the scene and WebGL context when the page changes
+	// or the window is resized
+	$: if ($threlteSize.width && $threlteSize.height && $page.url.pathname) {
+		invalidate()
+	}
 
 	interactivity()
 

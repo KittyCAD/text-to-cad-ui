@@ -4,7 +4,6 @@
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
-	import { page } from '$app/stores'
 	import type { LoadResponse } from '../../../api/get-generation/+server'
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { browser } from '$app/environment'

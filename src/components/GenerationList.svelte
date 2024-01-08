@@ -48,7 +48,9 @@
 		const nextBatch = payload?.items ?? []
 		let shouldKeepFetching = true
 		fetchedGenerations.update((g) => {
-			const newGenerations = [...g, ...nextBatch]
+			// By putting the new generations first, we ensure that the newest versions of any
+			// duplicate generations are the ones that are kept
+			const newGenerations = [...nextBatch, ...g]
 			const newGenerationsDeduplicated = Array.from(
 				new Set(newGenerations.map((item) => item.id))
 			).map((id) => newGenerations.find((item) => item.id === id)) as Models['TextToCad_type'][]
