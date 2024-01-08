@@ -2,6 +2,7 @@
 	import type { Models } from '@kittycad/lib'
 	import { paths } from '$lib/paths'
 	import Person from './Icons/Person.svelte'
+	import ArrowRight from './Icons/ArrowRight.svelte'
 
 	export let user: Models['User_type']
 	let open = false
@@ -29,7 +30,7 @@
 
 <div class={'relative flex ' + (open ? 'open' : '')}>
 	<button
-		class="flex flex-auto items-center gap-1"
+		class="flex flex-auto items-center gap-2"
 		on:click={() => {
 			open = !open
 		}}
@@ -48,7 +49,7 @@
 			/>
 			{#if shouldDisplayInitial}
 				<span
-					class="w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
+					class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-120"
 					data-testid="initial"
 				>
 					{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
@@ -60,14 +61,14 @@
 				/>
 			{/if}
 		</div>
-		<span>{displayName}</span>
+		<span class="mt-0.5 font-mono">{displayName}</span>
 	</button>
 	<dialog class="menu">
 		<menu class="contents">
 			<div class="p-4 pb-2">
 				<p class="font-mono">
 					{user?.first_name
-						? user.first_name + (user.last_name ? user.last_name : '')
+						? user.first_name + (user.last_name ? ' ' + user.last_name : '')
 						: user?.name || 'Unnamed User'}
 				</p>
 				<p class="font-mono text-sm text-chalkboard-70 dark:text-chalkboard-40">
@@ -75,11 +76,26 @@
 				</p>
 			</div>
 			<a
-				data-sveltekit-reload
-				href={paths.SIGN_OUT}
-				class="text-sm font-mono uppercase tracking-[1px] hover:bg-green hover:text-chalkboard-120 text-center px-4 py-2 border-t"
+				href={paths.ZOO_BILLING}
+				class="menu-button"
 				on:keydown={dismiss}
+				target="_blank"
+				rel="noopener noreferrer"
 			>
+				<span>Billing Info</span>
+				<ArrowRight class="w-5 h-5 inline-block ml-1" />
+			</a>
+			<a
+				href={paths.GITHUB_NEW_ISSUE}
+				class="menu-button"
+				on:keydown={dismiss}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<span>Report UI Issue</span>
+				<ArrowRight class="w-5 h-5 inline-block ml-1" />
+			</a>
+			<a data-sveltekit-reload href={paths.SIGN_OUT} class="menu-button" on:keydown={dismiss}>
 				Sign Out
 			</a>
 		</menu>
@@ -94,7 +110,7 @@
 		@apply bg-white dark:bg-chalkboard-90;
 		@apply border-solid border-2 border-chalkboard-100;
 		@apply border border-chalkboard-100 dark:border-chalkboard-20;
-		@apply flex flex-col gap-5;
+		@apply flex flex-col;
 		@apply w-screen;
 		max-inline-size: min(90vw, 250px);
 		min-inline-size: 150px;
@@ -116,5 +132,14 @@
 		content: '';
 		@apply fixed inset-0 z-0 bg-chalkboard-110/20;
 		@apply pointer-events-auto;
+	}
+
+	.menu-button {
+		@apply uppercase tracking-[1px] hover:bg-green hover:text-chalkboard-120;
+		@apply flex gap-2 justify-center items-center text-sm font-mono text-center px-4 py-2 border-t;
+	}
+
+	.menu-button span {
+		@apply pt-0.5;
 	}
 </style>
