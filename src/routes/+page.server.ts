@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit'
 
-export const load = async ({ cookies }) => {
+export const load = async ({ cookies, url }) => {
 	const token = cookies.get('__Secure-next-auth.session-token')
 
 	if (token) {
-		throw redirect(302, '/dashboard')
+		throw redirect(302, '/dashboard' + (url.search || ''))
 	}
 }
