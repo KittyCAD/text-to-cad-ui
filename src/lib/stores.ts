@@ -1,17 +1,34 @@
 import type { Models } from '@kittycad/lib'
 import { derived, writable } from 'svelte/store'
 import groupBy from 'object.groupby'
-import { PERSIST_KEY_GENERATIONS, TIME_BUCKETS } from './consts'
+import {
+	PERSIST_KEY_GENERATIONS,
+	PERSIST_KEY_UNREAD,
+	PERSIST_KEY_VERSION,
+	TIME_BUCKETS
+} from './consts'
 import { browser } from '$app/environment'
-import { persisted } from '@square/svelte-store'
+
+// Clear local storage if the version has changed
+// This allows us to clear users' local storage if we need to
+// do something like hard refresh the loaded models
+if (browser && localStorage.getItem(PERSIST_KEY_VERSION) !== PERSIST_KEY_VERSION) {
+	localStorage.clear()
+	localStorage.setItem(PERSIST_KEY_VERSION, PERSIST_KEY_VERSION)
+}
 
 export const localGenerations = writable<Models['TextToCad_type'][]>([])
+export const unreadGenerations = writable<string[]>(
+	browser ? JSON.parse(localStorage.getItem(PERSIST_KEY_UNREAD) ?? '[]') : []
+)
+unreadGenerations.subscribe((value) => {
+	if (browser) {
+		localStorage.setItem(PERSIST_KEY_UNREAD, JSON.stringify(value))
+	}
+})
 export const fetchedGenerations = writable<Models['TextToCad_type'][]>(
 	browser ? JSON.parse(localStorage.getItem(PERSIST_KEY_GENERATIONS) ?? '[]') : []
 )
-export const persistedFetchedGenerations = browser
-	? persisted(fetchedGenerations, PERSIST_KEY_GENERATIONS)
-	: fetchedGenerations
 
 export type GenerationWithSource = Models['TextToCad_type'] & { source: 'local' | 'fetched' }
 
@@ -26,7 +43,9 @@ const combinedGenerations = derived(
 			...item,
 			source: 'fetched'
 		})) as GenerationWithSource[]
-		return [...sourcedLocal, ...sourcedFetched]
+		return [...sourcedLocal, ...sourcedFetched].sort((a, b) =>
+			b.created_at.localeCompare(a.created_at)
+		)
 	}
 )
 

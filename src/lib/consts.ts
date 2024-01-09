@@ -1,6 +1,8 @@
 import { msSinceStartOfDay, msSinceStartOfMonth, msSinceAWeekAgo, msSinceStartOfYear } from './time'
 
+export const PERSIST_KEY_VERSION = '2023-01-09'
 export const PERSIST_KEY_GENERATIONS = 'TEXT_TO_CAD_GENERATIONS'
+export const PERSIST_KEY_UNREAD = 'TEXT_TO_CAD_UNREAD'
 
 export const EXAMPLE_PROMPTS = [
 	'Draw me a 1/2 inch gear with 12 teeth',
