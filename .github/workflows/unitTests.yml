@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Unit Tests
 on:
   push:
     branches: [main]
@@ -19,10 +19,9 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Run integration tests
-        run: yarn test:integration
+        run: yarn test:unit run
         env:
           CI: true
-          PLAYWRIGHT_SESSION_COOKIE: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
