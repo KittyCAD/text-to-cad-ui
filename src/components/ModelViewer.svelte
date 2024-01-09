@@ -62,10 +62,12 @@
 		on:start={disableAutoRotate}
 		on:end={reenableAutoRotate}
 	/>
+	<T.DirectionalLight color="white" />
+	<T.DirectionalLight color="white" position={[2 * maxDistance, 0, -2 * maxDistance]} />
 </T.OrthographicCamera>
-
+<T.DirectionalLight
+	color="white"
+	position={[-2 * maxDistance, 2 * maxDistance, -2 * maxDistance]}
+/>
 <T.AmbientLight color="white" />
-<T.DirectionalLight color="white" />
-<T.DirectionalLight color="white" position={[5, 0, -5]} />
-
 <GLTF url={dataUrl} position={[0, 0, 0]} />

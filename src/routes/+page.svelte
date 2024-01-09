@@ -3,7 +3,7 @@
 	import { paths } from '$lib/paths'
 	import { Canvas } from '@threlte/core'
 	import LogoMLephant from 'components/LogoMLephant.svelte'
-	import ModelPreviewer from 'components/ModelPreviewer.svelte'
+	import ModelViewer from 'components/ModelViewer.svelte'
 
 	const examples = [
 		{
@@ -27,7 +27,7 @@
 					style={`--delay-steps: ${examples[0].prompt.length}`}
 				>
 					<Canvas>
-						<ModelPreviewer dataUrl={examples[0].model} pausable={false} />
+						<ModelViewer dataUrl={examples[0].model} pausable={false} />
 					</Canvas>
 				</div>
 			</div>

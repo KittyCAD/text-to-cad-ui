@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core'
-	import ModelPreviewer from 'components/ModelPreviewer.svelte'
+	import ModelViewer from 'components/ModelViewer.svelte'
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
@@ -48,7 +48,7 @@
 <section class="min-h-screen flex flex-col">
 	<div class="md:mt-16 grid md:grid-cols-3 lg:grid-cols-4 md:border items-stretch">
 		<h1
-			class="font-normal font-mono md:col-span-2 lg:col-span-3 md:border-r px-2 py-6 lg:px-4 lg:py-16"
+			class="font-normal font-mono md:col-span-2 lg:col-span-3 md:border-r px-2 py-6 lg:px-4 lg:py-8"
 		>
 			<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 				>Your Prompt</span
@@ -76,7 +76,7 @@
 	{#if data.outputs && data.status === 'completed'}
 		<div class="relative flex-grow min-h-[500px]">
 			<Canvas>
-				<ModelPreviewer dataUrl={gltfUrl} />
+				<ModelViewer dataUrl={gltfUrl} />
 			</Canvas>
 		</div>
 	{:else if data.status === 'failed' && data.error}
