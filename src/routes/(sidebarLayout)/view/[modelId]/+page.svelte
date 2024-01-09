@@ -59,7 +59,7 @@
 				>Your Prompt</span
 			>
 			<span class="sr-only">: </span>
-			<span class="block text-lg">"{data.prompt}"</span>
+			<span class="block text-lg">"{data.prompt.trim()}"</span>
 		</h1>
 		{#if data.outputs}
 			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">

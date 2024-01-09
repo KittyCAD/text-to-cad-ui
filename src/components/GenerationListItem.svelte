@@ -65,7 +65,7 @@
 	class={'generation-item group' +
 		($page.url.pathname.includes(data.id) ? ' current pointer-events-none' : '')}
 >
-	<span class="text">{data.prompt}</span>
+	<span class="text">{data.prompt.trim()}</span>
 	<div class="group-hover:hidden group-focus:hidden">
 		{#if data.status === 'completed'}
 			<Checkmark class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green' : '')} />
