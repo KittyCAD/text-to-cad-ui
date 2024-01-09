@@ -68,9 +68,13 @@
 	<span class="text">{data.prompt.trim()}</span>
 	<div class="group-hover:hidden group-focus:hidden">
 		{#if data.status === 'completed'}
-			<Checkmark class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green' : '')} />
+			<Checkmark
+				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green text-chalkboard-120' : '')}
+			/>
 		{:else if data.status === 'failed' || error}
-			<Close class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-destroy-10' : '')} />
+			<Close
+				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-destroy-10 text-chalkboard-120' : '')}
+			/>
 		{:else}
 			<Spinner class="w-5 h-5 animate-spin" />
 		{/if}
