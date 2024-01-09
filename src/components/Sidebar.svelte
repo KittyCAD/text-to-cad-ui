@@ -39,8 +39,7 @@
 		</a>
 		<a
 			href={paths.DASHBOARD}
-			class={'new-prompt border-transparent md:border-green bg-green md:bg-transparent md:hover:bg-green ' +
-				($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
+			class={'new-prompt ' + ($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
 		>
 			<span class="text-sm sr-only md:not-sr-only md:pt-1">New prompt</span>
 			<Plus class="w-8 h-8 md:w-5 md:h-5" />
@@ -83,6 +82,9 @@
 		@apply flex items-center justify-center gap-2;
 		@apply font-mono uppercase tracking-[1px] px-2 py-1;
 		@apply rounded-sm border;
+		@apply border-transparent md:border-green;
+		@apply max-sm:text-chalkboard-120 md:hover:text-chalkboard-120;
+		@apply bg-green md:bg-transparent md:hover:bg-green md:hover:hue-rotate-15;
 	}
 
 	.open .mobile-contents {
