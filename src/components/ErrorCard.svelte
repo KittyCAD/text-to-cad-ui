@@ -1,8 +1,6 @@
 <script lang="ts">
 	export let error: string
 	let card: HTMLDivElement
-	let x: number = 0
-	let y: number = 0
 
 	function handleMouseMove(e: MouseEvent) {
 		if (!card) return

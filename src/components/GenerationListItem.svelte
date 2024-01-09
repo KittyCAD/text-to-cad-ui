@@ -6,7 +6,6 @@
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 	import Close from 'components/Icons/Close.svelte'
 	import Spinner from 'components/Icons/Spinner.svelte'
-	import type { Models } from '@kittycad/lib'
 	import { fetchedGenerations, localGenerations, type GenerationWithSource } from '$lib/stores'
 
 	export let data: GenerationWithSource
@@ -60,7 +59,7 @@
 	<span class="text">{data.prompt}</span>
 	{#if data.status === 'completed'}
 		<Checkmark class="w-5 h-5" />
-	{:else if data.status === 'failed'}
+	{:else if data.status === 'failed' || error}
 		<Close class="w-5 h-5" />
 	{:else}
 		<Spinner class="w-5 h-5 animate-spin" />

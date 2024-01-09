@@ -12,7 +12,6 @@
 	export let token: string
 
 	let inputValue = $page.url.searchParams.get('prompt') ?? ''
-	let form = null as HTMLFormElement | null
 	let button = null as HTMLButtonElement | null
 	let error: string | null = null
 	let isSubmitting = false
@@ -65,7 +64,7 @@
 	}
 </script>
 
-<form on:submit={submitForm} class="flex border items-stretch text-lg" bind:this={form}>
+<form on:submit={submitForm} class="flex border items-stretch text-lg">
 	<label class="flex-1 grid place-items-center">
 		<span class="sr-only">Enter a text-to-CAD prompt:</span>
 		<textarea

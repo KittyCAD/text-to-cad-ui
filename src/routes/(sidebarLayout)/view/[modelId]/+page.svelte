@@ -12,7 +12,7 @@
 
 	export let data: Models['TextToCad_type']
 	let poller: ReturnType<typeof setInterval> | undefined
-	let error: { message: string; status: number }
+	let pollingError: { message: string; status: number }
 
 	const setupPoller = (id: string) => {
 		if (poller) {
@@ -30,7 +30,7 @@
 		})
 		const newResponse: LoadResponse = await res.json().catch((err) => {
 			console.error(err)
-			error = { message: 'Failed to poll for generation status', status: res.status }
+			pollingError = { message: 'Failed to poll for generation status', status: res.status }
 		})
 
 		data = newResponse.body ? newResponse.body : data
@@ -82,6 +82,10 @@
 	{:else if data.status === 'failed' && data.error}
 		<div class="grid flex-grow place-content-center p-4">
 			<ErrorCard error={data.error} />
+		</div>
+	{:else if pollingError}
+		<div class="grid flex-grow place-content-center p-4">
+			<ErrorCard error={pollingError.status + ' ' + pollingError.message} />
 		</div>
 	{:else}
 		<div class="flex-grow flex items-center justify-center">
