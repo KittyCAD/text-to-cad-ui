@@ -41,7 +41,7 @@
 				(shouldDisplayInitial || shouldDisplayImage ? 'rounded-full' : 'rounded')}
 		>
 			<img
-				src={user.image}
+				src={user?.image}
 				alt="Avatar"
 				class="object-fill"
 				style={`display: ${shouldDisplayImage ? 'block' : 'none'}`}

@@ -74,9 +74,11 @@
 <form on:submit={submitForm} class="flex border items-stretch text-lg">
 	<label class="flex-1 grid place-items-center">
 		<span class="sr-only">Enter a text-to-CAD prompt:</span>
+		<!-- svelte-ignore a11y-autofocus -->
 		<textarea
 			autocapitalize="false"
 			name="prompt"
+			autofocus
 			placeholder="e.g. Create a plate with 4 holes and rounded corners"
 			required
 			spellcheck="false"

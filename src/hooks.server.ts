@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { users, Client } from '@kittycad/lib'
 import { SIGN_OUT_PARAM } from '$lib/paths'
@@ -21,7 +21,9 @@ export const handle = async ({ event, resolve }) => {
 		process.env.BASE_URL = import.meta.env.VITE_API_BASE_URL + '/'
 	}
 	const client = new Client(token)
-	const currentUser = await users.get_user_self({ client })
+	const currentUser = await users.get_user_self({ client }).catch((e) => {
+		throw error(500, e)
+	})
 
 	if (currentUser) {
 		event.locals.user = currentUser
