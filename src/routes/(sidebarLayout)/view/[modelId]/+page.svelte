@@ -58,7 +58,7 @@
 		</h1>
 		{#if data.outputs}
 			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-				<DownloadButton className="w-full" outputs={data.outputs} prompt={data.prompt} />
+				<DownloadButton className="w-full md:border-b" outputs={data.outputs} prompt={data.prompt} />
 				<ModelFeedback modelId={data.id} feedback={data.feedback} />
 			</div>
 		{:else if data.status === 'failed'}

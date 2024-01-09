@@ -2,8 +2,8 @@
 	<h2 class="font-mono pt-1 text-xs uppercase">Prompt writing tips:</h2>
 	<ul class="list-disc pl-6 text-lg">
 		<li class="my-4">
-			Describe an object that can be represented in geometric shapes, and less nebulous concepts
-			such as "a tiger" or "the universe", unless you just want to see what it does with that 😏
+			Describe an object that can be represented in geometric shapes, not nebulous concepts such as
+			"a tiger" or "the universe", unless you're just curious what it does with that 😏
 		</li>
 		<li class="my-4">
 			Be as explicit as possible. For example, if you want a plate with 4 holes, say <em>where</em>

@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="flex gap-2 justify-evenly items-center font-mono">
+<div class="flex md:flex-col lg:flex-row gap-2 justify-evenly items-center font-mono p-2">
 	Rate
 	<button
 		on:click={giveFeedback('thumbs_down')}

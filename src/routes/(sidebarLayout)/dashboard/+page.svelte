@@ -9,8 +9,8 @@
 	let input = null as HTMLTextAreaElement | null
 </script>
 
-<section class="mx-auto min-h-screen flex flex-col justify-end">
-	<div class="max-w-2xl mx-auto mt-16">
+<section class="mx-4 lg:mx-auto min-h-screen flex flex-col justify-end">
+	<div class="max-w-2xl mx-auto mt-12 lg:mt-16">
 		<h1 class="text-4xl md:text-5xl mb-2">
 			Text-to-<span class="text-green">CAD</span>
 		</h1>
