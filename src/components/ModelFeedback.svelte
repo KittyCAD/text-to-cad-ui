@@ -28,6 +28,7 @@
 			'hover:text-destroy-40 focus:text-destroy-40'}
 	>
 		<ThumbsUp class="w-6 h-auto -scale-x-100 rotate-180" />
+		<span class="sr-only">Thumbs down</span>
 	</button>
 	<button
 		on:click={giveFeedback('thumbs_up')}
@@ -35,5 +36,6 @@
 			'hover:text-green/80 focus:text-green/80'}
 	>
 		<ThumbsUp class="w-6 h-auto -scale-x-100" />
+		<span class="sr-only">Thumbs up</span>
 	</button>
 </div>
