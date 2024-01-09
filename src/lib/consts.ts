@@ -15,6 +15,8 @@ export const EXAMPLE_PROMPTS = [
 	'a coaster for a drink'
 ] as const
 
+export const EXAMPLES_TO_SHOW = 4
+
 export const TIME_BUCKETS = [
 	{
 		name: 'Today',

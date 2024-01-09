@@ -13,5 +13,6 @@ export const paths = {
 	VIEW: (viewId: string) => `/view/${viewId}`,
 	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`,
 	ZOO_SITE: SITE,
-	ZOO_BILLING: SITE + '/account/billing-information'
+	ZOO_BILLING: SITE + '/account/billing-information',
+	ZOO_ML: SITE + '/machine-learning-api'
 } as const
