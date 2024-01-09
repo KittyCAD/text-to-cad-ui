@@ -4,7 +4,7 @@
 	import type { Models } from '@kittycad/lib'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { endpoints } from '$lib/endpoints'
-	import { localGenerations } from '$lib/stores'
+	import { localGenerations, unreadGenerations } from '$lib/stores'
 	import { paths } from '$lib/paths'
 	import { goto } from '$app/navigation'
 
@@ -40,8 +40,15 @@
 			return
 		}
 
-		const responseData = (await response.json()) as Models['TextToCad_type']
-		$localGenerations = responseData ? [responseData, ...$localGenerations] : $localGenerations
+		const responseData = (await response
+			.json()
+			.catch((e) => console.error('failed to parse response data', e))) as Models['TextToCad_type']
+
+		if (responseData) {
+			$localGenerations = [responseData, ...$localGenerations]
+			$unreadGenerations = [responseData.id, ...$unreadGenerations]
+		}
+
 		goto(paths.VIEW(responseData.id))
 	}
 
@@ -110,7 +117,11 @@
 		@apply self-end flex items-center justify-center gap-2;
 		@apply font-mono uppercase tracking-[1px] text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
-		@apply bg-green;
+		@apply text-chalkboard-120 bg-green hover:hue-rotate-15;
 		@apply disabled:bg-chalkboard-40 dark:disabled:bg-chalkboard-70;
+	}
+
+	textarea {
+		@apply bg-transparent;
 	}
 </style>

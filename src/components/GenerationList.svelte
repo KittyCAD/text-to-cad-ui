@@ -37,10 +37,6 @@
 		// generations in the store, we know we can stop fetching
 		const shouldKeepFetching = updateFetchedGenerations(nextBatchPayload)
 		$nextPageToken = shouldKeepFetching ? nextBatchPayload?.next_page ?? null : null
-		console.log({
-			shouldKeepFetching,
-			nextPageToken: $nextPageToken
-		})
 		isFetching = false
 	}
 
@@ -60,7 +56,6 @@
 				newGenerations.length === newGenerationsDeduplicated.length
 			return newGenerationsDeduplicated
 		})
-		console.log('shouldKeepFetching', shouldKeepFetching)
 		return shouldKeepFetching
 	}
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { T, useThrelte } from '@threlte/core'
 	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
-	import { Box3, Color, Vector3 } from 'three'
+	import { Box3, Color, Vector3, Scene, Mesh } from 'three'
 
 	export let dataUrl: string
 	export let pausable = true
@@ -32,10 +32,14 @@
 	let maxDistance = 0
 
 	$: if (dataUrl && $loadedModel) {
-		console.log('this should fire on navigation')
-		$loadedModel.scene.traverse((child: any) => {
-			if (child.isMesh) {
-				child.material.color = new Color(0x29ffa4)
+		;($loadedModel.scene as Scene).traverse((child) => {
+			if ('isMesh' in child && child.isMesh) {
+				const material = (child as Mesh).material
+				if (material instanceof Array && 'color' in material[0]) {
+					material[0].color = new Color(0x29ffa4)
+				} else if ('color' in material) {
+					material.color = new Color(0x29ffa4)
+				}
 			}
 		})
 		const size = new Vector3()
@@ -43,7 +47,6 @@
 		boundingBox.setFromObject($loadedModel.scene)
 		boundingBox.getSize(size)
 		maxDistance = Math.max(size.x, size.y, size.z)
-		console.log('amended model', $loadedModel)
 		readyToRender = true
 	}
 </script>
@@ -67,12 +70,12 @@
 			on:start={disableAutoRotate}
 			on:end={reenableAutoRotate}
 		/>
-		<T.DirectionalLight color="white" />
-		<T.DirectionalLight color="white" position={[0, 0, 2 * maxDistance]} intensity={3.0} />
+		<T.DirectionalLight color="white" position={[maxDistance * -5, -maxDistance, maxDistance]} />
+		<T.DirectionalLight color="white" position={[0, 0, 2 * maxDistance]} intensity={1.4} />
 	</T.OrthographicCamera>
 	<T.DirectionalLight
 		color="white"
-		position={[-2 * maxDistance, 2 * maxDistance, -2 * maxDistance]}
+		position={[-2 * maxDistance, -2 * maxDistance, 2 * maxDistance]}
 	/>
 	<T.AmbientLight color="white" intensity={8.0} />
 	<GLTF url={dataUrl} position={[0, 0, 0]} />

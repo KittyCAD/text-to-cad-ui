@@ -6,11 +6,19 @@
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 	import Close from 'components/Icons/Close.svelte'
 	import Spinner from 'components/Icons/Spinner.svelte'
-	import { fetchedGenerations, localGenerations, type GenerationWithSource } from '$lib/stores'
+	import {
+		fetchedGenerations,
+		localGenerations,
+		type GenerationWithSource,
+		unreadGenerations
+	} from '$lib/stores'
+	import ArrowRight from './Icons/ArrowRight.svelte'
 
 	export let data: GenerationWithSource
 	let poller: ReturnType<typeof setInterval> | undefined
 	let error: { message: string; status: number }
+
+	$: isUnread = $unreadGenerations.includes(data.id)
 
 	const setupPoller = (id: string) => {
 		if (poller) {
@@ -54,26 +62,27 @@
 
 <a
 	href={`/view/${data.id}`}
-	class={'generation-item' + ($page.url.pathname.includes(data.id) ? ' current' : '')}
+	class={'generation-item group' +
+		($page.url.pathname.includes(data.id) ? ' current pointer-events-none' : '')}
 >
 	<span class="text">{data.prompt}</span>
-	{#if data.status === 'completed'}
-		<Checkmark class="w-5 h-5" />
-	{:else if data.status === 'failed' || error}
-		<Close class="w-5 h-5" />
-	{:else}
-		<Spinner class="w-5 h-5 animate-spin" />
-	{/if}
+	<div class="group-hover:hidden group-focus:hidden">
+		{#if data.status === 'completed'}
+			<Checkmark class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green' : '')} />
+		{:else if data.status === 'failed' || error}
+			<Close class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-destroy-10' : '')} />
+		{:else}
+			<Spinner class="w-5 h-5 animate-spin" />
+		{/if}
+	</div>
+	<ArrowRight class="w-5 h-5 hidden group-hover:block group-focus:block" />
 </a>
 
 <style lang="postcss">
 	.generation-item {
 		@apply font-mono flex px-4 py-2 text-sm rounded border border-transparent gap-4;
 		@apply transition-colors duration-200 ease-in-out;
-	}
-
-	.generation-item:hover {
-		@apply bg-green;
+		@apply hover:bg-green hover:text-chalkboard-120;
 	}
 
 	.generation-item.current {

@@ -49,7 +49,7 @@
 	{#if status == 'ready'}
 		<a href={dataUrl} download={fileName} class="mt-1">Download</a>
 	{:else if status == 'loading'}
-		<button disabled class="mt-1">Loading&nbsp;</button>
+		<button disabled class="mt-1">Converting&nbsp;</button>
 	{:else}
 		<button disabled class="mt-1">Failed</button>
 	{/if}

@@ -9,6 +9,7 @@
 	import { browser } from '$app/environment'
 	import { endpoints } from '$lib/endpoints'
 	import ErrorCard from 'components/ErrorCard.svelte'
+	import { unreadGenerations } from '$lib/stores'
 
 	export let data: Models['TextToCad_type']
 	let poller: ReturnType<typeof setInterval> | undefined
@@ -42,6 +43,10 @@
 		clearInterval(poller)
 	}
 
+	$: if ((browser && data.status === 'completed') || data.status === 'failed') {
+		unreadGenerations.update((g) => g.filter((id) => id !== data.id))
+	}
+
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>
 
@@ -58,12 +63,19 @@
 		</h1>
 		{#if data.outputs}
 			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-				<DownloadButton className="w-full md:border-b" outputs={data.outputs} prompt={data.prompt} />
+				<DownloadButton
+					className="w-full md:border-b"
+					outputs={data.outputs}
+					prompt={data.prompt}
+				/>
 				<ModelFeedback modelId={data.id} feedback={data.feedback} />
 			</div>
 		{:else if data.status === 'failed'}
 			<div class="flex justify-stretch self-stretch items-stretch">
-				<a href={`/dashboard?prompt=${data.prompt}`} class="link-text fallback-button bg-green">
+				<a
+					href={`/dashboard?prompt=${data.prompt}`}
+					class="link-text fallback-button text-chalkboard-120 bg-green"
+				>
 					Retry prompt</a
 				>
 			</div>
