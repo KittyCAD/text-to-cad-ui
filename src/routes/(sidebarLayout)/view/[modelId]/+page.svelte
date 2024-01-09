@@ -8,6 +8,7 @@
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { browser } from '$app/environment'
 	import { endpoints } from '$lib/endpoints'
+	import ErrorCard from 'components/ErrorCard.svelte'
 
 	export let data: Models['TextToCad_type']
 	let poller: ReturnType<typeof setInterval> | undefined
@@ -55,28 +56,22 @@
 			<span class="sr-only">: </span>
 			<span class="block text-lg">"{data.prompt}"</span>
 		</h1>
-		<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-			{#if data.outputs}
+		{#if data.outputs}
+			<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
 				<DownloadButton className="w-full" outputs={data.outputs} prompt={data.prompt} />
 				<ModelFeedback modelId={data.id} feedback={data.feedback} />
-			{:else if data.status === 'failed'}
+			</div>
+		{:else if data.status === 'failed'}
+			<div class="flex justify-stretch self-stretch items-stretch">
 				<a href={`/dashboard?prompt=${data.prompt}`} class="link-text fallback-button bg-green">
 					Retry prompt</a
 				>
-				<a
-					href={`https://github.com/KittyCAD/text-to-cad-ui/issues/new?title=${encodeURIComponent(
-						`Failed to generate model for prompt "${data.prompt}"`
-					)}&body=${encodeURIComponent(
-						`- Prompt: ${data.prompt}\n- Error: ${data.error}\n- Model ID: ${data.id}`
-					)}"&labels=help+wanted,bug`}
-					class="link-text fallback-button"
-				>
-					Report on GitHub
-				</a>
-			{:else}
+			</div>
+		{:else}
+			<div class="flex justify-stretch self-stretch items-stretch">
 				<p class="link-text w-full flex items-center justify-center row-span-2">Generating...</p>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 	{#if data.outputs && data.status === 'completed'}
 		<div class="relative flex-grow min-h-[500px]">
@@ -86,12 +81,7 @@
 		</div>
 	{:else if data.status === 'failed' && data.error}
 		<div class="grid flex-grow place-content-center p-4">
-			<div class="error-card">
-				<p class="error-tag font-mono text-sm">An error occurred:</p>
-				<p class="font-mono text-lg">
-					{data.error}
-				</p>
-			</div>
+			<ErrorCard error={data.error} />
 		</div>
 	{:else}
 		<div class="flex-grow flex items-center justify-center">
@@ -113,16 +103,6 @@
 </section>
 
 <style lang="postcss">
-	.error-card {
-		@apply max-w-xl p-4 md:p-16 rounded-md;
-		@apply bg-destroy-10/20 dark:bg-destroy-80/20 text-destroy-80 dark:text-destroy-10;
-		@apply border border-destroy-80;
-	}
-
-	.error-card .errror-tag {
-		@apply text-destroy-70 dark:text-destroy-20;
-	}
-
 	.fallback-button {
 		@apply w-full flex items-center justify-center;
 		@apply hover:bg-green hover:hue-rotate-15 py-4 md:py-1;
