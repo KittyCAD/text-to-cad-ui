@@ -2,7 +2,6 @@
 	import { endpoints } from '$lib/endpoints'
 	import type { Models } from '@kittycad/lib'
 	import type { PageData } from '../view/$types'
-	import type { GenerationEvents } from '$lib/types'
 	import { localGenerations } from '$lib/stores'
 	import { goto } from '$app/navigation'
 	import { EXAMPLE_PROMPTS } from '$lib/consts'
@@ -10,9 +9,11 @@
 	import { paths } from '$lib/paths'
 	import autosize from 'svelte-autosize'
 	import ArrowRight from 'components/Icons/ArrowRight.svelte'
+
 	export let data: PageData
 	let form = null as HTMLFormElement | null
 	let input = null as HTMLTextAreaElement | null
+	let button = null as HTMLButtonElement | null
 	const getExammplePrompts = () => [...EXAMPLE_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 3)
 	let examplePrompts = getExammplePrompts()
 	let error: string | null = null
@@ -21,6 +22,12 @@
 	let isCoolingDown = false
 	let listSection = null as HTMLDivElement | null
 	let inputValue = $page.url.searchParams.get('prompt') ?? ''
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			button?.click()
+		}
+	}
 
 	const submitPrompt = async (prompt: string) => {
 		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
@@ -77,6 +84,7 @@
 				class="w-full tracking-wide px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
 				bind:this={input}
 				bind:value={inputValue}
+				on:keydown={handleKeydown}
 				on:input={() => {
 					showSuccessMessage = false
 					error = null
@@ -84,7 +92,12 @@
 				use:autosize
 			/>
 		</label>
-		<button type="submit" class="submit" disabled={isCoolingDown || isSubmitting}>
+		<button
+			type="submit"
+			class="submit"
+			disabled={isCoolingDown || isSubmitting}
+			bind:this={button}
+		>
 			<span class="sr-only md:not-sr-only md:pt-0.5">
 				{#if isSubmitting}
 					Submitting

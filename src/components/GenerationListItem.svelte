@@ -74,7 +74,7 @@
 	}
 
 	.generation-item:hover {
-		@apply bg-green/10 dark:bg-green/20;
+		@apply bg-green;
 	}
 
 	.generation-item.current {

@@ -39,7 +39,7 @@
 		</a>
 		<a
 			href={paths.DASHBOARD}
-			class={'new-prompt border-transparent md:border-green bg-green md:bg-transparent md:hover:bg-green/10 ' +
+			class={'new-prompt border-transparent md:border-green bg-green md:bg-transparent md:hover:bg-green ' +
 				($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
 		>
 			<span class="text-sm sr-only md:not-sr-only md:pt-1">New prompt</span>
