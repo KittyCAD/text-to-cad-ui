@@ -21,6 +21,13 @@ export function msSinceStartOfYear(date: Date) {
 	return date.getTime() - startOfYear.getTime()
 }
 
+export function bucketByTime(time: string, now = new Date()) {
+	const createdAtDate = new Date(time)
+	const bucket = TIME_BUCKETS.find(({ test }) => test(createdAtDate, now))
+
+	return bucket?.name ?? createdAtDate.getFullYear().toString()
+}
+
 export function sortTimeBuckets([a]: [string, unknown], [b]: [string, unknown]) {
 	const foundIndexA = TIME_BUCKETS.findIndex(({ name }) => name === a)
 	const foundIndexB = TIME_BUCKETS.findIndex(({ name }) => name === b)

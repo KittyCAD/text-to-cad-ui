@@ -1,9 +1,11 @@
+import groupBy from 'object.groupby'
 import {
 	msSinceStartOfDay,
 	msSinceStartOfMonth,
 	msSinceAWeekAgo,
 	msSinceStartOfYear,
-	sortTimeBuckets
+	sortTimeBuckets,
+	bucketByTime
 } from './time'
 
 describe('time interval tests', () => {
@@ -44,5 +46,30 @@ describe('time bucketing tests', () => {
 			['2023', []],
 			['2021', []]
 		])
+	})
+
+	it('puts items in the right buckets', () => {
+		const now = new Date('2024-04-27T17:00:25.950')
+		const items = [
+			{ created_at: '2024-02-21T17:00:25.950' }, // This Year
+			{ created_at: '2024-04-27T09:00:25.950' }, // Today
+			{ created_at: '2024-04-21T17:00:25.950' }, // Past 7 Days
+			{ created_at: '2024-04-24T17:00:25.950' }, // Past 7 Days
+			{ created_at: '2022-03-21T17:00:25.950' }, // 2022
+			{ created_at: '2024-04-10T09:00:25.950' } // This Month
+		]
+		const bucketed = groupBy(items, ({ created_at }) => bucketByTime(created_at, now))
+
+		// TODO
+		expect(bucketed).toEqual({
+			Today: [{ created_at: '2024-04-27T09:00:25.950' }],
+			'Past 7 Days': [
+				{ created_at: '2024-04-21T17:00:25.950' },
+				{ created_at: '2024-04-24T17:00:25.950' }
+			],
+			'This Month': [{ created_at: '2024-04-10T09:00:25.950' }],
+			'This Year': [{ created_at: '2024-02-21T17:00:25.950' }],
+			'2022': [{ created_at: '2022-03-21T17:00:25.950' }]
+		})
 	})
 })
