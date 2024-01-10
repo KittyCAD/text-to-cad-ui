@@ -1,13 +1,9 @@
 import type { Models } from '@kittycad/lib'
 import { derived, writable } from 'svelte/store'
 import groupBy from 'object.groupby'
-import {
-	PERSIST_KEY_GENERATIONS,
-	PERSIST_KEY_UNREAD,
-	PERSIST_KEY_VERSION,
-	TIME_BUCKETS
-} from './consts'
+import { PERSIST_KEY_GENERATIONS, PERSIST_KEY_UNREAD, PERSIST_KEY_VERSION } from './consts'
 import { browser } from '$app/environment'
+import { bucketByTime } from './time'
 
 // Clear local storage if the version has changed
 // This allows us to clear users' local storage if we need to
@@ -56,13 +52,7 @@ combinedGenerations.subscribe((value) => {
 })
 
 export const generations = derived([combinedGenerations], ([$combinedGenerations]) => {
-	return groupBy($combinedGenerations, ({ created_at }) => {
-		const now = new Date()
-		const createdAtDate = new Date(created_at)
-		const bucket = TIME_BUCKETS.find(({ test }) => test(createdAtDate, now))
-
-		return bucket?.name ?? createdAtDate.getFullYear().toString()
-	})
+	return groupBy($combinedGenerations, ({ created_at }) => bucketByTime(created_at))
 })
 
 export const nextPageToken = writable<string | null | undefined>(undefined)
