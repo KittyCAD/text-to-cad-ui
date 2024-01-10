@@ -2,8 +2,6 @@ import { endpoints } from '$lib/endpoints.js'
 import type { Models } from '@kittycad/lib'
 import { error, redirect } from '@sveltejs/kit'
 
-export const csr = true
-
 /** @type {import('./$types').PageLoad} */
 export async function load({ params, parent, fetch }) {
 	const data = await parent()
@@ -15,6 +13,7 @@ export async function load({ params, parent, fetch }) {
 	const response = await fetch(endpoints.view(params.modelId), {
 		headers: {
 			Authorization: 'Bearer ' + data.token
+			// "Cache-Control": "max-age=604800, must-revalidate"
 		}
 	})
 

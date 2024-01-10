@@ -20,20 +20,22 @@
 	}
 </script>
 
-<div class="flex gap-2 justify-evenly items-center font-mono">
+<div class="flex md:flex-col lg:flex-row gap-2 justify-evenly items-center font-mono p-2">
 	Rate
 	<button
 		on:click={giveFeedback('thumbs_down')}
 		class={(feedback === 'thumbs_down' ? 'text-destroy-40 ' : '') +
 			'hover:text-destroy-40 focus:text-destroy-40'}
 	>
-		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100 rotate-180" />
+		<ThumbsUp class="w-6 h-auto -scale-x-100 rotate-180" />
+		<span class="sr-only">Thumbs down</span>
 	</button>
 	<button
 		on:click={giveFeedback('thumbs_up')}
-		class={(feedback === 'thumbs_up' ? 'text-succeed-40 ' : '') +
-			'hover:text-succeed-40 focus:text-succeed-40'}
+		class={(feedback === 'thumbs_up' ? 'text-green ' : '') +
+			'hover:text-green/80 focus:text-green/80'}
 	>
-		<ThumbsUp class="w-4 md:w-6 h-auto -scale-x-100" />
+		<ThumbsUp class="w-6 h-auto -scale-x-100" />
+		<span class="sr-only">Thumbs up</span>
 	</button>
 </div>

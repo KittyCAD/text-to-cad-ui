@@ -27,6 +27,12 @@
 	}
 }
 
+@layer utilities {
+	.link-text {
+		@apply font-mono uppercase tracking-wide;
+	}
+}
+
 :root {
 	@apply bg-white text-chalkboard-120;
 	@apply dark:bg-chalkboard-120 dark:text-chalkboard-10;

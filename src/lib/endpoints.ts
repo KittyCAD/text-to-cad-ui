@@ -23,18 +23,17 @@ export const endpoints = {
 		`${import.meta.env.VITE_API_BASE_URL}/file/conversion/gltf/${output_format}`,
 	feedback: (id: string, feedback: Models['TextToCad_type']['feedback']) =>
 		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
-	list: ({ limit, page_token, sort_by = 'created_at_descending' }: ListParams) =>
-		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?limit=${limit}${
+	list: ({ limit = 5, page_token }: ListParams) =>
+		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
 			page_token ? `&page_token=${page_token}` : ''
-		}&sort_by=${sort_by}`,
+		}`,
 	prompt: (output_format: CADFormat = 'gltf') =>
 		`${import.meta.env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
 	view: (id: string) => `${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}`,
+	viewNoModels: (id: string) =>
+		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?no_models=true`,
 	localConvert: (output_format: CADFormat) => `/api/convert/${output_format}`,
-	localFeedback: `/api/submit-feedback`,
-	localList: '/api/get-generation-list',
-	localPrompt: '/api/submit-prompt',
-	localView: '/api/get-generation'
+	localFeedback: `/api/submit-feedback`
 }
 
 export type PromptResponse = Models['TextToCad_type']

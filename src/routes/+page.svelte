@@ -3,7 +3,7 @@
 	import { paths } from '$lib/paths'
 	import { Canvas } from '@threlte/core'
 	import LogoMLephant from 'components/LogoMLephant.svelte'
-	import ModelPreviewer from 'components/ModelPreviewer.svelte'
+	import ModelViewer from 'components/ModelViewer.svelte'
 
 	const examples = [
 		{
@@ -13,55 +13,57 @@
 	]
 </script>
 
-<section class="mx-auto max-w-5xl my-12 md:my-48">
-	<div class="grid lg:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
-		<h1
-			class="-order-1 md:order-none col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center pl-2 md:pl-4"
-		>
-			Text-to-CAD <span class="text-green">UI</span>
-		</h1>
-		<div class="z-10 relative border md:border-b-0 col-span-2 md:col-span-1 min-h-[25vh]">
-			<div
-				class="animate-reveal absolute inset-0 -top-1/4 opacity-80 md:opacity-100 md:-top-full"
-				style={`--delay-steps: ${examples[0].prompt.length}`}
-			>
-				<Canvas>
-					<ModelPreviewer dataUrl={examples[0].model} pausable={false} />
-				</Canvas>
-			</div>
-		</div>
-		<div
-			class="-order-1 md:order-none w-full flex items-center justify-start lg:col-span-3 text-lg md:text-4xl font-mono border border-b-0 md:border-b py-4 px-2 md:px-6"
-		>
-			<div
-				class="typing-animation block text-chalkboard-70 dark:text-chalkboard-50"
-				style={`--steps: ${examples[0].prompt.length}`}
-			>
-				<div class="block w-fit">{examples[0].prompt}</div>
-			</div>
-		</div>
-		<div class="lg:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
-			<p class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30 tracking-wider">
-				Create B-Rep CAD files and meshes from natural language prompts.{' '}<br />Powered by the
-				<a
-					href="https://zoo.dev/machine-learning-api"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="bg-chalkboard-120 rounded-sm dark:bg-transparent pt-0.5"
-					><LogoMLephant
-						className="h-[0.8em] text-green mx-[0.5ch] inline-block align-baseline"
-					/><span class="sr-only">ML-ephant</span></a
+<main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center">
+	<section class="mx-auto max-w-5xl flex-1">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
+			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
+				Text-to-CAD <span class="text-green">UI</span>
+			</h1>
+			<div class="z-10 relative border md:border-b-0 md:col-span-1 min-h-[25vh]">
+				<div
+					class="animate-reveal absolute inset-0 -top-1/4 opacity-80 md:opacity-100 md:-top-full"
+					style={`--delay-steps: ${examples[0].prompt.length}`}
 				>
-				API from <a href="https://zoo.dev" target="_blank" rel="noopener noreferrer">Zoo</a>.
-			</p>
-			<a
-				href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}
-				class="self-stretch uppercase tracking-[1px] flex items-center justify-center text-center bg-green px-2 md:px-4 py-2 dark:bg-green dark:text-chalkboard-120 border-0 border-t md:border-t-0 md:border-l font-mono hover:hue-rotate-15"
-				>Sign in to get started</a
+					<Canvas>
+						<ModelViewer dataUrl={examples[0].model} pausable={false} />
+					</Canvas>
+				</div>
+			</div>
+			<div
+				class="w-full flex items-center justify-start md:col-span-3 text-lg md:text-4xl font-mono border py-4 px-2 md:px-6"
 			>
+				<div
+					class="typing-animation block text-chalkboard-70 dark:text-chalkboard-50"
+					style={`--steps: ${examples[0].prompt.length}`}
+				>
+					<div class="block w-fit">{examples[0].prompt}</div>
+				</div>
+			</div>
+			<div class="md:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
+				<p
+					class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30 tracking-wider"
+				>
+					Create B-Rep CAD files and meshes from natural language prompts.{' '}<br />Powered by the
+					<a
+						href="https://zoo.dev/machine-learning-api"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="bg-chalkboard-120 rounded-sm dark:bg-transparent pt-0.5"
+						><LogoMLephant
+							className="h-[0.8em] text-green mx-[0.5ch] inline-block align-baseline"
+						/><span class="sr-only">ML-ephant</span></a
+					>
+					API from <a href="https://zoo.dev" target="_blank" rel="noopener noreferrer">Zoo</a>.
+				</p>
+				<a
+					href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}
+					class="self-stretch uppercase tracking-[1px] flex items-center justify-center text-center bg-green px-2 md:px-4 py-2 dark:bg-green dark:text-chalkboard-120 border-0 border-t md:border-t-0 md:border-l font-mono hover:hue-rotate-15"
+					>Sign in to get started</a
+				>
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</main>
 
 <style lang="postcss">
 	section {

@@ -42,3 +42,13 @@ CookieDate.setFullYear(CookieDate.getFullYear() + 10)
 document.cookie =
 	'__Secure-next-auth.session-token=YOUR_TOKEN;Secure;expires=' + CookieDate.toUTCString() + ';'
 ```
+
+### Running Playwright E2E tests locally
+
+In order to run our Playwright testing suite locally, please set the `PLAYWRIGHT_SESSION_COOKIE` variable within `.env.development` to a token from a logged in local development session. You can retrieve it by:
+
+1. logging in to the project locally using the method outlined above
+2. opening the Application tab in your browser developer tools
+3. copying out the value of the cookie titled `__Secure-next-auth.session-token` with the domain of `localhost`
+
+Now you should be able to run the `yarn test:integration` and `yarn test` commands successfully.
