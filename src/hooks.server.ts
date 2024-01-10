@@ -2,11 +2,14 @@ import { error, redirect } from '@sveltejs/kit'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { users, Client } from '@kittycad/lib'
 import { SIGN_OUT_PARAM } from '$lib/paths'
+import { PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts'
+import { hooksUserMocks, isUserMock } from '$lib/mocks'
 const unProtectedRoutes = ['/']
 
 const domain = import.meta.env.DEV ? 'localhost' : import.meta.env.VITE_SITE_BASE_URL
 
 export const handle = async ({ event, resolve }) => {
+	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
 	const token = event.cookies.get(AUTH_COOKIE_NAME)
 	if (!token && !unProtectedRoutes.includes(event.url.pathname)) {
 		throw redirect(303, '/')
@@ -26,7 +29,16 @@ export const handle = async ({ event, resolve }) => {
 	})
 
 	if (currentUser) {
-		event.locals.user = currentUser
+		if ('error_code' in currentUser) {
+			throw error(500, currentUser)
+		} else {
+			if (mock !== null) {
+				const userMock = isUserMock(mock)
+				event.locals.user = userMock ? hooksUserMocks[userMock](currentUser) : currentUser
+			} else {
+				event.locals.user = currentUser
+			}
+		}
 	} else {
 		if (!unProtectedRoutes.includes(event.url.pathname)) {
 			throw redirect(303, '/')
