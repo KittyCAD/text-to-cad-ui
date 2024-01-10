@@ -21,8 +21,6 @@
 				</p>
 			{/if}
 		</div>
-	{:else}
-		<p>not blocked</p>
 	{/if}
 	<div class="pane-layout">
 		<Sidebar user={data ? data.user : undefined} className="md:w-80" />
