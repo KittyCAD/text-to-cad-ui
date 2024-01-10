@@ -14,9 +14,11 @@
 	export let data: Models['TextToCad_type']
 	$: status = $combinedGenerations.find((g) => g.id === data.id)?.status ?? data.status
 
-	$: if ((browser && status === 'completed') || status === 'failed') {
+	$: if (browser && (status === 'completed' || status === 'failed')) {
 		unreadGenerations.update((g) => g.filter((id) => id !== data.id))
-		invalidateAll()
+		if (data.status !== 'completed' && data.status !== 'failed') {
+			invalidateAll()
+		}
 	}
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
