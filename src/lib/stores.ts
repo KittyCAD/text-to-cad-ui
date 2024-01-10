@@ -32,7 +32,7 @@ export const fetchedGenerations = writable<Models['TextToCad_type'][]>(
 
 export type GenerationWithSource = Models['TextToCad_type'] & { source: 'local' | 'fetched' }
 
-const combinedGenerations = derived(
+export const combinedGenerations = derived(
 	[localGenerations, fetchedGenerations],
 	([$local, $fetched]) => {
 		const sourcedLocal = $local.map((item) => ({

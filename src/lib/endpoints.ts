@@ -30,11 +30,10 @@ export const endpoints = {
 	prompt: (output_format: CADFormat = 'gltf') =>
 		`${import.meta.env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
 	view: (id: string) => `${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}`,
+	viewNoModels: (id: string) =>
+		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?no_models=true`,
 	localConvert: (output_format: CADFormat) => `/api/convert/${output_format}`,
-	localFeedback: `/api/submit-feedback`,
-	localList: '/api/get-generation-list',
-	localPrompt: '/api/submit-prompt',
-	localView: '/api/get-generation'
+	localFeedback: `/api/submit-feedback`
 }
 
 export type PromptResponse = Models['TextToCad_type']

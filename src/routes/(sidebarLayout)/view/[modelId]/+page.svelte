@@ -4,47 +4,18 @@
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
 	import type { Models } from '@kittycad/lib'
-	import type { LoadResponse } from '../../../api/get-generation/+server'
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { browser } from '$app/environment'
-	import { endpoints } from '$lib/endpoints'
 	import ErrorCard from 'components/ErrorCard.svelte'
-	import { unreadGenerations } from '$lib/stores'
+	import { combinedGenerations, unreadGenerations } from '$lib/stores'
+	import { invalidateAll } from '$app/navigation'
 
 	export let data: Models['TextToCad_type']
-	let poller: ReturnType<typeof setInterval> | undefined
-	let pollingError: { message: string; status: number }
+	$: status = $combinedGenerations.find((g) => g.id === data.id)?.status ?? data.status
 
-	const setupPoller = (id: string) => {
-		if (poller) {
-			clearInterval(poller)
-		}
-		poller = setInterval(doPoll(id), 8000)
-	}
-
-	const doPoll = (id: string) => async () => {
-		const res = await fetch(endpoints.localView, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			credentials: 'include',
-			body: JSON.stringify({ id })
-		})
-		const newResponse: LoadResponse = await res.json().catch((err) => {
-			console.error(err)
-			pollingError = { message: 'Failed to poll for generation status', status: res.status }
-		})
-
-		data = newResponse.body ? newResponse.body : data
-	}
-
-	$: if (browser && data.status !== 'completed') {
-		setupPoller(data.id)
-	} else if (browser && data.status === 'completed' && poller) {
-		clearInterval(poller)
-	}
-
-	$: if ((browser && data.status === 'completed') || data.status === 'failed') {
+	$: if ((browser && status === 'completed') || status === 'failed') {
 		unreadGenerations.update((g) => g.filter((id) => id !== data.id))
+		invalidateAll()
 	}
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
@@ -94,10 +65,6 @@
 	{:else if data.status === 'failed' && data.error}
 		<div class="grid flex-grow place-content-center p-4">
 			<ErrorCard error={data.error} />
-		</div>
-	{:else if pollingError}
-		<div class="grid flex-grow place-content-center p-4">
-			<ErrorCard error={pollingError.status + ' ' + pollingError.message} />
 		</div>
 	{:else}
 		<div class="flex-grow flex items-center justify-center">
