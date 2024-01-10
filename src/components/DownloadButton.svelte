@@ -4,13 +4,20 @@
 	import type { ConvertResponse } from '../routes/api/convert/[output_format]/+server'
 	import { toKebabCase } from '$lib/toKebabCase'
 	import LoadingIndicator from './LoadingIndicator.svelte'
+	import { onNavigate } from '$app/navigation'
+	import { tick } from 'svelte'
 
 	export let prompt: string = ''
 	export let outputs: PromptResponse['outputs']
 	export let className: string = ''
+	let link: HTMLAnchorElement
 	let currentOutput: CADFormat = 'gltf'
 	let outputData = outputs ? outputs[`source.${currentOutput}`] : ''
 	let status: 'loading' | 'ready' | 'failed' = 'ready'
+
+	onNavigate(() => {
+		currentOutput = 'gltf'
+	})
 
 	$: currentMimeType = CADMIMETypes[currentOutput]
 	$: dataUrl = `data:${currentMimeType};base64,${outputData}`
@@ -36,18 +43,21 @@
 				return
 			}
 
-			// TODO: handle asynchronous case where the conversion is not yet complete
-
 			outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
 			outputData = outputs[`source.${currentOutput}`]
 		}
 		status = outputData ? 'ready' : 'failed'
+
+		if (outputData) {
+			await tick()
+			link.click()
+		}
 	}
 </script>
 
 <div class={`split-button ${status}${status === 'loading' ? ' shimmer ' : ' '}${className}`}>
 	{#if status == 'ready'}
-		<a href={dataUrl} download={fileName} class="mt-1">Download</a>
+		<a href={dataUrl} download={fileName} class="mt-1" bind:this={link}>Download</a>
 	{:else if status == 'loading'}
 		<button disabled class="mt-1">Converting&nbsp;</button>
 	{:else}
