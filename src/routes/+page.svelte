@@ -13,15 +13,13 @@
 	]
 </script>
 
-<main class="mx-2 md:mx-5 lg:mx-auto max-w-5xl">
-	<section class="mx-auto max-w-5xl my-12 md:my-48">
-		<div class="grid lg:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
-			<h1
-				class="-order-1 md:order-none col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center pl-2 md:pl-4"
-			>
+<main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center">
+	<section class="mx-auto max-w-5xl flex-1">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
+			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
 				Text-to-CAD <span class="text-green">UI</span>
 			</h1>
-			<div class="z-10 relative border md:border-b-0 col-span-2 md:col-span-1 min-h-[25vh]">
+			<div class="z-10 relative border md:border-b-0 md:col-span-1 min-h-[25vh]">
 				<div
 					class="animate-reveal absolute inset-0 -top-1/4 opacity-80 md:opacity-100 md:-top-full"
 					style={`--delay-steps: ${examples[0].prompt.length}`}
@@ -32,7 +30,7 @@
 				</div>
 			</div>
 			<div
-				class="-order-1 md:order-none w-full flex items-center justify-start lg:col-span-3 text-lg md:text-4xl font-mono border border-b-0 md:border-b py-4 px-2 md:px-6"
+				class="w-full flex items-center justify-start md:col-span-3 text-lg md:text-4xl font-mono border py-4 px-2 md:px-6"
 			>
 				<div
 					class="typing-animation block text-chalkboard-70 dark:text-chalkboard-50"
@@ -41,7 +39,7 @@
 					<div class="block w-fit">{examples[0].prompt}</div>
 				</div>
 			</div>
-			<div class="lg:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
+			<div class="md:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
 				<p
 					class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30 tracking-wider"
 				>
