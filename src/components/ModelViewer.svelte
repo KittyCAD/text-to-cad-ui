@@ -35,7 +35,6 @@
 	let maxDistance = 0
 
 	$: if (dataUrl && $loadedModel) {
-		console.log($loadedModel)
 		// If the model is empty, we need to tell the parent component
 		// to show the empty scene error card
 		if (Object.values($loadedModel.nodes).length === 0) {
