@@ -16,7 +16,7 @@
 			Text-to-<span class="text-green">CAD</span>
 		</h1>
 		<div class="tracking-wide">
-			<PromptForm bind:input token={data.token} />
+			<PromptForm bind:input token={data.token} disabled={data.user.block} />
 			{#if data.user.block}
 				<div class="mt-4">
 					<BlockedMessage blockedReason={data.user.block} />
