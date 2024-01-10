@@ -8,11 +8,16 @@
 	import { browser } from '$app/environment'
 	import ErrorCard from 'components/ErrorCard.svelte'
 	import { combinedGenerations, unreadGenerations } from '$lib/stores'
-	import { invalidateAll } from '$app/navigation'
+	import { invalidateAll, onNavigate } from '$app/navigation'
 	import { navigating } from '$app/stores'
 
 	export let data: Models['TextToCad_type']
 	$: status = $combinedGenerations.find((g) => g.id === data.id)?.status ?? data.status
+	let isSceneEmpty = false
+
+	onNavigate(() => {
+		isSceneEmpty = false
+	})
 
 	$: if (browser && (status === 'completed' || status === 'failed')) {
 		unreadGenerations.update((g) => g.filter((id) => id !== data.id))
@@ -66,11 +71,22 @@
 			{/if}
 		</div>
 		{#if data.outputs && data.status === 'completed'}
-			<div class="relative flex-grow min-h-[500px]">
-				<Canvas>
-					<ModelViewer dataUrl={gltfUrl} />
-				</Canvas>
-			</div>
+			{#if !isSceneEmpty}
+				<div class="relative flex-grow min-h-[500px]">
+					<Canvas>
+						<ModelViewer
+							on:emptyscene={() => {
+								isSceneEmpty = true
+							}}
+							dataUrl={gltfUrl}
+						/>
+					</Canvas>
+				</div>
+			{:else}
+				<div class="grid flex-grow place-content-center p-4">
+					<ErrorCard error={'Model generated an empty scene.'} />
+				</div>
+			{/if}
 		{:else if data.status === 'failed' && data.error}
 			<div class="grid flex-grow place-content-center p-4">
 				<ErrorCard error={data.error} />
