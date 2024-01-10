@@ -28,24 +28,19 @@ export const handle = async ({ event, resolve }) => {
 		throw error(500, e)
 	})
 
-	if (currentUser) {
-		if ('error_code' in currentUser) {
-			throw error(500, currentUser)
-		} else {
-			if (mock !== null) {
-				const userMock = isUserMock(mock)
-				event.locals.user = userMock ? hooksUserMocks[userMock](currentUser) : currentUser
-			} else {
-				event.locals.user = currentUser
-			}
-		}
-	} else {
-		if (!unProtectedRoutes.includes(event.url.pathname)) {
-			throw redirect(303, '/')
-		}
-
+	if (!currentUser) {
 		event.locals.user = undefined
+		if (!unProtectedRoutes.includes(event.url.pathname)) throw redirect(303, '/')
+	} else {
+		if ('error_code' in currentUser) throw error(500, currentUser)
+
+		event.locals.user = currentUser
+		if (mock !== null) {
+			const userMock = isUserMock(mock)
+			event.locals.user = userMock ? hooksUserMocks[userMock](currentUser) : currentUser
+		}
 	}
+
 	const query = event.url.searchParams.get(SIGN_OUT_PARAM)
 
 	if (Boolean(query) == true) {

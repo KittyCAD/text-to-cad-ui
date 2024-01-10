@@ -1,9 +1,10 @@
 <script lang="ts">
 	import PromptForm from 'components/PromptForm.svelte'
-	import type { PageData } from '../view/$types'
+	import type { PageData } from './$types'
 	import ExamplePrompts from 'components/ExamplePrompts.svelte'
 	import { paths } from '$lib/paths'
 	import PromptGuide from 'components/PromptGuide.svelte'
+	import BlockedMessage from 'components/BlockedMessage.svelte'
 
 	export let data: PageData
 	let input = null as HTMLTextAreaElement | null
@@ -16,6 +17,11 @@
 		</h1>
 		<div class="tracking-wide">
 			<PromptForm bind:input token={data.token} />
+			{#if data.user.block}
+				<div class="mt-4">
+					<BlockedMessage blockedReason={data.user.block} />
+				</div>
+			{/if}
 			<ExamplePrompts {input} class="my-12" />
 			<PromptGuide />
 		</div>
