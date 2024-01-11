@@ -5,13 +5,15 @@
 	export let data: LayoutData
 </script>
 
-<div class="pane-layout">
-	<Sidebar user={data ? data.user : undefined} className="md:w-80" />
-	<main>
-		<div class="main-content">
-			<slot />
-		</div>
-	</main>
+<div class="h-screen overflow-hidden flex flex-col">
+	<div class="pane-layout">
+		<Sidebar user={data ? data.user : undefined} className="md:w-80" />
+		<main>
+			<div class="main-content">
+				<slot />
+			</div>
+		</main>
+	</div>
 </div>
 
 <style lang="postcss">

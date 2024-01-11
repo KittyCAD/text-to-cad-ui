@@ -10,6 +10,7 @@
 
 	export let input: HTMLTextAreaElement | null
 	export let token: string
+	export let disabled: boolean = false
 
 	let inputValue = $page.url.searchParams.get('prompt') ?? ''
 	let button = null as HTMLButtonElement | null
@@ -94,7 +95,12 @@
 			use:autosize
 		/>
 	</label>
-	<button type="submit" class="submit" disabled={isCoolingDown || isSubmitting} bind:this={button}>
+	<button
+		type="submit"
+		class="submit"
+		disabled={disabled || isCoolingDown || isSubmitting}
+		bind:this={button}
+	>
 		<span class="sr-only md:not-sr-only md:pt-0.5">
 			{#if isSubmitting}
 				Submitting
