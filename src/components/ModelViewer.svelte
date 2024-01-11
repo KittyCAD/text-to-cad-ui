@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { T, useThrelte } from '@threlte/core'
 	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
+	import { createEventDispatcher } from 'svelte'
 	import { Box3, Color, Vector3, Scene, Mesh } from 'three'
 
 	export let dataUrl: string
@@ -9,12 +10,14 @@
 	let readyToRender = false
 
 	const { size: threlteSize } = useThrelte()
+	const dispatch = createEventDispatcher()
 
 	interactivity()
 
 	let shouldAutoRotate = true
 	const AUTO_ROTATE_PAUSE = 5000
 
+	// This allows autorotate to be paused when the user is interacting with the model
 	let autorotateTimeout: ReturnType<typeof setTimeout> | undefined
 	const disableAutoRotate = () => {
 		if (!pausable) return
@@ -32,22 +35,32 @@
 	let maxDistance = 0
 
 	$: if (dataUrl && $loadedModel) {
-		;($loadedModel.scene as Scene).traverse((child) => {
-			if ('isMesh' in child && child.isMesh) {
-				const material = (child as Mesh).material
-				if (material instanceof Array && 'color' in material[0]) {
-					material[0].color = new Color(0x29ffa4)
-				} else if ('color' in material) {
-					material.color = new Color(0x29ffa4)
+		// If the model is empty, we need to tell the parent component
+		// to show the empty scene error card
+		if (Object.values($loadedModel.nodes).length === 0) {
+			dispatch('emptyscene')
+		} else {
+			// Otherwise we'll traverse each mesh and set the color to green
+			;($loadedModel.scene as Scene).traverse((child) => {
+				if ('isMesh' in child && child.isMesh) {
+					const material = (child as Mesh).material
+					if (material instanceof Array && 'color' in material[0]) {
+						material[0].color = new Color(0x29ffa4)
+					} else if ('color' in material) {
+						material.color = new Color(0x29ffa4)
+					}
 				}
-			}
-		})
-		const size = new Vector3()
-		const boundingBox = new Box3()
-		boundingBox.setFromObject($loadedModel.scene)
-		boundingBox.getSize(size)
-		maxDistance = Math.max(size.x, size.y, size.z)
-		readyToRender = true
+			})
+
+			// Then we'll calculate the max distance of the bounding box
+			// and set that as the camera's position
+			const size = new Vector3()
+			const boundingBox = new Box3()
+			boundingBox.setFromObject($loadedModel.scene)
+			boundingBox.getSize(size)
+			maxDistance = Math.max(size.x, size.y, size.z)
+			readyToRender = true
+		}
 	}
 </script>
 
