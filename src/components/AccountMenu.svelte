@@ -109,7 +109,7 @@
 		@apply absolute bottom-full left-0;
 		@apply z-10 mb-2;
 		@apply text-chalkboard-120 dark:text-chalkboard-10;
-		@apply bg-white dark:bg-chalkboard-90;
+		@apply bg-white dark:bg-chalkboard-120;
 		@apply border-solid border-2 border-chalkboard-100;
 		@apply border border-chalkboard-100 dark:border-chalkboard-20;
 		@apply flex flex-col;
