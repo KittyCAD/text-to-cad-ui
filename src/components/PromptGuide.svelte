@@ -1,6 +1,6 @@
 <div class="my-12 text-chalkboard-100 dark:text-chalkboard-20">
-	<h2 class="font-mono pt-1 text-xs uppercase">Prompt writing tips:</h2>
-	<ul class="list-disc pl-6 text-lg">
+	<h2 class="font-mono pt-1 text-xs uppercase font-normal">Prompt writing tips:</h2>
+	<ul class="list-disc pl-6">
 		<li class="my-4">
 			Describe an object that can be represented in geometric shapes, not nebulous concepts such as
 			"a tiger" or "the universe", unless you're just curious what it does with that 😏

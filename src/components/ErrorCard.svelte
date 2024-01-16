@@ -17,7 +17,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="error-card" on:mousemove={handleMouseMove} bind:this={card}>
 	<p class="error-tag font-mono text-sm">An error occurred:</p>
-	<p class="font-mono text-lg">
+	<p class="font-mono mt-4">
 		{error}
 	</p>
 </div>
@@ -26,7 +26,7 @@
 	.error-card {
 		--x-rotate: 0;
 		--y-rotate: 0;
-		@apply max-w-xl p-4 md:p-16 lg:p-24 rounded-md;
+		@apply max-w-md p-4 md:p-8 rounded-md;
 		@apply bg-destroy-10/20 dark:bg-destroy-80/20 text-destroy-80 dark:text-destroy-10;
 		@apply border border-destroy-80;
 		transform-style: preserve-3d;

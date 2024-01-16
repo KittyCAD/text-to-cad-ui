@@ -22,7 +22,7 @@
 					<BlockedMessage blockedReason={data.user.block} />
 				</div>
 			{/if}
-			<ExamplePrompts {input} class="my-12" />
+			<ExamplePrompts {input} class="mb-12 mt-24" />
 			<PromptGuide />
 		</div>
 	</div>

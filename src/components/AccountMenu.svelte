@@ -3,6 +3,7 @@
 	import { paths } from '$lib/paths'
 	import Person from './Icons/Person.svelte'
 	import ArrowRight from './Icons/ArrowRight.svelte'
+	import ArrowLeft from './Icons/ArrowLeft.svelte'
 
 	export let user: Models['User_type']
 	let open = false
@@ -61,7 +62,7 @@
 				/>
 			{/if}
 		</div>
-		<span class="mt-0.5 font-mono">{displayName}</span>
+		<span class="mt-0.5 font-mono text-left whitespace-break-spaces">{displayName}</span>
 	</button>
 	<dialog class="menu">
 		<menu class="contents">
@@ -82,7 +83,7 @@
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<span>Billing Info</span>
+				<span class="flex-1 text-left">Billing Info</span>
 				<ArrowRight class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
 			<a
@@ -92,11 +93,12 @@
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<span>Report UI Issue</span>
+				<span class="flex-1 text-left">Report UI Issue</span>
 				<ArrowRight class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
 			<a data-sveltekit-reload href={paths.SIGN_OUT} class="menu-button" on:keydown={dismiss}>
-				Sign Out
+				<span class="flex-1 text-left">Sign Out</span>
+				<ArrowLeft class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
 		</menu>
 	</dialog>
@@ -136,7 +138,7 @@
 
 	.menu-button {
 		@apply uppercase tracking-[1px] hover:bg-green hover:text-chalkboard-120;
-		@apply flex gap-2 justify-center items-center text-sm font-mono text-center px-4 py-2 border-t;
+		@apply flex gap-2 justify-center items-center text-sm font-mono px-4 py-2 border-t;
 	}
 
 	.menu-button span {

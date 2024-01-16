@@ -46,7 +46,7 @@
 		</a>
 	</header>
 	<div class="mobile-contents hidden md:contents">
-		<div class="flex-auto overflow-hidden border-y">
+		<div class="flex-auto overflow-hidden border-y border-chalkboard-50">
 			<GenerationList />
 		</div>
 		<footer>
@@ -61,7 +61,7 @@
 		@apply flex flex-col md:max-h-full overflow-hidden;
 		@apply flex-none;
 		@apply justify-between md:justify-start;
-		@apply border-b md:border-b-0 md:border-r;
+		@apply border-b border-chalkboard-50 md:border-b-0 md:border-r;
 	}
 
 	.sidebar.open {
