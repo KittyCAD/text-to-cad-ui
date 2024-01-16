@@ -36,30 +36,26 @@
 			<Spinner class="block w-10 h-10 animate-spin" />
 		</div>
 	{:else}
-		<div class="md:mt-16 grid md:grid-cols-3 lg:grid-cols-4 md:border items-stretch">
+		<div class="md:mt-16 grid md:grid-cols-3 items-stretch gap-4">
 			<h1
-				class="font-normal font-mono md:col-span-2 lg:col-span-3 md:border-r px-2 py-6 lg:px-4 lg:py-8"
+				class="font-normal font-mono md:col-span-2 md:border border-chalkboard-30 dark:border-chalkboard-90 rounded px-2 py-4 lg:px-4"
 			>
 				<span class="block text-sm uppercase text-chalkboard-70 dark:text-chalkboard-40"
 					>Your Prompt</span
 				>
 				<span class="sr-only">: </span>
-				<span class="block text-lg">"{data.prompt.trim()}"</span>
+				<span class="block">"{data.prompt.trim()}"</span>
 			</h1>
 			{#if data.outputs}
 				<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-					<DownloadButton
-						className="w-full md:border-b"
-						outputs={data.outputs}
-						prompt={data.prompt}
-					/>
+					<DownloadButton className="w-full rounded" outputs={data.outputs} prompt={data.prompt} />
 					<ModelFeedback modelId={data.id} feedback={data.feedback} />
 				</div>
 			{:else if data.status === 'failed'}
-				<div class="flex justify-stretch self-stretch items-stretch">
+				<div class="flex justify-stretch">
 					<a
 						href={`/dashboard?prompt=${data.prompt}`}
-						class="link-text fallback-button text-chalkboard-120 bg-green"
+						class="link-text fallback-button border rounded border-green text-green hover:bg-green hover:text-chalkboard-120"
 					>
 						Retry prompt</a
 					>
@@ -97,7 +93,7 @@
 			</div>
 		{/if}
 		<footer
-			class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
+			class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-chalkboard-30 dark:border-chalkboard-90 border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 		>
 			<p>Submitted {data.created_at}</p>
 			{#if data.outputs && data.status === 'completed'}

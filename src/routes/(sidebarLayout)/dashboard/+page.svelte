@@ -22,12 +22,12 @@
 					<BlockedMessage blockedReason={data.user.block} />
 				</div>
 			{/if}
-			<ExamplePrompts {input} class="my-12" />
+			<ExamplePrompts {input} class="mb-12 mt-24" />
 			<PromptGuide />
 		</div>
 	</div>
 	<footer
-		class="max-w-4xl w-full mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between px-2 lg:px-4 py-1 border border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
+		class="max-w-4xl w-full mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between px-2 lg:px-4 py-1 border border-chalkboard-30 dark:border-chalkboard-90 border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
 	>
 		<p>
 			Built with the{' '}

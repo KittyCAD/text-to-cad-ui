@@ -34,7 +34,7 @@
 	}
 
 	.prompt-buttons button {
-		@apply text-sm text-left font-mono tracking-wider rounded border p-3 md:p-4;
+		@apply text-sm text-left tracking-wider rounded border p-2;
 		@apply bg-transparent hover:bg-green/50;
 		@apply text-chalkboard-70 dark:text-chalkboard-50 hover:text-chalkboard-120 dark:hover:text-chalkboard-10;
 		@apply border-chalkboard-30 dark:border-chalkboard-70;
