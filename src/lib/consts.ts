@@ -9,7 +9,7 @@ export const PLAYWRIGHT_MOCKING_HEADER = 'x-playwright-mocking'
 export const MODEL_POLLING_INTERVAL = 6000
 
 export const EXAMPLE_PROMPTS = [
-	'Draw me a 1/2 inch gear with 21 teeth',
+	'a 1/2 inch gear with 21 teeth',
 	'a 9 pointed star',
 	'a 3x6 lego',
 	'21-tooth involute helical gear',
