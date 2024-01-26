@@ -1,8 +1,18 @@
 <script lang="ts">
+	import { getTheme } from '$lib/getTheme'
 	import { T, useThrelte } from '@threlte/core'
 	import { GLTF, OrbitControls, interactivity, useGltf } from '@threlte/extras'
 	import { createEventDispatcher } from 'svelte'
-	import { Box3, Color, Vector3, Scene, Mesh } from 'three'
+	import {
+		Box3,
+		Color,
+		Vector3,
+		Scene,
+		Mesh,
+		EdgesGeometry,
+		LineSegments,
+		LineBasicMaterial
+	} from 'three'
 
 	export let dataUrl: string
 	export let pausable = true
@@ -50,6 +60,13 @@
 					} else if ('color' in material) {
 						material.color = new Color(0x29ffa4)
 					}
+
+					const edges = new EdgesGeometry((child as Mesh).geometry, 30)
+					const lines = new LineSegments(
+						edges,
+						new LineBasicMaterial({ color: getTheme() === 'light' ? 0xffffff : 0x1f2020 })
+					)
+					$loadedModel.scene.add(lines)
 				}
 			})
 
