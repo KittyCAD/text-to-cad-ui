@@ -15,7 +15,7 @@
 
 	interactivity()
 
-	let shouldAutoRotate = true
+	$: shouldAutoRotate = enableAutoRotate
 	const AUTO_ROTATE_PAUSE = 5000
 
 	// This allows autorotate to be paused when the user is interacting with the model
@@ -28,7 +28,7 @@
 	const reenableAutoRotate = () => {
 		if (!pausable) return
 		autorotateTimeout = setTimeout(function () {
-			shouldAutoRotate = true
+			shouldAutoRotate = enableAutoRotate
 		}, AUTO_ROTATE_PAUSE)
 	}
 
@@ -79,7 +79,7 @@
 	>
 		<OrbitControls
 			enableDamping
-			autoRotate={enableAutoRotate && shouldAutoRotate}
+			autoRotate={shouldAutoRotate}
 			{enableZoom}
 			on:start={disableAutoRotate}
 			on:end={reenableAutoRotate}
