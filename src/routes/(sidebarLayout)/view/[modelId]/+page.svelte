@@ -7,9 +7,10 @@
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { browser } from '$app/environment'
 	import ErrorCard from 'components/ErrorCard.svelte'
-	import { combinedGenerations, unreadGenerations } from '$lib/stores'
+	import { combinedGenerations, unreadGenerations, userSettings } from '$lib/stores'
 	import { invalidateAll, onNavigate } from '$app/navigation'
 	import { navigating } from '$app/stores'
+	import Checkmark from 'components/Icons/Checkmark.svelte'
 
 	export let data: Models['TextToCad_type']
 	$: status = $combinedGenerations.find((g) => g.id === data.id)?.status ?? data.status
@@ -75,6 +76,7 @@
 								isSceneEmpty = true
 							}}
 							dataUrl={gltfUrl}
+							enableAutoRotate={$userSettings.autoRotateModels}
 						/>
 					</Canvas>
 				</div>
@@ -92,10 +94,19 @@
 				<Spinner class="w-10 h-10 animate-spin" />
 			</div>
 		{/if}
-		<footer
-			class="w-full flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1 border border-chalkboard-30 dark:border-chalkboard-90 border-b-0 text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40"
-		>
+		<footer class="w-full footer-row">
 			<p>Submitted {data.created_at}</p>
+			<label class="flex items-center gap-2">
+				Auto-rotate model
+				{#if browser}
+					<input type="checkbox" class="sr-only" bind:checked={$userSettings.autoRotateModels} />
+					<div class="w-4 h-4 border border-chalkboard-30 dark:border-chalkboard-90">
+						{#if $userSettings.autoRotateModels}
+							<Checkmark class="w-full h-auto" />
+						{/if}
+					</div>
+				{/if}
+			</label>
 			{#if data.outputs && data.status === 'completed'}
 				<p>Generated {data.completed_at}</p>
 			{:else if data.status === 'failed'}
@@ -111,5 +122,11 @@
 	.fallback-button {
 		@apply w-full flex items-center justify-center;
 		@apply hover:bg-green hover:hue-rotate-15 py-4 md:py-1;
+	}
+
+	.footer-row {
+		@apply flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1;
+		@apply border border-chalkboard-30 dark:border-chalkboard-90 border-b-0;
+		@apply text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40;
 	}
 </style>
