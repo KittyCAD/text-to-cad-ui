@@ -7,6 +7,7 @@
 	export let dataUrl: string
 	export let pausable = true
 	export let enableZoom = true
+	export let enableAutoRotate = true
 	let readyToRender = false
 
 	const { size: threlteSize } = useThrelte()
@@ -78,7 +79,7 @@
 	>
 		<OrbitControls
 			enableDamping
-			autoRotate={shouldAutoRotate}
+			autoRotate={enableAutoRotate && shouldAutoRotate}
 			{enableZoom}
 			on:start={disableAutoRotate}
 			on:end={reenableAutoRotate}
