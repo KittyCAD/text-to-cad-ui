@@ -30,7 +30,7 @@
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 </script>
 
-<section class="min-h-screen flex flex-col">
+<section class="min-h-screen flex flex-col" style="min-height: 100dvh">
 	{#if $navigating}
 		<div class="flex-1 flex flex-col justify-center items-center">
 			<p class="link-text mb-4">Loading your model</p>

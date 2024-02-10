@@ -13,7 +13,7 @@
 	]
 </script>
 
-<main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center">
+<main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center" style="min-height: 100dvh">
 	<section class="mx-auto max-w-5xl flex-1">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
 			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">

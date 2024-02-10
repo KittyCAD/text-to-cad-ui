@@ -5,7 +5,7 @@
 	export let data: LayoutData
 </script>
 
-<div class="h-screen overflow-hidden flex flex-col">
+<div class="h-screen overflow-hidden flex flex-col" style="height: 100dvh;">
 	<div class="pane-layout">
 		<Sidebar user={data ? data.user : undefined} className="md:w-80" />
 		<main>
@@ -23,6 +23,7 @@
 
 	.pane-layout {
 		@apply h-screen overflow-hidden flex flex-col md:flex-row;
+		height: 100dvh;
 	}
 
 	main {
