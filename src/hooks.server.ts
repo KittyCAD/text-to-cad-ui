@@ -6,7 +6,7 @@ import { PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts'
 import { hooksUserMocks, isUserMock } from '$lib/mocks'
 const unProtectedRoutes = ['/']
 
-const domain = import.meta.env.DEV ? 'localhost' : import.meta.env.VITE_SITE_BASE_URL
+const domain = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
 export const handle = async ({ event, resolve }) => {
 	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
