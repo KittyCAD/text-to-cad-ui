@@ -1,6 +1,5 @@
 import { error, redirect } from '@sveltejs/kit'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
-import { users, Client } from '@kittycad/lib'
 import { SIGN_OUT_PARAM } from '$lib/paths'
 import { PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts'
 import { hooksUserMocks, isUserMock } from '$lib/mocks'
@@ -10,7 +9,11 @@ const domain = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
 export const handle = async ({ event, resolve }) => {
 	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token = event.cookies.get(AUTH_COOKIE_NAME)
+	const token =
+		import.meta.env.MODE === 'production'
+			? event.cookies.get(AUTH_COOKIE_NAME)
+			: import.meta.env.VITE_TOKEN
+
 	if (!token && !unProtectedRoutes.includes(event.url.pathname)) {
 		throw redirect(303, '/')
 	} else if (!token) {
@@ -23,10 +26,19 @@ export const handle = async ({ event, resolve }) => {
 		// This will be used by the client to make requests to the API.
 		process.env.BASE_URL = import.meta.env.VITE_API_BASE_URL + '/'
 	}
-	const client = new Client(token)
-	const currentUser = await users.get_user_self({ client }).catch((e) => {
-		throw error(500, e)
-	})
+
+	const currentUser = await event
+		.fetch(process.env.BASE_URL + '/user', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then((res) => res.json())
+		.catch((e) => {
+			throw error(500, e)
+		})
 
 	if (!currentUser) {
 		event.locals.user = undefined
