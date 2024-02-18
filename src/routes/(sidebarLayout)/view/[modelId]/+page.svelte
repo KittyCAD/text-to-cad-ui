@@ -96,7 +96,7 @@
 		{/if}
 		<footer class="w-full footer-row">
 			<p>Submitted {data.created_at}</p>
-			<label class="flex items-center gap-2">
+			<label class="order-1 xl:order-none flex items-center gap-2">
 				Auto-rotate model
 				{#if browser}
 					<input type="checkbox" class="sr-only" bind:checked={$userSettings.autoRotateModels} />
@@ -125,7 +125,7 @@
 	}
 
 	.footer-row {
-		@apply flex flex-col md:flex-row md:items-center justify-between px-2 lg:px-4 py-1;
+		@apply flex flex-col gap-4 md:flex-row md:items-center justify-between px-2 lg:px-4 py-1;
 		@apply border border-chalkboard-30 dark:border-chalkboard-90 border-b-0;
 		@apply text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40;
 	}
