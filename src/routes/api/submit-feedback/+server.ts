@@ -1,3 +1,4 @@
+import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { endpoints, type PromptResponse } from '$lib/endpoints'
 import { error, json, type RequestHandler } from '@sveltejs/kit'
 
@@ -7,7 +8,10 @@ export type LoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token = cookies.get('__Secure-next-auth.session-token')
+	const token =
+		import.meta.env.MODE === 'production'
+			? cookies.get(AUTH_COOKIE_NAME)
+			: import.meta.env.VITE_TOKEN
 	const body = await request.json()
 
 	if (!(body?.id && body?.feedback))
@@ -21,7 +25,7 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 		}
 	})
 
-	const message = await response.text()
+	const message = (await response.json()) as PromptResponse
 
 	return json({
 		status: response.status,
