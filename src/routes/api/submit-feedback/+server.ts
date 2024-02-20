@@ -8,10 +8,7 @@ export type LoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token =
-		import.meta.env.MODE === 'production'
-			? cookies.get(AUTH_COOKIE_NAME)
-			: import.meta.env.VITE_TOKEN
+	const token = import.meta.env.PROD ? cookies.get(AUTH_COOKIE_NAME) : import.meta.env.VITE_TOKEN
 	const body = await request.json()
 
 	if (!(body?.id && body?.feedback))

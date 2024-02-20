@@ -7,7 +7,7 @@ export const paths = {
 	GITHUB_REPO,
 	GITHUB_NEW_ISSUE: `${GITHUB_REPO}/issues/new`,
 	SIGN_IN: (callbackUrl: string) =>
-		import.meta.env.VITE_SITE_BASE_URL + '/signin/?callbackUrl=' + encodeURIComponent(callbackUrl),
+		SITE + '/signin/?callbackUrl=' + encodeURIComponent(callbackUrl),
 	HOME: '/',
 	DASHBOARD: '/dashboard',
 	VIEW: (viewId: string) => `/view/${viewId}`,
