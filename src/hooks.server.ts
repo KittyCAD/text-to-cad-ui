@@ -9,10 +9,9 @@ const domain = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
 export const handle = async ({ event, resolve }) => {
 	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token =
-		import.meta.env.MODE === 'production'
-			? event.cookies.get(AUTH_COOKIE_NAME)
-			: import.meta.env.VITE_TOKEN
+	const token = import.meta.env.PROD
+		? event.cookies.get(AUTH_COOKIE_NAME)
+		: import.meta.env.VITE_TOKEN
 
 	if (!token && !unProtectedRoutes.includes(event.url.pathname)) {
 		throw redirect(303, '/')
@@ -20,15 +19,8 @@ export const handle = async ({ event, resolve }) => {
 		return resolve(event)
 	}
 
-	// We need to tell the client to use the right base URL
-	if (import.meta.env.MODE !== 'production') {
-		// Set the env variable BASE_URL to import.meta.env.VITE_API_BASE_URL.
-		// This will be used by the client to make requests to the API.
-		process.env.BASE_URL = import.meta.env.VITE_API_BASE_URL + '/'
-	}
-
 	const currentUser = await event
-		.fetch(process.env.BASE_URL + '/user', {
+		.fetch(import.meta.env.VITE_API_BASE_URL + '/user', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
