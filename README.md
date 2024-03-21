@@ -6,8 +6,7 @@ This repository is an open-source example of how to quickly get up and running w
 
 1. Remove the `.example` from `/.env.example`, leaving it `.env` (Git will ignore this and prevent you from accidentally publishing your dev API token)
 2. Set the `VITE_ZOO_DEV_TOKEN` environment variable in with a **dev** API token from: https://dev.zoo.dev in `/.env`
-3. Set the `PLAYWRIGHT_TESTING_TOKEN` environment variable with a **prod** API token from: https://zoo.dev in `/.env`
-4. Run the dev server with `yarn dev -- --open`
+3. Run the dev server with `yarn dev --open`
 
 ## Building
 
