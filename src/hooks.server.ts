@@ -11,7 +11,7 @@ export const handle = async ({ event, resolve }) => {
 	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
 	const token = import.meta.env.PROD
 		? event.cookies.get(AUTH_COOKIE_NAME)
-		: import.meta.env.VITE_ZOO_DEV_TOKEN
+		: import.meta.env.VITE_TOKEN
 
 	if (!token && !unProtectedRoutes.includes(event.url.pathname)) {
 		throw redirect(303, '/')
@@ -32,7 +32,7 @@ export const handle = async ({ event, resolve }) => {
 			throw error(500, e)
 		})
 
-	if (!currentUser || 'message' in currentUser) {
+	if (!currentUser) {
 		event.locals.user = undefined
 		if (!unProtectedRoutes.includes(event.url.pathname)) throw redirect(303, '/')
 	} else {
