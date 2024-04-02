@@ -29,7 +29,11 @@ export const handle = async ({ event, resolve }) => {
 		})
 		.then((res) => res.json())
 		.catch((e) => {
-			throw error(500, e)
+			// If the user had a token but there was an error fetching the user,
+			//delete the token, because it was likely revoked or expired
+			console.error('Error fetching user:', e)
+			event.cookies.delete(AUTH_COOKIE_NAME, { domain, path: '/' })
+			throw redirect(303, '/')
 		})
 
 	if (!currentUser) {
