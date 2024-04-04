@@ -18,8 +18,7 @@ const config = {
 			styles: 'src/styles',
 			components: 'src/components'
 		}
-	},
-
+	}
 }
 
 export default config
