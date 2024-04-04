@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { SIGN_OUT_PARAM } from '$lib/paths'
 import { PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts'
@@ -40,7 +40,11 @@ export const handle = async ({ event, resolve }) => {
 		event.locals.user = undefined
 		if (!unProtectedRoutes.includes(event.url.pathname)) throw redirect(303, '/')
 	} else {
-		if ('error_code' in currentUser) throw error(500, currentUser)
+		if ('error_code' in currentUser) {
+			console.error('Error fetching user:', currentUser.error_code)
+			event.cookies.delete(AUTH_COOKIE_NAME, { domain, path: '/' })
+			throw redirect(303, '/')
+		}
 
 		event.locals.user = currentUser
 		if (mock !== null) {
