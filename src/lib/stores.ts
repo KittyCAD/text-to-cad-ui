@@ -55,7 +55,10 @@ export const generations = derived([combinedGenerations], ([$combinedGenerations
 	return groupBy($combinedGenerations, ({ created_at }) => bucketByTime(created_at))
 })
 
-export const nextPageToken = writable<string | null | undefined>(undefined)
+const NEXT_PAGE_TOKENS_KEY = 'nextPageTokens'
+export const nextPageTokensInitial = fromLocalStorage<string[]>(NEXT_PAGE_TOKENS_KEY, [])
+export const nextPageTokens = writable(nextPageTokensInitial)
+toLocalStorage(nextPageTokens, NEXT_PAGE_TOKENS_KEY)
 
 type UserSettings = {
 	autoRotateModels: boolean
