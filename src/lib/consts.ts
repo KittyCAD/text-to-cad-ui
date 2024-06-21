@@ -41,3 +41,12 @@ export const TIME_BUCKETS = [
 		test: (then: Date, now: Date) => now.getTime() - then.getTime() < msSinceStartOfYear(now)
 	}
 ] as const
+
+/**
+ * The number of pages to fetch ahead of the current page
+ */
+export const PAGES_AHEAD_TO_FETCH = 5
+/**
+ * The number of items to fetch per request
+ */
+export const ITEMS_PER_PAGE = 5
