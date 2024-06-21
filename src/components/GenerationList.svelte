@@ -8,12 +8,17 @@
 	import { sortTimeBuckets } from '$lib/time'
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { PAGES_AHEAD_TO_FETCH } from '$lib/consts'
+	import { onMount } from 'svelte'
 
 	let error: string | null = null
 	let pagesToFetch = PAGES_AHEAD_TO_FETCH
 	let scrolledPercentage = 0
-	let fetchPromise =
-		$nextPageTokens[$nextPageTokens.length - 1] === null ? Promise.resolve() : fetchData()
+	let fetchPromise: Promise<void>
+
+	onMount(() => {
+		fetchPromise =
+			$nextPageTokens[$nextPageTokens.length - 1] === null ? Promise.resolve() : fetchData()
+	})
 
 	// Reset the pages to fetch counter if the user scrolls
 	// to the bottom of the generation list

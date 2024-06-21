@@ -26,7 +26,7 @@ test('Prompt input is visible and usable on mobile', async ({ page }) => {
 	await expect(page.locator('textarea')).toBeFocused()
 })
 
-test('Sidebar only loads 5 pages of results initially', async ({ page }) => {
+test('Sidebar only loads set number of pages of results initially', async ({ page }) => {
 	// Go to the home page
 	await page.goto('https://localhost:3000')
 
