@@ -1,4 +1,5 @@
 import type { Models } from '@kittycad/lib'
+import { ITEMS_PER_PAGE } from './consts'
 
 export type CADFormat = Models['FileExportFormat_type']
 
@@ -23,7 +24,7 @@ export const endpoints = {
 		`${import.meta.env.VITE_API_BASE_URL}/file/conversion/gltf/${output_format}`,
 	feedback: (id: string, feedback: Models['TextToCad_type']['feedback']) =>
 		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
-	list: ({ limit = 5, page_token }: ListParams) =>
+	list: ({ limit = ITEMS_PER_PAGE, page_token }: ListParams) =>
 		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
 			page_token ? `&page_token=${page_token}` : ''
 		}`,

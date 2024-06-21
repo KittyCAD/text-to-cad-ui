@@ -1,6 +1,6 @@
 import { msSinceStartOfDay, msSinceStartOfMonth, msSinceAWeekAgo, msSinceStartOfYear } from './time'
 
-export const PERSIST_KEY_VERSION = '2023-01-09'
+export const PERSIST_KEY_VERSION = '2024-06-21'
 export const PERSIST_KEY_GENERATIONS = 'TEXT_TO_CAD_GENERATIONS'
 export const PERSIST_KEY_UNREAD = 'TEXT_TO_CAD_UNREAD'
 
@@ -41,3 +41,12 @@ export const TIME_BUCKETS = [
 		test: (then: Date, now: Date) => now.getTime() - then.getTime() < msSinceStartOfYear(now)
 	}
 ] as const
+
+/**
+ * The number of pages to fetch ahead of the current page
+ */
+export const PAGES_AHEAD_TO_FETCH = 5
+/**
+ * The number of items to fetch per request
+ */
+export const ITEMS_PER_PAGE = 5
