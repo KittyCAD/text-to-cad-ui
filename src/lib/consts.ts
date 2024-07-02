@@ -15,7 +15,7 @@ export const EXAMPLE_PROMPTS = [
 	'21-tooth involute helical gear',
 	'5-sided star',
 	'a plate with 4 holes near each corner and rounded corners',
-	'Make me a golf tee',
+	'a golf tee',
 	'Design a mounting plate that is 12 inches wide and 6 inches tall. Put four holes in each corner for #10 fasteners and fillet each corner',
 	'a brick: 8 in. long 4 in. deep 2 in. tall—with chamfered edges',
 	'a coaster for a drink'
