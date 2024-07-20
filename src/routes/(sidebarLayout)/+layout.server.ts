@@ -5,6 +5,7 @@ import { redirect } from '@sveltejs/kit'
 export const load = async ({ locals, cookies }) => {
 	// redirect user if not logged in
 	if (!locals.user) {
+		locals.token = undefined
 		cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
 		throw redirect(302, '/')
 	}

@@ -6,6 +6,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			user?: Models['User_type'] | Models['Error_type']
+			token?: string
 		}
 		// interface PageData {}
 		// interface Platform {}
