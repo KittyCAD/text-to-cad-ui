@@ -1,8 +1,10 @@
-import { paths } from '$lib/paths.js'
+import { AUTH_COOKIE_NAME } from '$lib/cookies.js'
 import { redirect } from '@sveltejs/kit'
 
-export const load = async ({ url, locals }) => {
-	if (locals.token && locals.user) {
-		throw redirect(302, paths.DASHBOARD + (url.search || ''))
+export const load = async ({ cookies, url }) => {
+	const token = import.meta.env.PROD ? cookies.get(AUTH_COOKIE_NAME) : import.meta.env.VITE_TOKEN
+
+	if (token) {
+		throw redirect(302, '/dashboard' + (url.search || ''))
 	}
 }
