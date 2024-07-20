@@ -9,6 +9,7 @@ export const paths = {
 	SIGN_IN: (callbackUrl: string) =>
 		SITE + '/signin/?callbackUrl=' + encodeURIComponent(callbackUrl),
 	HOME: '/',
+	SUCCESS: '/success',
 	DASHBOARD: '/dashboard',
 	VIEW: (viewId: string) => `/view/${viewId}`,
 	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`,
