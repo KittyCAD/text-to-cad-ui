@@ -56,7 +56,7 @@
 					API from <a href="https://zoo.dev" target="_blank" rel="noopener noreferrer">Zoo</a>.
 				</p>
 				<a
-					href={paths.SIGN_IN($page.url.origin.concat(paths.DASHBOARD))}
+					href={paths.SIGN_IN($page.url.origin.concat(paths.SUCCESS))}
 					class="self-stretch uppercase tracking-[1px] flex items-center justify-center text-center bg-green px-2 md:px-4 py-2 dark:bg-green dark:text-chalkboard-120 border-0 border-t md:border-t-0 md:border-l font-mono hover:hue-rotate-15"
 					>Sign in to get started</a
 				>

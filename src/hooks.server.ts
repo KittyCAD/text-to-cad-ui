@@ -3,7 +3,7 @@ import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { SIGN_OUT_PARAM } from '$lib/paths'
 import { PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts'
 import { hooksUserMocks, isUserMock } from '$lib/mocks'
-const unProtectedRoutes = ['/']
+const unProtectedRoutes = ['/', '/success']
 
 const domain = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
