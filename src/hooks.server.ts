@@ -7,13 +7,11 @@ import { hooksUserMocks, isUserMock } from '$lib/mocks'
 export const handle = async ({ event, resolve }) => {
 	const mock = event.request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
 	const token = import.meta.env.PROD
-		? event.request.headers.get(AUTH_COOKIE_NAME)
+		? event.cookies.get(AUTH_COOKIE_NAME)
 		: import.meta.env.VITE_TOKEN
 
 	if (!token) {
 		return resolve(event)
-	} else {
-		event.locals.token = token
 	}
 
 	const currentUser = await event
