@@ -3,6 +3,7 @@ import { msSinceStartOfDay, msSinceStartOfMonth, msSinceAWeekAgo, msSinceStartOf
 export const PERSIST_KEY_VERSION = '2024-06-21'
 export const PERSIST_KEY_GENERATIONS = 'TEXT_TO_CAD_GENERATIONS'
 export const PERSIST_KEY_UNREAD = 'TEXT_TO_CAD_UNREAD'
+export const DOMAIN = import.meta.env.DEV ? 'localhost' : '.zoo.dev'
 
 export const PLAYWRIGHT_MOCKING_HEADER = 'x-playwright-mocking'
 
