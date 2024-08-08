@@ -10,17 +10,10 @@ export const PLAYWRIGHT_MOCKING_HEADER = 'x-playwright-mocking'
 export const MODEL_POLLING_INTERVAL = 6000
 
 export const EXAMPLE_PROMPTS = [
-	'A dodecahedron',
-	'A camshaft',
-	'A 1/2 inch gear with 21 teeth',
-	'A 3x6 lego',
-	'A 21-tooth involute helical gear',
-	'A 5-pointed star',
-	'A plate with 4 holes near each corner and rounded corners',
-	'A mounting plate that is 12 inches wide and 6 inches tall. Put four holes in each corner for #10 fasteners and fillet each corner.',
-	'A brick: 8 in. long 4 in. deep 2 in. tall—with chamfered edges',
-	'A coaster for a drink',
-	'Two gears to reduce rotation speed to half'
+	'M8 flat washer, 2mm thickness',
+	'4x4 lego',
+	'A 1 inch tall helical gear with 10 teeth and a diameter of 3 inches',
+	'A ring gear for a planetary gear train: 20 dp, 64 teeth, 3.4" outer diameter',
 ] as const
 
 export const EXAMPLES_TO_SHOW = 4
