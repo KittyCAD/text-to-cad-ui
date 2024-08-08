@@ -15,7 +15,6 @@ export const EXAMPLE_PROMPTS = [
 	'A 1/2 inch gear with 21 teeth',
 	'A 3x6 lego',
 	'A 21-tooth involute helical gear',
-	'A 5-pointed star',
 	'A plate with 4 holes near each corner and rounded corners',
 	'A mounting plate that is 12 inches wide and 6 inches tall. Put four holes in each corner for #10 fasteners and fillet each corner.',
 	'A brick: 8 in. long 4 in. deep 2 in. tall—with chamfered edges',
