@@ -96,7 +96,13 @@
 				<span class="flex-1 text-left">Report UI Issue</span>
 				<ArrowRight class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
-			<a data-sveltekit-reload href={paths.SIGN_OUT} class="menu-button" on:keydown={dismiss}>
+			<a
+				data-sveltekit-reload
+				href={paths.SIGN_OUT}
+				class="menu-button"
+				on:keydown={dismiss}
+				on:click={() => localStorage.clear()}
+			>
 				<span class="flex-1 text-left">Sign Out</span>
 				<ArrowLeft class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
