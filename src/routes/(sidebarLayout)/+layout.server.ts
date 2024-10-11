@@ -57,6 +57,7 @@ export const load = async ({ cookies, request, url, fetch }) => {
 	 */
 	function signOut() {
 		cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
+		localStorage.clear()
 		throw redirect(303, '/')
 	}
 }
