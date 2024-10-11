@@ -85,9 +85,8 @@
 			autofocus
 			placeholder="e.g. Create a plate with 4 holes and rounded corners"
 			required
-			spellcheck="false"
 			disabled={isSubmitting}
-			class="w-full tracking-wide px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10"
+			class="w-full tracking-wide px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10 max-h-64"
 			bind:this={input}
 			bind:value={inputValue}
 			on:keydown={handleKeydown}
