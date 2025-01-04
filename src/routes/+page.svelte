@@ -15,7 +15,10 @@
 
 <main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center" style="min-height: 100dvh">
 	<!-- A banner that warns this is not the latest version of the app -->
-	<div class="fixed top-0 left-0 right-0 z-50 bg-red text-white text-center py-1" style="padding: 5px 15px">
+	<div
+		class="fixed top-0 left-0 right-0 z-50 bg-red text-white text-center py-1"
+		style="padding: 5px 15px"
+	>
 		<span class="font-bold">This is an old version of the model.</span>
 		<span class="font-bold"
 			>Please <a href="https://zoo.dev/modeling-app/download">download the latest alpha version</a>
