@@ -11,9 +11,9 @@
 		class="top-0 left-0 right-0 z-50 text-center py-1"
 		style="background: black;color:white; position:relative"
 	>
-		<span class="font-bold">This is an old version of the model.</span>
+		<span class="font-bold">This is an old version of our ML model.</span>
 		<span class="font-bold"
-			>Please <a href="https://zoo.dev/modeling-app/download" style="border-bottom: 2px solid"
+			>Please <a href="https://zoo.dev/modeling-app/download" style="border-bottom: 2px solid;"
 				>download the latest alpha version</a
 			>
 			or
