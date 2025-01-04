@@ -6,6 +6,15 @@
 </script>
 
 <div class="h-screen overflow-hidden flex flex-col" style="height: 100dvh;">
+	<!-- A banner that warns this is not the latest version of the app -->
+	<div class="fixed top-0 left-0 right-0 z-50 bg-red text-white text-center py-1">
+		<span class="font-bold">This is an old version of the model.</span>
+		<span class="font-bold"
+			>Please <a href="https://zoo.dev/modeling-app/download">download the latest alpha version</a>
+			or <a href="https://zoo.dev/modeling-app/download/nightly">nightly version</a> (if you are feeling
+			on the wild side) of the Modeling App.</span
+		>
+	</div>
 	<div class="pane-layout">
 		<Sidebar user={data ? data.user : undefined} className="md:w-80" />
 		<main>
