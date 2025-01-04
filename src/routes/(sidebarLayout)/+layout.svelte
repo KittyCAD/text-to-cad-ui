@@ -13,11 +13,11 @@
 	>
 		<span class="font-bold">This is an old version of the model.</span>
 		<span class="font-bold"
-			>Please <a href="https://zoo.dev/modeling-app/download" style="border-bottom: 1px"
+			>Please <a href="https://zoo.dev/modeling-app/download" style="border-bottom: 2px solid"
 				>download the latest alpha version</a
 			>
 			or
-			<a href="https://zoo.dev/modeling-app/download/nightly" style="border-bottom: 1px"
+			<a href="https://zoo.dev/modeling-app/download/nightly" style="border-bottom: 2px solid;"
 				>nightly version</a
 			> (if you are feeling on the wild side) of the Modeling App.</span
 		>
