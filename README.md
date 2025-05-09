@@ -4,7 +4,7 @@ This repository is an open-source example of how to quickly get up and running w
 
 ## Developing
 
-1. Generate a dev API token from https://dev.zoo.dev
+1. Generate a dev API token from https://zoo.dev
 2. Set the `VITE_TOKEN` environment variable in `./.env.development.local` to the generated dev API token
 3. Install yarn
 4. Install dependencies with `yarn global add vite` and `yarn install`
