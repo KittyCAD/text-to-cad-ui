@@ -14,18 +14,6 @@
 </script>
 
 <main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center" style="min-height: 100dvh">
-	<!-- A banner that warns this is not the latest version of the app -->
-	<div
-		class="fixed top-0 left-0 right-0 z-50 bg-red text-white text-center py-1"
-		style="padding: 5px 15px"
-	>
-		<span class="font-bold">This is an old version of the model.</span>
-		<span class="font-bold"
-			>Please <a href="https://zoo.dev/modeling-app/download">download the latest alpha version</a>
-			or <a href="https://zoo.dev/modeling-app/download/nightly">nightly version</a> (if you are feeling
-			on the wild side) of the Modeling App.</span
-		>
-	</div>
 	<section class="mx-auto max-w-5xl flex-1">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
 			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
