@@ -6,7 +6,8 @@ To get started
 
 create a `.env` following .env.example
 
-then 
+then
+
 ```bash
 yarn
 yarn dev
