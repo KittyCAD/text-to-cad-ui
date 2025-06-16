@@ -13,7 +13,7 @@
 	} from '$lib/stores'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { MODEL_POLLING_INTERVAL } from '$lib/consts'
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 
 	export let data: GenerationWithSource
 	let poller: ReturnType<typeof setInterval> | undefined

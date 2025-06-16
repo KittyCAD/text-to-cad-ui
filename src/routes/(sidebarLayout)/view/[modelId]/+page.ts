@@ -1,5 +1,5 @@
 import { endpoints } from '$lib/endpoints.js'
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 import { error, redirect } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */

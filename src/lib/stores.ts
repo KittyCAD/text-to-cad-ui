@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 import { derived, writable, type Readable } from 'svelte/store'
 import groupBy from 'object.groupby'
 import { PERSIST_KEY_GENERATIONS, PERSIST_KEY_UNREAD, PERSIST_KEY_VERSION } from './consts'

@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 
 const mockUserKeys = ['mockUserMissingPayment', 'mockUserFailedPayment'] as const
 export type MockUserMethod = (typeof mockUserKeys)[number]

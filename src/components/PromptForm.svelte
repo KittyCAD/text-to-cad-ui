@@ -1,7 +1,7 @@
 <script lang="ts">
 	import autosize from 'svelte-autosize'
 	import { page } from '$app/stores'
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'

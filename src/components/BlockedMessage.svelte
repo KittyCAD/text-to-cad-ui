@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { paths } from '$lib/paths'
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 
 	export let blockedReason: Models['User_type']['block']
 </script>

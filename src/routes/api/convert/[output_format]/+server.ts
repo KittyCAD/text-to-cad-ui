@@ -1,7 +1,7 @@
 import { CADMIMETypes, endpoints } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 
 export type ConvertResponse = Models['FileConversion_type'] & {
