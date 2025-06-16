@@ -29,6 +29,10 @@
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 
+	$: zooDesignStudioUrl = data.code
+		? `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${encodeURIComponent(btoa(data.code))}`
+		: ''
+
 	function downloadKcl() {
 		if (!data.code) return
 		
@@ -55,20 +59,7 @@
 		URL.revokeObjectURL(url)
 	}
 
-	function openInZooDesignStudio() {
-		if (!data.code) return
-		
-		// Base64 encode the code
-		const base64Code = btoa(data.code)
-		// URL encode the base64 string
-		const urlEncodedCode = encodeURIComponent(base64Code)
-		
-		// Construct the URL
-		const zooUrl = `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${urlEncodedCode}`
-		
-		// Open in new tab
-		window.open(zooUrl, '_blank')
-	}
+
 </script>
 
 <section class="min-h-screen flex flex-col" style="min-height: 100dvh">
@@ -128,12 +119,14 @@
 								Keep editing this model?
 							</p>
 							<div class="flex flex-col gap-2">
-								<button
-									on:click={openInZooDesignStudio}
-									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors"
+								<a
+									href={zooDesignStudioUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors block text-center"
 								>
 									Open in Zoo Design Studio
-								</button>
+								</a>
 								<button
 									on:click={downloadKcl}
 									class="px-3 py-2 text-xs font-medium bg-chalkboard-20 dark:bg-chalkboard-100 hover:bg-chalkboard-30 dark:hover:bg-chalkboard-90 border border-chalkboard-30 dark:border-chalkboard-80 rounded text-chalkboard-100 dark:text-chalkboard-10 transition-colors"
