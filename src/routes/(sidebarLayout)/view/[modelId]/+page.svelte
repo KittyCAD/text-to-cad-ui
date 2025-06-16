@@ -3,7 +3,7 @@
 	import ModelViewer from 'components/ModelViewer.svelte'
 	import ModelFeedback from 'components/ModelFeedback.svelte'
 	import DownloadButton from 'components/DownloadButton.svelte'
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { browser } from '$app/environment'
 	import ErrorCard from 'components/ErrorCard.svelte'

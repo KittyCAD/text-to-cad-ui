@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 	import Logo from './Logo.svelte'
 	import { paths } from '$lib/paths'
 	import AccountMenu from 'components/AccountMenu.svelte'

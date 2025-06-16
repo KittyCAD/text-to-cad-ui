@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte'
 import AccountMenu from './AccountMenu.svelte'
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 
 const FULL_USER: Models['User_type'] = {
 	id: 'some_id',
@@ -15,7 +15,11 @@ const FULL_USER: Models['User_type'] = {
 	updated_at: '2023-10-13T19:33:17.783Z',
 	company: '',
 	discord: '',
-	github: ''
+	github: '',
+	can_train_on_data: false,
+	deletion_scheduled: false,
+	is_onboarded: true,
+	is_service_account: false
 }
 const NAME_USER: Models['User_type'] = {
 	...FULL_USER,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 	import { paths } from '$lib/paths'
 	import Person from './Icons/Person.svelte'
 	import ArrowRight from './Icons/ArrowRight.svelte'

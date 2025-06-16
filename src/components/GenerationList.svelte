@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib'
+	import type { Models } from '@kittycad/lib/types'
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { endpoints } from '$lib/endpoints'

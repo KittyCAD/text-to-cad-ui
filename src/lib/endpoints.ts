@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib'
+import type { Models } from '@kittycad/lib/types'
 import { ITEMS_PER_PAGE } from './consts'
 
 export type CADFormat = Models['FileExportFormat_type']
