@@ -28,6 +28,47 @@
 	}
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
+
+	function downloadKcl() {
+		if (!data.code) return
+		
+		// Create a safe filename from the prompt
+		const maxLength = 50
+		const safeName = data.prompt
+			.trim()
+			.slice(0, maxLength)
+			.replace(/[^a-zA-Z0-9\s-_]/g, '') // Remove special characters
+			.replace(/\s+/g, '_') // Replace spaces with underscores
+			.toLowerCase()
+		
+		const filename = `${safeName}.kcl`
+		
+		// Create and trigger download
+		const blob = new Blob([data.code], { type: 'text/plain' })
+		const url = URL.createObjectURL(blob)
+		const a = document.createElement('a')
+		a.href = url
+		a.download = filename
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
+		URL.revokeObjectURL(url)
+	}
+
+	function openInZooDesignStudio() {
+		if (!data.code) return
+		
+		// Base64 encode the code
+		const base64Code = btoa(data.code)
+		// URL encode the base64 string
+		const urlEncodedCode = encodeURIComponent(base64Code)
+		
+		// Construct the URL
+		const zooUrl = `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${urlEncodedCode}`
+		
+		// Open in new tab
+		window.open(zooUrl, '_blank')
+	}
 </script>
 
 <section class="min-h-screen flex flex-col" style="min-height: 100dvh">
@@ -88,11 +129,13 @@
 							</p>
 							<div class="flex flex-col gap-2">
 								<button
+									on:click={openInZooDesignStudio}
 									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors"
 								>
 									Open in Zoo Design Studio
 								</button>
 								<button
+									on:click={downloadKcl}
 									class="px-3 py-2 text-xs font-medium bg-chalkboard-20 dark:bg-chalkboard-100 hover:bg-chalkboard-30 dark:hover:bg-chalkboard-90 border border-chalkboard-30 dark:border-chalkboard-80 rounded text-chalkboard-100 dark:text-chalkboard-10 transition-colors"
 								>
 									Download KCL
