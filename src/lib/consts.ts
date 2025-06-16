@@ -21,7 +21,7 @@ export const EXAMPLE_PROMPTS = [
 	'Prosthetic hip',
 	'Two gears to reduce rotation speed to half',
 	'Wing spar section',
-	'A shepherd\'s hook bolt',
+	"A shepherd's hook bolt",
 	'Bone plate',
 	'Cold plate',
 	'PDU faceplate',
