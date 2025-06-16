@@ -30,36 +30,10 @@
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 
 	$: zooDesignStudioUrl = data.code
-		? `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${encodeURIComponent(btoa(data.code))}`
+		? `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${encodeURIComponent(
+				btoa(data.code)
+		  )}`
 		: ''
-
-	function downloadKcl() {
-		if (!data.code) return
-		
-		// Create a safe filename from the prompt
-		const maxLength = 50
-		const safeName = data.prompt
-			.trim()
-			.slice(0, maxLength)
-			.replace(/[^a-zA-Z0-9\s-_]/g, '') // Remove special characters
-			.replace(/\s+/g, '_') // Replace spaces with underscores
-			.toLowerCase()
-		
-		const filename = `${safeName}.kcl`
-		
-		// Create and trigger download
-		const blob = new Blob([data.code], { type: 'text/plain' })
-		const url = URL.createObjectURL(blob)
-		const a = document.createElement('a')
-		a.href = url
-		a.download = filename
-		document.body.appendChild(a)
-		a.click()
-		document.body.removeChild(a)
-		URL.revokeObjectURL(url)
-	}
-
-
 </script>
 
 <section class="min-h-screen flex flex-col" style="min-height: 100dvh">
@@ -81,7 +55,12 @@
 			</h1>
 			{#if data.outputs}
 				<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-					<DownloadButton className="w-full rounded" outputs={data.outputs} prompt={data.prompt} />
+					<DownloadButton
+						className="w-full rounded"
+						outputs={data.outputs}
+						prompt={data.prompt}
+						code={data.code ?? ''}
+					/>
 					<ModelFeedback modelId={data.id} feedback={data.feedback} />
 				</div>
 			{:else if data.status === 'failed'}
@@ -127,12 +106,6 @@
 								>
 									Open in Zoo Design Studio
 								</a>
-								<button
-									on:click={downloadKcl}
-									class="px-3 py-2 text-xs font-medium bg-chalkboard-20 dark:bg-chalkboard-100 hover:bg-chalkboard-30 dark:hover:bg-chalkboard-90 border border-chalkboard-30 dark:border-chalkboard-80 rounded text-chalkboard-100 dark:text-chalkboard-10 transition-colors"
-								>
-									Download KCL
-								</button>
 							</div>
 						</div>
 					{/if}

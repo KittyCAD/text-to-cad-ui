@@ -10,23 +10,42 @@
 	export let prompt: string = ''
 	export let outputs: PromptResponse['outputs']
 	export let className: string = ''
+	export let code: string = ''
 	let link: HTMLAnchorElement
-	let currentOutput: CADFormat = 'gltf'
+	let currentOutput: CADFormat | 'kcl' = 'gltf'
 	let outputData = outputs ? outputs[`source.${currentOutput}`] : ''
 	let status: 'loading' | 'ready' | 'failed' = 'ready'
+
+	// Create available formats list including KCL if code is provided
+	$: availableFormats = [...Object.keys(CADMIMETypes), ...(code ? ['kcl'] : [])]
 
 	onNavigate(() => {
 		currentOutput = 'gltf'
 	})
 
-	$: currentMimeType = CADMIMETypes[currentOutput]
-	$: dataUrl = `data:${currentMimeType};base64,${outputData}`
+	$: currentMimeType =
+		currentOutput === 'kcl' ? 'text/plain' : CADMIMETypes[currentOutput as CADFormat]
+	$: dataUrl =
+		currentOutput === 'kcl'
+			? `data:text/plain;charset=utf-8,${encodeURIComponent(code)}`
+			: `data:${currentMimeType};base64,${outputData}`
 	$: fileName = `${toKebabCase(prompt)}.${currentOutput}`
 
 	async function updateOutput(e: Event) {
 		const currentTarget = e.currentTarget as HTMLSelectElement
-		currentOutput = currentTarget.value as CADFormat
+		currentOutput = currentTarget.value as CADFormat | 'kcl'
 		status = 'loading'
+
+		// Handle KCL downloads separately
+		if (currentOutput === 'kcl') {
+			status = code ? 'ready' : 'failed'
+			if (code) {
+				await tick()
+				link.click()
+			}
+			return
+		}
+
 		if (outputs[`source.${currentOutput}`]) {
 			outputData = outputs[`source.${currentOutput}`]
 		} else {
@@ -70,7 +89,7 @@
 			bind:value={currentOutput}
 			on:change={updateOutput}
 		>
-			{#each Object.keys(CADMIMETypes) as format}
+			{#each availableFormats as format}
 				<option value={format} selected={format == currentOutput}>
 					{format}
 				</option>
