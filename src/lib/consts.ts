@@ -33,8 +33,7 @@ export const EXAMPLE_PROMPTS = [
 	'Aircraft telemetry antenna, diameter 3 in, 6 CSK holes',
 	'Angled three-finger gripper end-effector, 120 mm tall',
 	'EV battery cooling plate, 400x200x10 mm, corner mounts',
-	'Design a propellant line assembly with four mounting holes and one hole in the center of the bracket for a p-clamp. The p-clamp diameter should be 1.5 inches.
-'
+	'Design a propellant line assembly with four mounting holes and one hole in the center of the bracket for a p-clamp. The p-clamp diameter should be 1.5 inches.'
 ] as const
 
 export const EXAMPLES_TO_SHOW = 4
