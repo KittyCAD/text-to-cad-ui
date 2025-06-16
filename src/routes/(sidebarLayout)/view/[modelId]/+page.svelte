@@ -79,6 +79,27 @@
 							enableAutoRotate={$userSettings.autoRotateModels}
 						/>
 					</Canvas>
+					{#if data.code}
+						<div
+							class="absolute bottom-4 right-4 bg-chalkboard-10 dark:bg-chalkboard-110 border border-chalkboard-30 dark:border-chalkboard-90 rounded-lg p-4 shadow-lg max-w-xs"
+						>
+							<p class="text-sm font-medium mb-3 text-chalkboard-100 dark:text-chalkboard-10">
+								Keep editing this model?
+							</p>
+							<div class="flex flex-col gap-2">
+								<button
+									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors"
+								>
+									Open in Zoo Design Studio
+								</button>
+								<button
+									class="px-3 py-2 text-xs font-medium bg-chalkboard-20 dark:bg-chalkboard-100 hover:bg-chalkboard-30 dark:hover:bg-chalkboard-90 border border-chalkboard-30 dark:border-chalkboard-80 rounded text-chalkboard-100 dark:text-chalkboard-10 transition-colors"
+								>
+									Download KCL
+								</button>
+							</div>
+						</div>
+					{/if}
 				</div>
 			{:else}
 				<div class="grid flex-grow place-content-center p-4">
