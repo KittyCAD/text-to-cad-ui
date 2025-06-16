@@ -28,6 +28,12 @@
 	}
 
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
+
+	$: zooDesignStudioUrl = data.code
+		? `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${encodeURIComponent(
+				btoa(data.code)
+		  )}`
+		: ''
 </script>
 
 <section class="min-h-screen flex flex-col" style="min-height: 100dvh">
@@ -49,7 +55,12 @@
 			</h1>
 			{#if data.outputs}
 				<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
-					<DownloadButton className="w-full rounded" outputs={data.outputs} prompt={data.prompt} />
+					<DownloadButton
+						className="w-full rounded"
+						outputs={data.outputs}
+						prompt={data.prompt}
+						code={data.code ?? ''}
+					/>
 					<ModelFeedback modelId={data.id} feedback={data.feedback} />
 				</div>
 			{:else if data.status === 'failed'}
@@ -79,6 +90,25 @@
 							enableAutoRotate={$userSettings.autoRotateModels}
 						/>
 					</Canvas>
+					{#if data.code}
+						<div
+							class="absolute bottom-4 right-4 bg-chalkboard-10 dark:bg-chalkboard-110 border border-chalkboard-30 dark:border-chalkboard-90 rounded-lg p-4 shadow-lg max-w-xs"
+						>
+							<p class="text-sm font-medium mb-3 text-chalkboard-100 dark:text-chalkboard-10">
+								Keep editing this model?
+							</p>
+							<div class="flex flex-col gap-2">
+								<a
+									href={zooDesignStudioUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors block text-center"
+								>
+									Open in Zoo Design Studio
+								</a>
+							</div>
+						</div>
+					{/if}
 				</div>
 			{:else}
 				<div class="grid flex-grow place-content-center p-4">
