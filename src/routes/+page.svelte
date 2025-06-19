@@ -17,7 +17,7 @@
 	<section class="mx-auto max-w-5xl flex-1">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
 			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
-				Text-to-CAD <span class="text-green">UI</span>
+				Text-to-CAD <span class="text-green">Generator</span>
 			</h1>
 			<div class="z-10 relative border md:border-b-0 md:col-span-1 min-h-[25vh]">
 				<div
