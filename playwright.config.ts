@@ -38,7 +38,8 @@ const config: PlaywrightTestConfig = {
 		port: 3000
 	},
 	testDir: 'tests',
-	testMatch: /(.+\.)?(playwright)\.[jt]s/
+	testMatch: /(.+\.)?(playwright)\.[jt]s/,
+	reporter: [[process.env.CI ? 'dot' : 'list'], ['./.github/workflows/lib/api-reporter.ts']]
 }
 
 export default config
