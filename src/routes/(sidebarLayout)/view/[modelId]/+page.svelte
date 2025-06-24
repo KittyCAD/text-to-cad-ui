@@ -30,7 +30,7 @@
 	$: gltfUrl = `data:model/gltf+json;base64,${data.outputs ? data.outputs['source.gltf'] : ''}`
 
 	$: zooDesignStudioUrl = data.code
-		? `https://app.zoo.dev?create-file=true&name=deeplinkscopy&code=${encodeURIComponent(
+		? `https://app.zoo.dev?ask-open-desktop=true&create-file=true&name=deeplinkscopy&code=${encodeURIComponent(
 				btoa(data.code)
 		  )}`
 		: ''
