@@ -34,7 +34,7 @@
 			{/if}
 			<span class="sr-only">Open menu</span>
 		</button>
-		<a href={paths.ZOO_SITE} rel="noopener noreferrer" target="_blank">
+		<a href={paths.DASHBOARD}>
 			<Logo className="h-6 hover:text-green" />
 		</a>
 		<a
