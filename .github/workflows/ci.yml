@@ -6,16 +6,20 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  types-lint-build:
+  static-analysis:
+    name: Static Analysis
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4.0.1
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'yarn'
 
       - run: yarn install
@@ -25,3 +29,22 @@ jobs:
       - run: yarn lint
 
       - run: yarn build
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - run: yarn install
+
+      - run: yarn test:unit run
+        env:
+          CI: true
