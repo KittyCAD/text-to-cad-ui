@@ -6,58 +6,58 @@ import { redirect } from '@sveltejs/kit'
 import { env } from '$lib/env'
 
 export const load = async ({ cookies, request, url, fetch }) => {
-  if (url.searchParams.get(SIGN_OUT_PARAM)) {
-    signOut()
-  }
+	if (url.searchParams.get(SIGN_OUT_PARAM)) {
+		signOut()
+	}
 
-  const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-  const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_TOKEN
+	const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
+	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_TOKEN
 
-  if (!token) {
-    signOut()
-  }
+	if (!token) {
+		signOut()
+	}
 
-  const currentUser = await fetch(env.VITE_API_BASE_URL + '/user', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then((res) => res.json())
-    .catch((e) => {
-      // If the user had a token but there was an error fetching the user,
-      //delete the token, because it was likely revoked or expired
-      console.error('Error fetching user:', e)
-      signOut()
-    })
+	const currentUser = await fetch(env.VITE_API_BASE_URL + '/user', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		}
+	})
+		.then((res) => res.json())
+		.catch((e) => {
+			// If the user had a token but there was an error fetching the user,
+			//delete the token, because it was likely revoked or expired
+			console.error('Error fetching user:', e)
+			signOut()
+		})
 
-  if (!currentUser) {
-    signOut()
-  } else {
-    if ('error_code' in currentUser) {
-      console.error('Error fetching user:', currentUser.error_code)
-      signOut()
-    } else if (mockRequestHeader !== null) {
-      const userMock = isUserMock(mockRequestHeader)
-      return {
-        user: userMock ? hooksUserMocks[userMock](currentUser) : currentUser,
-        token
-      }
-    }
+	if (!currentUser) {
+		signOut()
+	} else {
+		if ('error_code' in currentUser) {
+			console.error('Error fetching user:', currentUser.error_code)
+			signOut()
+		} else if (mockRequestHeader !== null) {
+			const userMock = isUserMock(mockRequestHeader)
+			return {
+				user: userMock ? hooksUserMocks[userMock](currentUser) : currentUser,
+				token
+			}
+		}
 
-    // Return the user and token
-    return {
-      user: currentUser,
-      token: token
-    }
-  }
+		// Return the user and token
+		return {
+			user: currentUser,
+			token: token
+		}
+	}
 
-  /**
-   * Shared sign out function
-   */
-  function signOut() {
-    cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
-    throw redirect(303, '/')
-  }
+	/**
+	 * Shared sign out function
+	 */
+	function signOut() {
+		cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
+		throw redirect(303, '/')
+	}
 }
