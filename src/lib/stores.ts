@@ -46,8 +46,50 @@ export const combinedGenerations = derived(
 )
 
 combinedGenerations.subscribe((value) => {
+	const setItemDeletingOldIfNeeded = (value: GenerationWithSource[], attempts = 0) => {
+		// Safeguard: Prevent infinite recursion
+		if (attempts > 1000) {
+			console.error('Too many attempts to store generations, giving up')
+			localStorage.removeItem(PERSIST_KEY_GENERATIONS)
+			return
+		}
+
+		// Safeguard: If we have no generations left, just clear the storage
+		if (value.length === 0) {
+			console.warn('No generations left to store, clearing localStorage')
+			localStorage.removeItem(PERSIST_KEY_GENERATIONS)
+			return
+		}
+
+		try {
+			localStorage.setItem(PERSIST_KEY_GENERATIONS, JSON.stringify(value))
+
+			// Log successful storage if we had to reduce items
+			if (attempts > 0) {
+				console.log(
+					`Successfully stored ${value.length} generations after ${attempts + 1} attempts`
+				)
+			}
+		} catch (e) {
+			if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+				// Log the reduction attempt
+				if (attempts === 0) {
+					console.warn(`localStorage quota exceeded with ${value.length} generations, reducing...`)
+				}
+
+				// If we hit the quota, delete the oldest generation and try again
+				const smallerGenerations = value.slice(0, -1)
+				setItemDeletingOldIfNeeded(smallerGenerations, attempts + 1)
+			} else {
+				// Handle other storage errors
+				console.error('Non-quota localStorage error:', e)
+				localStorage.removeItem(PERSIST_KEY_GENERATIONS)
+			}
+		}
+	}
+
 	if (browser) {
-		localStorage.setItem(PERSIST_KEY_GENERATIONS, JSON.stringify(value))
+		setItemDeletingOldIfNeeded(value)
 	}
 })
 
