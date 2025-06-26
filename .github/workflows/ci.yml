@@ -53,6 +53,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    environment: CI
 
     steps:
       - uses: actions/checkout@v4
@@ -68,12 +69,17 @@ jobs:
 
       - run: yarn test:e2e
         env:
-          # TODO: Load these base URLs from a committed `.env.development` file
-          VITE_API_BASE_URL: https://api.dev.zoo.dev
-          VITE_SITE_BASE_URL: https://dev.zoo.dev
           PLAYWRIGHT_SESSION_COOKIE: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           VITE_TOKEN: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           TAB_API_URL: ${{ secrets.TAB_API_URL }}
           TAB_API_KEY: ${{ secrets.TAB_API_KEY }}
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           CI_PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 30

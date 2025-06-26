@@ -6,7 +6,7 @@ test('Shows banner if user is blocked for missing payment', async ({ context }) 
 
 	const page = await context.newPage()
 
-	await page.goto('https://localhost:3000/dashboard')
+	await page.goto('http://localhost:3000/dashboard')
 	await page.waitForLoadState('domcontentloaded')
 
 	const banner = page.getByText('payment method', { exact: false })
@@ -21,7 +21,7 @@ test('Shows banner if user is blocked for failed payment', async ({ context }) =
 
 	const page = await context.newPage()
 
-	await page.goto('https://localhost:3000/dashboard')
+	await page.goto('http://localhost:3000/dashboard')
 	await page.waitForLoadState('domcontentloaded')
 
 	const banner = page.getByText('payment method failed', { exact: false })
