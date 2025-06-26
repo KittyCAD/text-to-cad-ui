@@ -69,9 +69,6 @@ jobs:
 
       - run: yarn test:e2e
         env:
-          # TODO: Load these base URLs from a committed `.env.development` file
-          VITE_API_BASE_URL: https://api.dev.zoo.dev
-          VITE_SITE_BASE_URL: https://dev.zoo.dev
           PLAYWRIGHT_SESSION_COOKIE: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           VITE_TOKEN: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           TAB_API_URL: ${{ secrets.TAB_API_URL }}
