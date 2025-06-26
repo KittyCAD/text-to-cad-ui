@@ -11,7 +11,7 @@ expiration.setFullYear(expiration.getFullYear() + 1)
 
 const config: PlaywrightTestConfig = {
 	use: {
-		baseURL: 'https://localhost:3000',
+		baseURL: 'http://localhost:3000',
 		storageState: {
 			cookies: [
 				{
@@ -27,7 +27,7 @@ const config: PlaywrightTestConfig = {
 			],
 			origins: [
 				{
-					origin: 'https://localhost:3000',
+					origin: 'http://localhost:3000',
 					localStorage: []
 				}
 			]
