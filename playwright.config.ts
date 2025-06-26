@@ -10,6 +10,7 @@ const expiration = new Date()
 expiration.setFullYear(expiration.getFullYear() + 1)
 
 const config: PlaywrightTestConfig = {
+	retries: 1,
 	use: {
 		baseURL: 'http://localhost:3000',
 		storageState: {
@@ -31,7 +32,8 @@ const config: PlaywrightTestConfig = {
 					localStorage: []
 				}
 			]
-		}
+		},
+		trace: 'on-first-retry'
 	},
 	webServer: {
 		command: 'yarn dev',
