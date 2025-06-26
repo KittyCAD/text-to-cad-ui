@@ -3,7 +3,9 @@ import { AUTH_COOKIE_NAME } from './src/lib/cookies'
 import dotenv from 'dotenv'
 import path from 'path'
 
-dotenv.config({ path: path.resolve(path.dirname('.'), '.env.development') })
+dotenv.config({
+	path: path.resolve(path.dirname('.'), `.env.development${process.env.CI ? '' : '.local'}`)
+})
 const expiration = new Date()
 expiration.setFullYear(expiration.getFullYear() + 1)
 

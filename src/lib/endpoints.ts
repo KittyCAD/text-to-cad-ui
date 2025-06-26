@@ -1,5 +1,6 @@
 import type { Models } from '@kittycad/lib/types'
 import { ITEMS_PER_PAGE } from './consts'
+import { env } from '$lib/env'
 
 export type CADFormat = Models['FileExportFormat_type']
 
@@ -21,18 +22,17 @@ interface ListParams {
 
 export const endpoints = {
 	convert: (output_format: CADFormat = 'obj') =>
-		`${import.meta.env.VITE_API_BASE_URL}/file/conversion/gltf/${output_format}`,
+		`${env.VITE_API_BASE_URL}/file/conversion/gltf/${output_format}`,
 	feedback: (id: string, feedback: Models['TextToCad_type']['feedback']) =>
-		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
+		`${env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
 	list: ({ limit = ITEMS_PER_PAGE, page_token }: ListParams) =>
-		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
+		`${env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
 			page_token ? `&page_token=${page_token}` : ''
 		}`,
 	prompt: (output_format: CADFormat = 'gltf') =>
-		`${import.meta.env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
-	view: (id: string) => `${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}`,
-	viewNoModels: (id: string) =>
-		`${import.meta.env.VITE_API_BASE_URL}/user/text-to-cad/${id}?no_models=true`,
+		`${env.VITE_API_BASE_URL}/ai/text-to-cad/${output_format}`,
+	view: (id: string) => `${env.VITE_API_BASE_URL}/user/text-to-cad/${id}`,
+	viewNoModels: (id: string) => `${env.VITE_API_BASE_URL}/user/text-to-cad/${id}?no_models=true`,
 	localConvert: (output_format: CADFormat) => `/api/convert/${output_format}`,
 	localFeedback: `/api/submit-feedback`
 }

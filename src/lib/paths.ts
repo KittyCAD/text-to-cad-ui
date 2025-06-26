@@ -1,6 +1,7 @@
 export const SIGN_OUT_PARAM = 'signout'
+import { env } from '$lib/env'
 
-const SITE = import.meta.env.VITE_SITE_BASE_URL
+const SITE = env.VITE_SITE_BASE_URL
 const GITHUB_REPO = `https://github.com/KittyCAD/text-to-cad-ui`
 
 export const paths = {

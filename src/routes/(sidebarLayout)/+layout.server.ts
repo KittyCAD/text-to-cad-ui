@@ -3,6 +3,7 @@ import { AUTH_COOKIE_NAME } from '$lib/cookies.js'
 import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect } from '@sveltejs/kit'
+import { env } from '$lib/env'
 
 export const load = async ({ cookies, request, url, fetch }) => {
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
@@ -10,13 +11,13 @@ export const load = async ({ cookies, request, url, fetch }) => {
 	}
 
 	const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token = import.meta.env.PROD ? cookies.get(AUTH_COOKIE_NAME) : import.meta.env.VITE_TOKEN
+	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_TOKEN
 
 	if (!token) {
 		signOut()
 	}
 
-	const currentUser = await fetch(import.meta.env.VITE_API_BASE_URL + '/user', {
+	const currentUser = await fetch(env.VITE_API_BASE_URL + '/user', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',

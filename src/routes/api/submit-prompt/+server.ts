@@ -2,6 +2,7 @@ import { endpoints, type PromptResponse } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
+import { env } from '$lib/env'
 
 export type PromptLoadResponse = {
 	status: number
@@ -9,7 +10,7 @@ export type PromptLoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token = import.meta.env.PROD ? cookies.get(AUTH_COOKIE_NAME) : import.meta.env.VITE_TOKEN
+	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_TOKEN
 	if (!token) throw error(401, 'You must be logged in to use this API.')
 
 	const body = await request.json()
