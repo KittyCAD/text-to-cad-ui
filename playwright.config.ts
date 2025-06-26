@@ -10,8 +10,9 @@ const expiration = new Date()
 expiration.setFullYear(expiration.getFullYear() + 1)
 
 const config: PlaywrightTestConfig = {
+	retries: 1,
 	use: {
-		baseURL: 'https://localhost:3000',
+		baseURL: 'http://localhost:3000',
 		storageState: {
 			cookies: [
 				{
@@ -27,18 +28,20 @@ const config: PlaywrightTestConfig = {
 			],
 			origins: [
 				{
-					origin: 'https://localhost:3000',
+					origin: 'http://localhost:3000',
 					localStorage: []
 				}
 			]
-		}
+		},
+		trace: 'on-first-retry'
 	},
 	webServer: {
 		command: 'yarn dev',
 		port: 3000
 	},
 	testDir: 'tests',
-	testMatch: /(.+\.)?(playwright)\.[jt]s/
+	testMatch: /(.+\.)?(playwright)\.[jt]s/,
+	reporter: [[process.env.CI ? 'dot' : 'list'], ['./.github/workflows/lib/api-reporter.ts']]
 }
 
 export default config

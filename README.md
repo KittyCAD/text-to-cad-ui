@@ -4,7 +4,7 @@ This repository is an open-source example of how to quickly get up and running w
 
 To get started
 
-create a `.env.development.local` following `.env.example`
+create a `.env.development.local` following `.env.development`
 
 then
 

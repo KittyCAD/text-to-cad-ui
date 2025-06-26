@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 test('Redirects to the dashboard from home when logged-in', async ({ page }) => {
 	// Go to the home page
-	await page.goto('https://localhost:3000')
+	await page.goto('http://localhost:3000')
 
 	// Assert that we are now on the dashboard
 	await page.waitForURL('**/dashboard', { waitUntil: 'domcontentloaded' })
@@ -16,7 +16,7 @@ test('Prompt input is visible and usable on mobile', async ({ page }) => {
 	await page.setViewportSize({ width: 375, height: 667 })
 
 	// Go to the home page
-	await page.goto('https://localhost:3000')
+	await page.goto('http://localhost:3000')
 
 	// Assert that we are now on the dashboard
 	await page.waitForURL('**/dashboard', { waitUntil: 'domcontentloaded' })
@@ -28,7 +28,7 @@ test('Prompt input is visible and usable on mobile', async ({ page }) => {
 
 test('Sidebar only loads set number of pages of results initially', async ({ page }) => {
 	// Go to the home page
-	await page.goto('https://localhost:3000')
+	await page.goto('http://localhost:3000')
 
 	// Assert that we are now on the dashboard
 	await page.waitForURL('**/dashboard', { waitUntil: 'networkidle' })
