@@ -9,7 +9,7 @@ export type LoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token = env.MODE === 'production' ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_TOKEN
+	const token = env.MODE === 'production' ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_API_TOKEN
 
 	const body = await request.json()
 

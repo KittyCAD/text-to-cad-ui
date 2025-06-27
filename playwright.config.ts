@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
 			cookies: [
 				{
 					name: AUTH_COOKIE_NAME,
-					value: process.env.PLAYWRIGHT_SESSION_COOKIE ?? '',
+					value: process.env.VITE_API_TOKEN ?? '',
 					domain: 'localhost',
 					path: '/',
 					expires: expiration.getTime() / 1000,
