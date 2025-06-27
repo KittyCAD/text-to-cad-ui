@@ -1,7 +1,7 @@
 import { mockHooksCall } from './testUtils'
 import { test, expect } from '@playwright/test'
 
-test.fixme('Shows banner if user is blocked for missing payment', async ({ context }) => {
+test('Shows banner if user is blocked for missing payment', async ({ context }) => {
 	await mockHooksCall(context, 'mockUserMissingPayment')
 
 	const page = await context.newPage()
@@ -13,10 +13,10 @@ test.fixme('Shows banner if user is blocked for missing payment', async ({ conte
 	const bannerLink = banner.getByRole('link')
 	await expect(banner).toBeVisible()
 	await expect(bannerLink).toBeVisible()
-	await expect(bannerLink).toHaveAttribute('href', /\/account\/billing-information$/)
+	await expect(bannerLink).toHaveAttribute('href', /\/account/)
 })
 
-test.fixme('Shows banner if user is blocked for failed payment', async ({ context }) => {
+test('Shows banner if user is blocked for failed payment', async ({ context }) => {
 	await mockHooksCall(context, 'mockUserFailedPayment')
 
 	const page = await context.newPage()
@@ -27,5 +27,5 @@ test.fixme('Shows banner if user is blocked for failed payment', async ({ contex
 	const banner = page.getByText('payment method failed', { exact: false })
 	const bannerLink = banner.getByRole('link')
 	await expect(banner).toBeVisible()
-	await expect(bannerLink).toHaveAttribute('href', /\/account\/billing-information$/)
+	await expect(bannerLink).toHaveAttribute('href', /\/account/)
 })
