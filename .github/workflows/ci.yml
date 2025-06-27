@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+    - cron: 0 * * * *
 
 permissions:
   contents: read
@@ -19,8 +21,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: yarn
 
       - run: yarn install
 
@@ -40,8 +42,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: yarn
 
       - run: yarn install
 
@@ -60,8 +62,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: yarn
 
       - run: yarn install
 
