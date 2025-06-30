@@ -19,13 +19,15 @@
 			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
 				Text-to-CAD <span class="text-green">Generator</span>
 			</h1>
-			<div class="z-10 relative border md:border-b-0 md:col-span-1 min-h-[25vh]">
+			<div
+				class="z-10 relative border md:border-b-0 md:col-span-1 min-h-[25vh] flex items-center justify-center"
+			>
 				<div
-					class="animate-reveal absolute inset-0 -top-1/4 opacity-80 md:opacity-100 md:-top-full"
+					class="animate-reveal opacity-80 md:opacity-100 w-full h-full flex items-center justify-center"
 					style={`--delay-steps: ${examples[0].prompt.length}`}
 				>
-					<Canvas>
-						<ModelViewer dataUrl={examples[0].model} pausable={false} />
+					<Canvas class="w-full h-full">
+						<ModelViewer dataUrl={examples[0].model} pausable={false} class="w-full h-full" />
 					</Canvas>
 				</div>
 			</div>
@@ -36,7 +38,7 @@
 					class="typing-animation block text-chalkboard-70 dark:text-chalkboard-50"
 					style={`--steps: ${examples[0].prompt.length}`}
 				>
-					<div class="block w-fit">{examples[0].prompt}</div>
+					<div class="block w-fit">{examples[0].prompt}&nbsp;</div>
 				</div>
 			</div>
 			<div class="md:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
