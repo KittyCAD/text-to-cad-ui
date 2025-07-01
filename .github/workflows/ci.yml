@@ -69,7 +69,9 @@ jobs:
 
       - run: npx playwright install
 
-      - run: npm run test:e2e
+      - run: |
+          npm run build
+          npm run test:e2e
         env:
           VITE_API_TOKEN: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           TAB_API_URL: ${{ secrets.TAB_API_URL }}
