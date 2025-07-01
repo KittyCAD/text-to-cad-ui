@@ -67,7 +67,7 @@ jobs:
 
       - run: npm install
 
-      - run: npm run playwright install
+      - run: npx playwright install
 
       - run: npm run test:e2e
         env:
