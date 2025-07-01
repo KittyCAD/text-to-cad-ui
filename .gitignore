@@ -12,3 +12,7 @@ vite.config.ts.timestamp-*
 
 # playwright artifacts
 test-results
+
+.idea
+
+.vercel

@@ -36,7 +36,7 @@ const config: PlaywrightTestConfig = {
 		trace: 'on-first-retry'
 	},
 	webServer: {
-		command: 'yarn dev',
+		command: 'npm run dev',
 		port: 3000
 	},
 	testDir: 'tests',

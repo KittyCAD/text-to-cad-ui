@@ -26,8 +26,8 @@
 					class="animate-reveal opacity-80 md:opacity-100 w-full h-full flex items-center justify-center"
 					style={`--delay-steps: ${examples[0].prompt.length}`}
 				>
-					<Canvas class="w-full h-full">
-						<ModelViewer dataUrl={examples[0].model} pausable={false} class="w-full h-full" />
+					<Canvas>
+						<ModelViewer dataUrl={examples[0].model} pausable={false} />
 					</Canvas>
 				</div>
 			</div>
