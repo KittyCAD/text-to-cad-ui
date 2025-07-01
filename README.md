@@ -9,8 +9,8 @@ Create `.env.development.local` copying `.env.development` as an example.
 Run the local development server:
 
 ```bash
-yarn
-yarn dev
+npm install
+npm run dev
 ```
 
 ## Validating Changes
@@ -18,20 +18,20 @@ yarn dev
 Run static analysis:
 
 ```bash
-yarn fmt
-yarn check
-yarn lint
+npm run fmt
+npm run check
+npm run lint
 ```
 
 Run unit tests:
 
 ```bash
-yarn test:unit
+npm run test:unit
 ```
 
 Run end-to-end tests:
 
 ```bash
-yarn playwright install
-yarn test:e2e
+npm run playwright install
+npm run test:e2e
 ```
