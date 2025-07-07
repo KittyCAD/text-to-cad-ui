@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+    - cron: 0 * * * *
 
 permissions:
   contents: read
@@ -19,16 +21,16 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - run: yarn install
+      - run: npm install
 
-      - run: yarn check
+      - run: npm run check
 
-      - run: yarn lint
+      - run: npm run lint
 
-      - run: yarn build
+      - run: npm run build
 
   unit-tests:
     name: Unit Tests
@@ -40,12 +42,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - run: yarn install
+      - run: npm install
 
-      - run: yarn test:unit run
+      - run: npm run test:unit run
         env:
           CI: true
 
@@ -60,17 +62,18 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - run: yarn install
+      - run: npm install
 
-      - run: yarn playwright install
+      - run: npx playwright install
 
-      - run: yarn test:e2e
+      - run: |
+          npm run build
+          npm run test:e2e
         env:
-          PLAYWRIGHT_SESSION_COOKIE: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
-          VITE_TOKEN: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
+          VITE_API_TOKEN: ${{ secrets.KITTYCAD_API_TOKEN_DEV }}
           TAB_API_URL: ${{ secrets.TAB_API_URL }}
           TAB_API_KEY: ${{ secrets.TAB_API_KEY }}
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}

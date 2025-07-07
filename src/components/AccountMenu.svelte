@@ -77,7 +77,7 @@
 				</p>
 			</div>
 			<a
-				href={paths.ZOO_BILLING}
+				href={paths.ZOO_ACCOUNT}
 				class="menu-button"
 				on:keydown={dismiss}
 				target="_blank"
