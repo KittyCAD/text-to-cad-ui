@@ -83,7 +83,7 @@
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<span class="flex-1 text-left">Billing Info</span>
+				<span class="flex-1 text-left">Manage Zoo account</span>
 				<ArrowRight class="w-5 h-5 inline-block origin-center -rotate-45 ml-1" />
 			</a>
 			<a
