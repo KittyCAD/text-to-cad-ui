@@ -107,7 +107,7 @@
 <style lang="postcss">
 	.split-button {
 		@apply inline-flex md:flex-col lg:flex-row justify-center items-center px-2 py-4 md:py-1 gap-4 relative;
-		@apply font-mono uppercase md:text-sm tracking-[1px] text-chalkboard-120 bg-green hover:hue-rotate-15;
+		@apply font-mono uppercase md:text-sm text-chalkboard-110 bg-green hover:hue-rotate-15;
 	}
 
 	.split-button:global(.loading),
@@ -120,11 +120,11 @@
 	}
 
 	select {
-		@apply bg-green text-chalkboard-120;
+		@apply bg-green text-chalkboard-110;
 		@apply uppercase text-sm font-mono;
 		@apply shadow-inner;
 		@apply pl-2 pr-3 py-1 rounded-sm;
-		@apply brightness-95 border border-transparent hover:border-chalkboard-120 hover:brightness-100;
+		@apply brightness-95 border border-transparent hover:border-chalkboard-110 hover:brightness-100;
 	}
 
 	.shimmer {
