@@ -1,8 +1,4 @@
-<script lang="ts">
-	export let className = ''
-</script>
-
-<svg class={className} viewBox="0 0 438 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg {...$$restProps} viewBox="0 0 438 145" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M88.2136 25.3021V3.12744H0.595269V34.3994H79.827L0.609484 120.312H0.595269V120.326L0.581055 120.34L0.595269 120.355V141.364H20.8936L41.3341 119.189V141.364H128.952V110.092H49.7349L128.952 24.1649V3.12744L108.64 3.15587L88.2136 25.3021Z"
 		fill="currentColor"

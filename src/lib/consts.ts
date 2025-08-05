@@ -56,3 +56,9 @@ export const PAGES_AHEAD_TO_FETCH = 5
  * The number of items to fetch per request
  */
 export const ITEMS_PER_PAGE = 5
+
+/**
+ * The App's name
+ */
+export const APP_NAME = 'Text-to-CAD Generator'
+export const CORP_NAME = 'Zoo'

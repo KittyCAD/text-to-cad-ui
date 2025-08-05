@@ -94,7 +94,7 @@
 
 <section
 	on:scroll={handleScroll}
-	class="overflow-y-auto max-h-full px-2 lg:pr-4 pt-6"
+	class="overflow-y-auto max-h-full px-2 pt-6"
 	data-testid="generation-list"
 >
 	{#if error}
@@ -102,7 +102,7 @@
 	{:else if Object.keys($generations).length > 0}
 		{#each Object.entries($generations).toSorted(sortTimeBuckets) as [category, items]}
 			<div class="first-of-type:mt-0 mt-12">
-				<h2 class="pl-2 lg:pl-4 text-xl">{category}</h2>
+				<h2 class="pl-2">Prompts {category}</h2>
 				<ul class="m-0 p-0">
 					{#each items as item}
 						<li id={item.id} class="first-of-type:mt-2 my-4">
@@ -114,7 +114,7 @@
 		{/each}
 		{#await fetchPromise}
 			<p
-				class={'flex gap-4 m-2 text-sm tracking-wide text-chalkboard-100 dark:text-chalkboard-30' +
+				class={'flex gap-4 m-2 text-sm text-chalkboard-100 dark:text-chalkboard-30' +
 					(Object.keys($generations).length > 0 ? ' pt-8 border-t' : '')}
 			>
 				<span class="flex-grow">Fetching your creations</span>
@@ -122,9 +122,7 @@
 			</p>
 		{:then}
 			{#if $nextPageTokens[$nextPageTokens.length - 1] === null}
-				<p
-					class="text-chalkboard-100 dark:text-chalkboard-30 text-sm tracking-wide m-2 py-6 border-t"
-				>
+				<p class="text-chalkboard-100 dark:text-chalkboard-30 text-sm m-2 py-6 border-t">
 					You've reached the end of your creations 🎉
 				</p>
 			{/if}

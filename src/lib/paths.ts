@@ -16,6 +16,7 @@ export const paths = {
 	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`,
 	ZOO_SITE: SITE,
 	ZOO_ACCOUNT: SITE + '/account',
+	ZOO_DESIGN_STUDIO_PAGE: SITE + '/design-studio',
 	ZOO_UPGRADE: SITE + '/design-studio-pricing',
 	ZOO_ML: SITE + '/machine-learning-api'
 } as const
