@@ -32,8 +32,8 @@
 	@apply bg-chalkboard-10 text-chalkboard-110;
 	@apply dark:bg-chalkboard-100 dark:text-chalkboard-10;
 	@apply font-sans;
-  --green: #29FFA4;
-  --chalkboard-10: 99.11%  0 0deg;
+	--green: #29ffa4;
+	--chalkboard-10: 99.11% 0 0deg;
 }
 
 .reverse {
@@ -42,14 +42,14 @@
 }
 
 body {
-  scrollbar-width: thin;
-  scrollbar-color: theme('colors.chalkboard.30') theme('colors.chalkboard.10');
+	scrollbar-width: thin;
+	scrollbar-color: theme('colors.chalkboard.30') theme('colors.chalkboard.10');
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  body {
-  scrollbar-color: theme('colors.chalkboard.70') theme('colors.chalkboard.90');
-}
+	body {
+		scrollbar-color: theme('colors.chalkboard.70') theme('colors.chalkboard.90');
+	}
 }
 
 h1,
@@ -66,10 +66,10 @@ input {
 }
 
 @layer utilities {
-  .text-3 {
-    @apply text-chalkboard-50 dark:text-chalkboard-70;
-  }
-  .divider {
-    @apply border-chalkboard-30 dark:border-chalkboard-80;
-  }
+	.text-3 {
+		@apply text-chalkboard-50 dark:text-chalkboard-70;
+	}
+	.divider {
+		@apply border-chalkboard-30 dark:border-chalkboard-80;
+	}
 }
