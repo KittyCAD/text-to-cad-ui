@@ -39,7 +39,7 @@
 
 <style lang="postcss">
 	.sidebar {
-		@apply bg-white dark:bg-chalkboard-110;
+		@apply bg-white dark:bg-chalkboard-100;
 		@apply flex flex-col md:max-h-full overflow-hidden;
 		@apply flex-none;
 		@apply justify-between md:justify-start;

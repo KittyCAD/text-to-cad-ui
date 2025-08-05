@@ -5,7 +5,7 @@
 	export let blockedReason: Models['User_type']['block']
 </script>
 
-<div class="p-4 tracking-wide text-xl text-blue border border-blue bg-blue/10 rounded">
+<div class="p-4 text-xl text-blue border border-blue bg-blue/10 rounded">
 	{#if blockedReason === 'missing_payment_method'}
 		<p>
 			You've used up all your free credits for this month. To continue using Text-to-CAD, please

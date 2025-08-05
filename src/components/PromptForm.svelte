@@ -83,10 +83,10 @@
 			autocapitalize="false"
 			name="prompt"
 			autofocus
-			placeholder="e.g. Create a plate with 4 holes and rounded corners"
+			placeholder={`Write a prompt, e.g. "Create a plate with 4 holes and rounded corners"`}
 			required
 			disabled={isSubmitting}
-			class="w-full tracking-wide px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10 max-h-64"
+			class="w-full px-4 py-1 focus:outline-none focus:bg-green/20 focus:placeholder-shown:bg-green/10 max-h-64"
 			bind:this={input}
 			bind:value={inputValue}
 			on:keydown={handleKeydown}
@@ -125,9 +125,9 @@
 	.submit {
 		@apply m-1 md:px-4 lg:px-6 md:pt-1 border;
 		@apply self-end flex items-center justify-center gap-2;
-		@apply font-mono uppercase tracking-[1px] text-sm;
+		@apply font-mono uppercase text-sm;
 		@apply border-chalkboard-100 dark:border-chalkboard-20;
-		@apply text-chalkboard-120 bg-green hover:hue-rotate-15;
+		@apply text-chalkboard-110 bg-green hover:hue-rotate-15;
 		@apply disabled:bg-chalkboard-40 dark:disabled:bg-chalkboard-70;
 	}
 

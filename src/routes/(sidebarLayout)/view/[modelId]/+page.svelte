@@ -36,10 +36,10 @@
 		: ''
 </script>
 
-<section class="min-h-screen flex flex-col" style="min-height: 100dvh">
+<section class="flex flex-col" style="min-height: 100dvh">
 	{#if $navigating}
 		<div class="flex-1 flex flex-col justify-center items-center">
-			<p class="link-text mb-4">Loading your model</p>
+			<p class="mb-4">Loading your model</p>
 			<Spinner class="block w-10 h-10 animate-spin" />
 		</div>
 	{:else}
@@ -67,14 +67,14 @@
 				<div class="flex justify-stretch">
 					<a
 						href={`/dashboard?prompt=${data.prompt}`}
-						class="link-text fallback-button border rounded border-green text-green hover:bg-green hover:text-chalkboard-120"
+						class="fallback-button border rounded border-green text-green hover:bg-green hover:text-chalkboard-110"
 					>
 						Retry prompt</a
 					>
 				</div>
 			{:else}
 				<div class="flex justify-stretch self-stretch items-stretch">
-					<p class="link-text w-full flex items-center justify-center row-span-2">Generating...</p>
+					<p class="w-full flex items-center justify-center row-span-2">Generating...</p>
 				</div>
 			{/if}
 		</div>
@@ -102,7 +102,7 @@
 									href={zooDesignStudioUrl}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-120 rounded transition-colors block text-center"
+									class="px-3 py-2 text-xs font-medium bg-green hover:bg-green/90 text-chalkboard-110 rounded transition-colors block text-center"
 								>
 									Open in Zoo Design Studio
 								</a>
@@ -157,6 +157,6 @@
 	.footer-row {
 		@apply flex flex-col gap-4 md:flex-row md:items-center justify-between px-2 lg:px-4 py-1;
 		@apply border border-chalkboard-30 dark:border-chalkboard-90 border-b-0;
-		@apply text-xs font-mono text-chalkboard-70 dark:text-chalkboard-40;
+		@apply text-xs text-chalkboard-70 dark:text-chalkboard-40;
 	}
 </style>

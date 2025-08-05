@@ -16,7 +16,9 @@
 <main class="mx-2 md:mx-5 lg:mx-auto min-h-screen flex items-center" style="min-height: 100dvh">
 	<section class="mx-auto max-w-5xl flex-1">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch min-h-[33vh]">
-			<h1 class="md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4">
+			<h1
+				class="font-display md:col-span-2 text-5xl md:text-7xl py-6 md:py-12 self-center px-2 md:px-4"
+			>
 				Text-to-CAD <span class="text-green">Generator</span>
 			</h1>
 			<div
@@ -42,15 +44,13 @@
 				</div>
 			</div>
 			<div class="md:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
-				<p
-					class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30 tracking-wider"
-				>
+				<p class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30">
 					Create B-Rep CAD files and meshes from natural language prompts.{' '}<br />Powered by the
 					<a
 						href="https://zoo.dev/machine-learning-api"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="bg-chalkboard-120 rounded-sm dark:bg-transparent pt-0.5"
+						class="bg-chalkboard-110 rounded-sm dark:bg-transparent pt-0.5"
 						><LogoMLephant
 							className="h-[0.8em] text-green mx-[0.5ch] inline-block align-baseline"
 						/><span class="sr-only">ML-ephant</span></a
@@ -59,7 +59,7 @@
 				</p>
 				<a
 					href={paths.SIGN_IN($page.url.origin.concat(paths.SUCCESS))}
-					class="self-stretch uppercase tracking-[1px] flex items-center justify-center text-center bg-green px-2 md:px-4 py-2 dark:bg-green dark:text-chalkboard-120 border-0 border-t md:border-t-0 md:border-l font-mono hover:hue-rotate-15"
+					class="self-stretch uppercase flex items-center justify-center text-center bg-green px-2 md:px-4 py-2 dark:bg-green dark:text-chalkboard-110 border-0 border-t md:border-t-0 md:border-l font-mono hover:hue-rotate-15"
 					>Sign in to get started</a
 				>
 			</div>
@@ -82,7 +82,7 @@
 	.typing-animation::before {
 		content: '';
 		position: absolute;
-		@apply bg-white dark:bg-chalkboard-120;
+		@apply bg-white dark:bg-chalkboard-110;
 		@apply absolute inset-0;
 		--_final-width: 100%;
 		animation: typewriter calc(var(--step-timing) * calc(var(--steps, 20) - 1))

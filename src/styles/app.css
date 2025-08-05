@@ -1,3 +1,4 @@
+@import 'colors.css';
 @import 'fonts.css';
 
 @tailwind base;
@@ -27,21 +28,28 @@
 	}
 }
 
-@layer utilities {
-	.link-text {
-		@apply font-mono uppercase tracking-wide;
-	}
-}
-
 :root {
-	@apply bg-white text-chalkboard-120;
-	@apply dark:bg-chalkboard-120 dark:text-chalkboard-10;
+	@apply bg-chalkboard-10 text-chalkboard-110;
+	@apply dark:bg-chalkboard-100 dark:text-chalkboard-10;
 	@apply font-sans;
+  --green: #29FFA4;
+  --chalkboard-10: 99.11%  0 0deg;
 }
 
 .reverse {
-	@apply bg-chalkboard-120 text-chalkboard-10;
-	@apply dark:bg-white dark:text-chalkboard-120;
+	@apply bg-chalkboard-100 text-chalkboard-10;
+	@apply dark:bg-chalkboard-10 dark:text-chalkboard-110;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.chalkboard.30') theme('colors.chalkboard.10');
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  body {
+  scrollbar-color: theme('colors.chalkboard.70') theme('colors.chalkboard.90');
+}
 }
 
 h1,
@@ -50,9 +58,18 @@ h3,
 h4,
 h5,
 h6 {
-	@apply font-display font-bold;
+	@apply font-bold;
 }
 
 input {
 	@apply bg-transparent;
+}
+
+@layer utilities {
+  .text-3 {
+    @apply text-chalkboard-50 dark:text-chalkboard-70;
+  }
+  .divider {
+    @apply border-chalkboard-30 dark:border-chalkboard-80;
+  }
 }

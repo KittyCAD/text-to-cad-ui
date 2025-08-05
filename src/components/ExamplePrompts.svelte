@@ -34,11 +34,11 @@
 	}
 
 	.prompt-buttons button {
-		@apply text-sm text-left tracking-wider rounded border p-2;
+		@apply text-sm text-left rounded border p-2;
 		@apply bg-transparent hover:bg-green/50;
-		@apply text-chalkboard-70 dark:text-chalkboard-50 hover:text-chalkboard-120 dark:hover:text-chalkboard-10;
+		@apply text-chalkboard-70 dark:text-chalkboard-50 hover:text-chalkboard-110 dark:hover:text-chalkboard-10;
 		@apply border-chalkboard-30 dark:border-chalkboard-70;
-		@apply hover:border-chalkboard-120 dark:hover:border-chalkboard-10;
-		@apply hover:bg-green/20 text-chalkboard-120 dark:text-chalkboard-20 hover:hue-rotate-15;
+		@apply hover:border-chalkboard-110 dark:hover:border-chalkboard-10;
+		@apply hover:bg-green/20 text-chalkboard-110 dark:text-chalkboard-20 hover:hue-rotate-15;
 	}
 </style>

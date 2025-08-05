@@ -75,11 +75,11 @@
 	<div class="group-hover:hidden group-focus:hidden">
 		{#if data.status === 'completed'}
 			<Checkmark
-				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green text-chalkboard-120' : '')}
+				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-green text-chalkboard-110' : '')}
 			/>
 		{:else if data.status === 'failed' || error}
 			<Close
-				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-destroy-10 text-chalkboard-120' : '')}
+				class={'w-5 h-5 rounded-full' + (isUnread ? ' bg-destroy-10 text-chalkboard-110' : '')}
 			/>
 		{:else}
 			<Spinner class="w-5 h-5 animate-spin" />
@@ -90,9 +90,9 @@
 
 <style lang="postcss">
 	.generation-item {
-		@apply font-mono flex px-4 py-2 text-sm rounded border border-transparent gap-4;
+		@apply flex px-2 py-2 text-sm rounded border border-transparent gap-4;
 		@apply transition-colors duration-200 ease-in-out;
-		@apply hover:bg-green hover:text-chalkboard-120;
+		@apply hover:bg-green hover:text-chalkboard-110;
 	}
 
 	.generation-item.current {
