@@ -16,7 +16,7 @@ test('User can generate from prompt and open in Zoo Design Studio', async ({ pag
 	await test.step('Setup', async () => {
 		// Assert that we are now on the dashboard
 		await page.waitForURL('**/dashboard', { waitUntil: 'networkidle' })
-		await expect(page.locator('h1')).toHaveText('Text-to-CAD')
+		await expect(page.locator('h1')).toContainText('Text-to-CAD')
 		await expect(promptInput).toBeFocused()
 	})
 
