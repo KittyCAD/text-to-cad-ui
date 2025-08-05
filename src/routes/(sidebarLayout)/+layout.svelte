@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AppHeader from 'components/AppHeader.svelte'
 	import Sidebar from 'components/Sidebar.svelte'
 	import type { LayoutData } from './$types'
 
@@ -6,8 +7,9 @@
 </script>
 
 <div class="h-screen overflow-hidden flex flex-col" style="height: 100dvh;">
+	<AppHeader user={data ? data.user : undefined} />
 	<div class="pane-layout">
-		<Sidebar user={data ? data.user : undefined} className="md:w-80" />
+		<Sidebar className="md:w-80" />
 		<main>
 			<div class="main-content">
 				<slot />
@@ -22,8 +24,7 @@
 	}
 
 	.pane-layout {
-		@apply h-screen overflow-hidden flex flex-col md:flex-row;
-		height: 100dvh;
+		@apply overflow-hidden flex flex-col flex-1 md:flex-row;
 	}
 
 	main {
@@ -31,6 +32,6 @@
 	}
 
 	.main-content {
-		@apply mx-2 md:mx-5 lg:mx-auto max-w-5xl;
+		@apply h-full mx-2 md:mx-5 lg:mx-auto max-w-5xl;
 	}
 </style>

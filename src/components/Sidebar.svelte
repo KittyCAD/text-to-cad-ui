@@ -1,15 +1,9 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib/types'
-	import Logo from './Logo.svelte'
-	import { paths } from '$lib/paths'
-	import AccountMenu from 'components/AccountMenu.svelte'
 	import Close from 'components/Icons/Close.svelte'
-	import Menu from 'components/Icons/Menu.svelte'
-	import Plus from 'components/Icons/Plus.svelte'
+	import Sidebar from 'components/Icons/Sidebar.svelte'
 	import GenerationList from 'components/GenerationList.svelte'
 	import { page } from '$app/stores'
 
-	export let user: Models['User_type']
 	export let className = ''
 	let isSidebarOpen = false
 
@@ -22,42 +16,30 @@
 <nav class={'sidebar ' + className} class:open={isSidebarOpen}>
 	<header>
 		<button
-			class="flex md:hidden"
+			class="flex md:hidden text-sm items-center gap-2"
 			on:click={() => {
 				isSidebarOpen = !isSidebarOpen
 			}}
 		>
 			{#if isSidebarOpen}
-				<Close class="w-8 h-8 md:w-5 md:h-5" />
+				<Close class="w-6 h-6 md:w-5 md:h-5" />
+				<span>Close prompt history</span>
 			{:else}
-				<Menu class="w-8 h-8 md:w-5 md:h-5" />
+				<Sidebar class="w-6 h-6 md:w-5 md:h-5" />
+				<span>View prompt history</span>
 			{/if}
-			<span class="sr-only">Open menu</span>
 		</button>
-		<a href={paths.DASHBOARD}>
-			<Logo className="h-6 hover:text-green" />
-		</a>
-		<a
-			href={paths.DASHBOARD}
-			class={'new-prompt ' + ($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
-		>
-			<span class="text-sm sr-only md:not-sr-only md:pt-1">New prompt</span>
-			<Plus class="w-8 h-8 md:w-5 md:h-5" />
-		</a>
 	</header>
 	<div class="mobile-contents hidden md:contents">
-		<div class="flex-auto overflow-hidden border-y border-chalkboard-30 dark:border-chalkboard-90">
+		<div class="flex-auto overflow-hidden border-b border-chalkboard-30 dark:border-chalkboard-90">
 			<GenerationList />
 		</div>
-		<footer>
-			<AccountMenu {user} />
-		</footer>
 	</div>
 </nav>
 
 <style lang="postcss">
 	.sidebar {
-		@apply bg-white dark:bg-chalkboard-120;
+		@apply bg-white dark:bg-chalkboard-110;
 		@apply flex flex-col md:max-h-full overflow-hidden;
 		@apply flex-none;
 		@apply justify-between md:justify-start;
@@ -69,25 +51,23 @@
 	}
 
 	.sign-in {
-		@apply font-mono text-sm uppercase tracking-[1px] px-2 pt-1 pb-0.5 hover:bg-green hover:text-chalkboard-120;
+		@apply font-mono text-sm uppercase px-2 pt-1 pb-0.5 hover:bg-green hover:text-chalkboard-110;
 	}
 
-	header,
-	footer {
+	header {
 		@apply flex items-center justify-between;
-		@apply px-4 py-4 lg:px-6;
+		@apply px-4 py-2 lg:px-6;
 	}
 
-	.new-prompt {
-		@apply flex items-center justify-center gap-2;
-		@apply font-mono uppercase tracking-[1px] px-2 py-1;
-		@apply rounded-sm border;
-		@apply border-transparent md:border-green;
-		@apply max-sm:text-chalkboard-120 md:hover:text-chalkboard-120;
-		@apply bg-green md:bg-transparent md:hover:bg-green md:hover:hue-rotate-15;
+	header {
+		@apply md:hidden;
+	}
+
+	.open header {
+		@apply border-b border-chalkboard-30 dark:border-chalkboard-90 md:border-b-0;
 	}
 
 	.open .mobile-contents {
-		@apply contents;
+		@apply max-sm:contents;
 	}
 </style>
