@@ -4,29 +4,33 @@
 	import { createRoot, type Root } from 'react-dom/client'
 	import { onDestroy, onMount } from 'svelte'
 
-	let rootEl: HTMLElement
-	let root: Root
+	// TODO: Figure out what we do with this boilerplate, or go with a lib
+	// got this from:
+	// - https://joyofcode.xyz/using-react-libraries-in-svelte
+	// - https://pandemicode.dev/using-react-within-your-svelte-applications-3b1f2a75aefc
+	let htmlElement: HTMLElement
+	let reactRoot: Root
 
 	onMount(() => {
 		const props = $$props as BillingDialogProps
 		try {
-			root = createRoot(rootEl)
+			reactRoot = createRoot(htmlElement)
 			import('@kittycad/react-shared').then(({ BillingDialog }) => {
 				const element = createElement(BillingDialog, { ...props })
-				root.render(element)
+				reactRoot.render(element)
 			})
 		} catch (err) {
-			console.warn(`react-adapter failed to mount.`, { err })
+			console.log('Failed to mount', { err })
 		}
 	})
 
 	onDestroy(() => {
 		try {
-			root.unmount()
+			reactRoot.unmount()
 		} catch (err) {
-			console.warn(`react-adapter failed to unmount.`, { err })
+			console.log('Failed to destroy', { err })
 		}
 	})
 </script>
 
-<div bind:this={rootEl} class="root-el" />
+<div bind:this={htmlElement} class="root-el" />
