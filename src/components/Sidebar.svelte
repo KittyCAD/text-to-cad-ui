@@ -37,7 +37,16 @@
 		</div>
 		<div>
 			<!-- TODO: actually hook it up -->
-			<BillingDialog upgradeHref="abc" credits={20} allowance={20} className="rounded-none" />
+			<BillingDialog
+				upgradeHref="abc"
+				credits={20}
+				allowance={20}
+				className="rounded-none"
+				text={{
+					heading: { limited: 'Get more Text-to-CAD credits' },
+					paragraph: { limited: 'Upgrade your plan, starting at $20!' }
+				}}
+			/>
 		</div>
 	</div>
 </nav>
