@@ -4,8 +4,11 @@
 	import GenerationList from 'components/GenerationList.svelte'
 	import BillingDialog from './BillingDialog.svelte'
 	import { page } from '$app/stores'
+	import { env } from '$lib/env'
 
 	export let className = ''
+	export let credits: number | undefined
+	export let allowance: number | undefined
 	let isSidebarOpen = false
 
 	// Close the sidebar on navigation
@@ -36,11 +39,10 @@
 			<GenerationList />
 		</div>
 		<div>
-			<!-- TODO: actually hook it up -->
 			<BillingDialog
-				upgradeHref="abc"
-				credits={20}
-				allowance={20}
+				upgradeHref={env.VITE_SITE_BASE_URL + '/design-studio-pricing'}
+				{credits}
+				{allowance}
 				className="rounded-none"
 				text={{
 					heading: { limited: 'Get more Text-to-CAD credits' },

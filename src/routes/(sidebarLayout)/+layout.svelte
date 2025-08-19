@@ -9,7 +9,7 @@
 <div class="h-screen overflow-hidden flex flex-col" style="height: 100dvh;">
 	<AppHeader user={data ? data.user : undefined} />
 	<div class="pane-layout">
-		<Sidebar className="md:w-80" />
+		<Sidebar className="md:w-80" credits={data.credits} allowance={data.allowance} />
 		<main>
 			<div class="main-content">
 				<slot />
