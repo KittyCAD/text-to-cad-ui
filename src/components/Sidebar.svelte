@@ -37,7 +37,7 @@
 		</div>
 		<div>
 			<!-- TODO: actually hook it up -->
-			<BillingDialog upgradeHref="abc" credits={20} allowance={20} />
+			<BillingDialog upgradeHref="abc" credits={20} allowance={20} className="rounded-none" />
 		</div>
 	</div>
 </nav>
