@@ -2,6 +2,7 @@
 	import Close from 'components/Icons/Close.svelte'
 	import Sidebar from 'components/Icons/Sidebar.svelte'
 	import GenerationList from 'components/GenerationList.svelte'
+	import BillingDialog from './BillingDialog.svelte'
 	import { page } from '$app/stores'
 
 	export let className = ''
@@ -33,6 +34,10 @@
 	<div class="mobile-contents hidden md:contents">
 		<div class="flex-auto overflow-hidden border-b border-chalkboard-30 dark:border-chalkboard-90">
 			<GenerationList />
+		</div>
+		<div>
+			<!-- TODO: actually hook it up -->
+			<BillingDialog upgradeHref="abc" credits={20} allowance={20} />
 		</div>
 	</div>
 </nav>

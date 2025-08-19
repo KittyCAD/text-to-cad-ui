@@ -56,8 +56,12 @@
 		"@types/core-js": "^2.5.8",
 		"@vercel/analytics": "^1.1.1",
 		"@vercel/speed-insights": "^1.0.2",
+		"@types/react": "^18.3.17",
+		"@types/react-dom": "^18.3.5",
 		"core-js-pure": "^3.35.0",
 		"object.groupby": "^1.0.1",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
 		"svelte-autosize": "^1.1.0",
 		"three": "^0.160.0"
 	}
