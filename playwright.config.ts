@@ -1,5 +1,4 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
-import { getCookieName } from './src/lib/cookies'
 import dotenv from 'dotenv'
 import path from 'path'
 
@@ -16,7 +15,7 @@ const config: PlaywrightTestConfig = {
 		storageState: {
 			cookies: [
 				{
-					name: getCookieName,
+					name: '__Secure-session-token-dev.zoo.dev',
 					value: process.env.VITE_API_TOKEN ?? '',
 					domain: 'localhost',
 					path: '/',
