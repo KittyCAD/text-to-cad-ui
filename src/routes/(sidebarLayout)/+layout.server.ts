@@ -4,6 +4,7 @@ import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect } from '@sveltejs/kit'
 import { env } from '$lib/env'
+import { getBillingInfo, isErr } from '$lib/billing'
 
 export const load = async ({ cookies, request, url, fetch }) => {
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
@@ -46,10 +47,21 @@ export const load = async ({ cookies, request, url, fetch }) => {
 			}
 		}
 
-		// Return the user and token
+		const billing = await getBillingInfo(token)
+		if (isErr(billing)) {
+			console.error('Error fetching billing info:', billing)
+			return {
+				user: currentUser,
+				token: token
+			}
+		}
+
 		return {
 			user: currentUser,
-			token: token
+			token: token,
+			tier: billing.tier,
+			credits: billing.credits,
+			allowance: billing.allowance
 		}
 	}
 

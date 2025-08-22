@@ -2,9 +2,13 @@
 	import Close from 'components/Icons/Close.svelte'
 	import Sidebar from 'components/Icons/Sidebar.svelte'
 	import GenerationList from 'components/GenerationList.svelte'
+	import BillingDialog from './BillingDialog.svelte'
 	import { page } from '$app/stores'
+	import { env } from '$lib/env'
 
 	export let className = ''
+	export let credits: number | undefined
+	export let allowance: number | undefined
 	let isSidebarOpen = false
 
 	// Close the sidebar on navigation
@@ -33,6 +37,18 @@
 	<div class="mobile-contents hidden md:contents">
 		<div class="flex-auto overflow-hidden border-b border-chalkboard-30 dark:border-chalkboard-90">
 			<GenerationList />
+		</div>
+		<div>
+			<BillingDialog
+				upgradeHref={env.VITE_SITE_BASE_URL + '/design-studio-pricing'}
+				{credits}
+				{allowance}
+				className="rounded-none"
+				text={{
+					heading: { limited: 'Get more Text-to-CAD credits' },
+					paragraph: { limited: 'Upgrade your plan, starting at $20!' }
+				}}
+			/>
 		</div>
 	</div>
 </nav>
