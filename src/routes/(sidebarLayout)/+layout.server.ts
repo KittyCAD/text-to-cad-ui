@@ -1,5 +1,5 @@
 import { DOMAIN, PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts.js'
-import { AUTH_COOKIE_NAME } from '$lib/cookies.js'
+import { getCookieName } from '$lib/cookies.js'
 import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect } from '@sveltejs/kit'
@@ -11,7 +11,7 @@ export const load = async ({ cookies, request, url, fetch }) => {
 	}
 
 	const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_API_TOKEN
+	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
 
 	if (!token) {
 		signOut()
@@ -57,7 +57,7 @@ export const load = async ({ cookies, request, url, fetch }) => {
 	 * Shared sign out function
 	 */
 	function signOut() {
-		cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
+		cookies.delete(getCookieName(), { domain: DOMAIN, path: '/' })
 		throw redirect(303, '/')
 	}
 }
