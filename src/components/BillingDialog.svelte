@@ -28,6 +28,7 @@
 		try {
 			reactRoot.unmount()
 		} catch (err) {
+			// TODO: I'm still seeing console errors for this, not sure why
 			console.log('Failed to destroy', { err })
 		}
 	})

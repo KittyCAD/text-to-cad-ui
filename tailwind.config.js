@@ -45,10 +45,6 @@ export default {
 			yellow: '#E4ED78',
 			green: '#29FFA4',
 			magenta: '#FF00F6',
-			'ml-green': '#29FFA4',
-			'ml-black': 'var(--chalkboard-100)',
-			'ml-white': '#FFFFFF',
-			'ml-grey': 'var(--chalkboard-80)',
 			...themeColors
 		}
 	},
