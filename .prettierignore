@@ -13,3 +13,6 @@ package-lock.json
 
 # Ignore generated files
 dependabot.yml
+
+.vercel
+

@@ -2,7 +2,7 @@ import { CADMIMETypes, endpoints } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import type { Models } from '@kittycad/lib/types'
-import { AUTH_COOKIE_NAME } from '$lib/cookies'
+import { getCookieName } from '$lib/cookies'
 import { env } from '$lib/env'
 
 export type ConvertResponse = Models['FileConversion_type'] & {
@@ -10,7 +10,7 @@ export type ConvertResponse = Models['FileConversion_type'] & {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request, params }) => {
-	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_API_TOKEN
+	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
 	if (!token) throw error(401, 'You must be logged in to use this API.')
 
 	const body = await request.text()
