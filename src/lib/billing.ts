@@ -26,7 +26,7 @@ const toTierFrom = (args: TierBasedOn): Tier => {
 		return Tier.Organization
 	} else if (typeof args.subscriptionsOrError !== 'number' && !isErr(args.subscriptionsOrError)) {
 		const subscriptions: Models['ZooProductSubscriptions_type'] = args.subscriptionsOrError
-		if (subscriptions.modeling_app.name === 'pro') {
+		if (subscriptions?.modeling_app?.name === 'pro') {
 			return Tier.Pro
 		} else {
 			return Tier.Free
