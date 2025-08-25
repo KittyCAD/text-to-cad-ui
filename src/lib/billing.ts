@@ -120,7 +120,7 @@ export async function getBillingInfo(token: string) {
 		case Tier.Free:
 			// TS too dumb Tier.Free has the same logic
 			if (typeof subscriptionsOrError !== 'number' && !isErr(subscriptionsOrError)) {
-				allowance = Number(subscriptionsOrError.modeling_app.monthly_pay_as_you_go_api_credits)
+				allowance = Number(subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits)
 			}
 			break
 		case Tier.Unknown:
