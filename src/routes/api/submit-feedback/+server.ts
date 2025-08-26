@@ -5,7 +5,6 @@ import { env } from '$lib/env'
 
 export type LoadResponse = {
 	status: number
-	body?: PromptResponse
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
@@ -23,10 +22,7 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 		}
 	})
 
-	const message = (await response.json()) as PromptResponse
-
 	return json({
 		status: response.status,
-		body: message
 	} satisfies LoadResponse)
 }
