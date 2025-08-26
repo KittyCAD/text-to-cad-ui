@@ -42,6 +42,10 @@ async function fetchOrError<T>(
 		return new Error(resolvedMessage)
 	}
 
+	if (typeof data === 'number') {
+		return new Error('Unexpected number response: ' + data)
+	}
+
 	return data
 }
 

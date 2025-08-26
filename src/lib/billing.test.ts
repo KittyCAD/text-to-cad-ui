@@ -8,6 +8,7 @@ const server = setupServer()
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
+const token = 'does not matter'
 
 // Data ripped from docs.zoo.dev
 const createUserPaymentBalanceResponse = (opts: {
@@ -79,6 +80,40 @@ const createUserPaymentSubscriptionsResponse = (opts: {
 	}
 })
 
+test('Handles error fetching billing on balance', async () => {
+	server.use(
+		http.get('*/user/payment/balance', () => {
+			return new HttpResponse(403)
+		})
+	)
+
+	const billing = await getBillingInfo('does not matter')
+	console.log('billing', billing)
+	expect(billing).toBeInstanceOf(Error)
+})
+
+test('Handles error fetching billing on subscriptions', async () => {
+	const data = {
+		balance: {
+			monthlyApiCreditsRemaining: 1,
+			stableApiCreditsRemaining: 2
+		}
+	}
+
+	server.use(
+		http.get('*/user/payment/balance', () => {
+			return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
+		}),
+		http.get('*/user/payment/subscriptions', () => {
+			return new HttpResponse(403)
+		})
+	)
+
+	const billing = await getBillingInfo('does not matter')
+	console.log('billing', billing)
+	expect(billing).toBeInstanceOf(Error)
+})
+
 test('Finds the total credits for Unknown subscription', async () => {
 	const data = {
 		balance: {
@@ -102,9 +137,7 @@ test('Finds the total credits for Unknown subscription', async () => {
 			return new HttpResponse(403)
 		})
 	)
-	const token = 'does not matter'
 	const billing = await getBillingInfo(token)
-	console.log('billing', billing)
 	if (isErr(billing)) throw billing
 
 	const totalCredits =
@@ -136,7 +169,6 @@ test('Finds the credits of Free subscription', async () => {
 		})
 	)
 
-	const token = 'does not matter'
 	const billing = await getBillingInfo(token)
 	if (isErr(billing)) throw billing
 	const totalCredits =
@@ -172,9 +204,7 @@ test('Finds infinite credits for Pro subscription', async () => {
 		})
 	)
 
-	const token = 'does not matter'
 	const billing = await getBillingInfo(token)
-	console.log('billing', billing)
 	if (isErr(billing)) throw billing
 	expect(billing.credits).toBe(Infinity)
 	expect(billing.allowance).toBeUndefined()
@@ -208,7 +238,6 @@ test('Finds infinite credits for Enterprise subscription', async () => {
 		})
 	)
 
-	const token = 'does not matter'
 	const billing = await getBillingInfo(token)
 	if (isErr(billing)) throw billing
 	expect(billing.credits).toBe(Infinity)
