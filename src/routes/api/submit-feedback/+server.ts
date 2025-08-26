@@ -1,5 +1,5 @@
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
-import { endpoints, type PromptResponse } from '$lib/endpoints'
+import { endpoints } from '$lib/endpoints'
 import { error, json, type RequestHandler } from '@sveltejs/kit'
 import { env } from '$lib/env'
 
