@@ -1,11 +1,10 @@
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
-import { endpoints, type PromptResponse } from '$lib/endpoints'
+import { endpoints } from '$lib/endpoints'
 import { error, json, type RequestHandler } from '@sveltejs/kit'
 import { env } from '$lib/env'
 
 export type LoadResponse = {
 	status: number
-	body?: PromptResponse
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
@@ -23,10 +22,7 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 		}
 	})
 
-	const message = (await response.json()) as PromptResponse
-
 	return json({
-		status: response.status,
-		body: message
+		status: response.status
 	} satisfies LoadResponse)
 }

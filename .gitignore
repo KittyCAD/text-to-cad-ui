@@ -16,3 +16,4 @@ test-results
 .idea
 
 .vercel
+.direnv
