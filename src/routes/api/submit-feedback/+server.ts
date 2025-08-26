@@ -23,6 +23,6 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 	})
 
 	return json({
-		status: response.status,
+		status: response.status
 	} satisfies LoadResponse)
 }
