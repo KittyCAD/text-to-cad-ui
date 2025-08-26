@@ -59,7 +59,6 @@ export const load = async ({ cookies, request, url, fetch }) => {
 		return {
 			user: currentUser,
 			token: token,
-			tier: billing.tier,
 			credits: billing.credits,
 			allowance: billing.allowance
 		}

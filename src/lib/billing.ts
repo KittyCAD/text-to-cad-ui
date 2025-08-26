@@ -1,134 +1,91 @@
 import type { Models } from '@kittycad/lib/types'
 import { env } from '$lib/env'
 
-// Stolen from modeling-app, need to see what we do with those
-enum Tier {
-	Free = 'free',
-	Pro = 'pro',
-	Organization = 'organization',
-	Unknown = 'unknown'
-}
-
-type OrgOrError = Models['Org_type'] | number | Error
-type SubscriptionsOrError = Models['ZooProductSubscriptions_type'] | number | Error
-type TierBasedOn = {
-	orgOrError: OrgOrError
-	subscriptionsOrError: SubscriptionsOrError
-}
-
+/**
+ * Stolen from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/lib/trap.ts
+ */
 type ExcludeErr<T> = Exclude<T, Error>
 export function isErr<T>(value: ExcludeErr<T> | Error): value is Error {
 	return value instanceof Error
 }
 
-const toTierFrom = (args: TierBasedOn): Tier => {
-	if (typeof args.orgOrError !== 'number' && !('error_code' in args.orgOrError)) {
-		return Tier.Organization
-	} else if (typeof args.subscriptionsOrError !== 'number' && !isErr(args.subscriptionsOrError)) {
-		const subscriptions: Models['ZooProductSubscriptions_type'] = args.subscriptionsOrError
-		if (subscriptions?.modeling_app?.name === 'pro') {
-			return Tier.Pro
-		} else {
-			return Tier.Free
-		}
+const headers = (token?: string): HeadersInit => ({
+	'Content-Type': 'application/json',
+	...(token ? { Authorization: `Bearer ${token}` } : {})
+})
+
+/**
+ * Adapted from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/lib/crossPlatformFetch.ts
+ */
+async function fetchOrError<T>(
+	url: string,
+	options?: RequestInit,
+	token?: string
+): Promise<T | Error> {
+	let response = null
+	const opts = options || {}
+	opts.headers = headers(token)
+	opts.credentials = 'include'
+	response = await fetch(url, opts)
+
+	if (!response) {
+		return new Error('Failed to request endpoint: ' + url)
 	}
 
-	return Tier.Unknown
+	const data = (await response.json().catch((e) => e)) as T | Error
+
+	if (!response.ok) {
+		console.error(`Failed to request endpoint: ${url}`, JSON.stringify(response), data)
+		const fallbackErrorMessage = `Failed to request endpoint: ${url} with status: ${response.status} ${response.statusText}`
+		const resolvedMessage =
+			data instanceof Object && 'message' in data ? data.message : fallbackErrorMessage
+		return new Error(resolvedMessage)
+	}
+
+	return data
 }
 
 /**
- * Copied logic from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/machines/billingMachine.ts#L91
+ * Adapted from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/machines/billingMachine.ts#L91
  */
-export async function getBillingInfo(token: string) {
-	const billingOrError: Models['CustomerBalance_type'] | number | Error = await fetch(
+export async function getBillingInfo(
+	token: string
+): Promise<Error | { credits: number; allowance?: number }> {
+	const billing = await fetchOrError<Models['CustomerBalance_type']>(
 		`${env.VITE_API_BASE_URL}/user/payment/balance`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
-		}
+		{ method: 'GET' },
+		token
 	)
-		.then((res) => res.json())
-		.catch((e) => {
-			console.error('Error fetching balance:', e)
-		})
 
-	if (typeof billingOrError === 'number') {
-		return new Error('Received error code: ' + billingOrError)
+	if (isErr(billing)) {
+		return billing
 	}
 
-	if (isErr(billingOrError)) {
-		return billingOrError
-	}
-
-	const billing: Models['CustomerBalance_type'] = billingOrError
-
-	const subscriptionsOrError: Models['ZooProductSubscriptions_type'] | number | Error = await fetch(
+	const subscriptions = await fetchOrError<Models['ZooProductSubscriptions_type']>(
 		`${env.VITE_API_BASE_URL}/user/payment/subscriptions`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
-		}
+		{ method: 'GET' },
+		token
 	)
-		.then((res) => res.json())
-		.catch((e) => {
-			console.error('Error fetching subscriptions:', e)
-		})
 
-	if (typeof subscriptionsOrError === 'number') {
-		return new Error('Received error code: ' + subscriptionsOrError)
+	if (isErr(subscriptions)) {
+		return subscriptions
 	}
 
-	if (isErr(subscriptionsOrError)) {
-		return subscriptionsOrError
-	}
-
-	const orgOrError: Models['Org_type'] | number | Error = await fetch(
+	const org = await fetchOrError<Models['Org_type']>(
 		`${env.VITE_API_BASE_URL}/org`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
-		}
+		{ method: 'GET' },
+		token
 	)
-		.then((res) => res.json())
-		.catch((e) => {
-			console.error('Error fetching org:', e)
-		})
 
-	const tier = toTierFrom({
-		orgOrError,
-		subscriptionsOrError
-	})
-
-	let credits =
-		Number(billing.monthly_api_credits_remaining) + Number(billing.stable_api_credits_remaining)
-	let allowance = undefined
-
-	switch (tier) {
-		case Tier.Organization:
-		case Tier.Pro:
-			credits = Infinity
-			break
-		case Tier.Free:
-			// TS too dumb Tier.Free has the same logic
-			if (typeof subscriptionsOrError !== 'number' && !isErr(subscriptionsOrError)) {
-				allowance = Number(subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits)
-			}
-			break
-		case Tier.Unknown:
-			break
+	const isOrgOrPro = (!isErr(org) && org.id) || subscriptions.modeling_app.name === 'pro'
+	if (isOrgOrPro) {
+		return { credits: Infinity }
 	}
 
+	const allowance = Number(subscriptions.modeling_app.monthly_pay_as_you_go_api_credits)
+	const credits =
+		Number(billing.monthly_api_credits_remaining) + Number(billing.stable_api_credits_remaining)
 	return {
-		tier,
 		credits,
 		allowance
 	}

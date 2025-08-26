@@ -1,10 +1,3 @@
-// Test runner
-
-// Render mocking, DOM querying
-import { act, render, within } from '@testing-library/svelte'
-import '@testing-library/jest-dom' // Required for .toHaveStyle
-
-// Request mocking
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import type { Models } from '@kittycad/lib'
@@ -86,7 +79,7 @@ const createUserPaymentSubscriptionsResponse = (opts: {
 	}
 })
 
-test('Shows the total credits for Unknown subscription', async () => {
+test('Finds the total credits for Unknown subscription', async () => {
 	const data = {
 		balance: {
 			monthlyApiCreditsRemaining: 10,
@@ -99,13 +92,13 @@ test('Shows the total credits for Unknown subscription', async () => {
 	}
 
 	server.use(
-		http.get('*/user/payment/balance', (req, res, ctx) => {
+		http.get('*/user/payment/balance', () => {
 			return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
 		}),
-		http.get('*/user/payment/subscriptions', (req, res, ctx) => {
+		http.get('*/user/payment/subscriptions', () => {
 			return HttpResponse.json(createUserPaymentSubscriptionsResponse(data.subscriptions))
 		}),
-		http.get('*/org', (req, res, ctx) => {
+		http.get('*/org', () => {
 			return new HttpResponse(403)
 		})
 	)
@@ -117,70 +110,43 @@ test('Shows the total credits for Unknown subscription', async () => {
 	const totalCredits =
 		data.balance.monthlyApiCreditsRemaining + data.balance.stableApiCreditsRemaining
 	expect(billing.credits).toBe(totalCredits)
-	expect(billing.tier).toBe('free')
 })
 
-// test('Progress bar reflects ratio left of Free subscription', async () => {
-//   const data = {
-//     balance: {
-//       monthlyApiCreditsRemaining: 10,
-//       stableApiCreditsRemaining: 0,
-//     },
-//     subscriptions: {
-//       monthlyPayAsYouGoApiCreditsTotal: 20,
-//       name: 'free',
-//     },
-//   }
+test('Finds the credits of Free subscription', async () => {
+	const data = {
+		balance: {
+			monthlyApiCreditsRemaining: 10,
+			stableApiCreditsRemaining: 0
+		},
+		subscriptions: {
+			monthlyPayAsYouGoApiCreditsTotal: 20,
+			name: 'free'
+		}
+	}
 
-//   server.use(
-//     http.get('*/user/payment/balance', (req, res, ctx) => {
-//       return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
-//     }),
-//     http.get('*/user/payment/subscriptions', (req, res, ctx) => {
-//       return HttpResponse.json(
-//         createUserPaymentSubscriptionsResponse(data.subscriptions)
-//       )
-//     }),
-//     http.get('*/org', (req, res, ctx) => {
-//       return new HttpResponse(403)
-//     })
-//   )
+	server.use(
+		http.get('*/user/payment/balance', () => {
+			return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
+		}),
+		http.get('*/user/payment/subscriptions', () => {
+			return HttpResponse.json(createUserPaymentSubscriptionsResponse(data.subscriptions))
+		}),
+		http.get('*/org', () => {
+			return new HttpResponse(403)
+		})
+	)
 
-//   const billingActor = createActor(billingMachine, {
-//     input: BILLING_CONTEXT_DEFAULTS,
-//   }).start()
+	const token = 'does not matter'
+	const billing = await getBillingInfo(token)
+	if (isErr(billing)) throw billing
+	const totalCredits =
+		data.balance.monthlyApiCreditsRemaining + data.balance.stableApiCreditsRemaining
+	const monthlyCredits = data.subscriptions.monthlyPayAsYouGoApiCreditsTotal
+	await expect(billing.credits).toBe(totalCredits)
+	await expect(billing.allowance).toBe(monthlyCredits)
+})
 
-//   const { queryByTestId } = render(
-//     <BillingRemainingWithSelector
-//       mode={BillingRemainingMode.ProgressBarFixed}
-//       billingActor={billingActor}
-//     />
-//   )
-
-//   await act(() => {
-//     billingActor.send({
-//       type: BillingTransition.Update,
-//       apiToken: "it doesn't matter wtf this is :)",
-//     })
-//   })
-
-//   const totalCredits =
-//     data.balance.monthlyApiCreditsRemaining +
-//     data.balance.stableApiCreditsRemaining
-//   const monthlyCredits = data.subscriptions.monthlyPayAsYouGoApiCreditsTotal
-//   const context = billingActor.getSnapshot().context
-//   await expect(context.credits).toBe(totalCredits)
-//   await expect(context.allowance).toBe(monthlyCredits)
-
-//   await within(queryByTestId('billing-credits')).getByText(totalCredits)
-//   await expect(
-//     queryByTestId('billing-remaining-progress-bar-inner')
-//   ).toHaveStyle({
-//     width: '50.00%',
-//   })
-// })
-
-test('Shows infinite credits for Pro subscription', async () => {
+test('Finds infinite credits for Pro subscription', async () => {
 	const data = {
 		// These are all ignored
 		balance: {
@@ -195,13 +161,13 @@ test('Shows infinite credits for Pro subscription', async () => {
 	}
 
 	server.use(
-		http.get('*/user/payment/balance', (req, res, ctx) => {
+		http.get('*/user/payment/balance', () => {
 			return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
 		}),
-		http.get('*/user/payment/subscriptions', (req, res, ctx) => {
+		http.get('*/user/payment/subscriptions', () => {
 			return HttpResponse.json(createUserPaymentSubscriptionsResponse(data.subscriptions))
 		}),
-		http.get('*/org', (req, res, ctx) => {
+		http.get('*/org', () => {
 			return new HttpResponse(403)
 		})
 	)
@@ -211,59 +177,40 @@ test('Shows infinite credits for Pro subscription', async () => {
 	console.log('billing', billing)
 	if (isErr(billing)) throw billing
 	expect(billing.credits).toBe(Infinity)
-	expect(billing.tier).toBe('pro')
+	expect(billing.allowance).toBeUndefined()
 })
-// test('Shows infinite credits for Enterprise subscription', async () => {
-//   const data = {
-//     // These are all ignored, user is part of an org.
-//     balance: {
-//       monthlyApiCreditsRemaining: 10,
-//       stableApiCreditsRemaining: 0,
-//     },
-//     subscriptions: {
-//       // This should be ignored because it's Pro tier.
-//       monthlyPayAsYouGoApiCreditsTotal: 20,
-//       // This should be ignored because the user is part of an Org.
-//       name: 'free',
-//     },
-//   }
 
-//   server.use(
-//     http.get('*/user/payment/balance', (req, res, ctx) => {
-//       return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
-//     }),
-//     http.get('*/user/payment/subscriptions', (req, res, ctx) => {
-//       return HttpResponse.json(
-//         createUserPaymentSubscriptionsResponse(data.subscriptions)
-//       )
-//     }),
-//     // Ok finally the first use of an org lol
-//     http.get('*/org', (req, res, ctx) => {
-//       return HttpResponse.json(createOrgResponse())
-//     })
-//   )
+test('Finds infinite credits for Enterprise subscription', async () => {
+	const data = {
+		// These are all ignored, user is part of an org.
+		balance: {
+			monthlyApiCreditsRemaining: 10,
+			stableApiCreditsRemaining: 0
+		},
+		subscriptions: {
+			// This should be ignored because it's Pro tier.
+			monthlyPayAsYouGoApiCreditsTotal: 20,
+			// This should be ignored because the user is part of an Org.
+			name: 'free'
+		}
+	}
 
-//   const billingActor = createActor(billingMachine, {
-//     input: BILLING_CONTEXT_DEFAULTS,
-//   }).start()
+	server.use(
+		http.get('*/user/payment/balance', () => {
+			return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
+		}),
+		http.get('*/user/payment/subscriptions', () => {
+			return HttpResponse.json(createUserPaymentSubscriptionsResponse(data.subscriptions))
+		}),
+		// Ok finally the first use of an org lol
+		http.get('*/org', () => {
+			return HttpResponse.json(createOrgResponse())
+		})
+	)
 
-//   const { queryByTestId } = render(
-//     <BillingRemainingWithSelector
-//       mode={BillingRemainingMode.ProgressBarFixed}
-//       billingActor={billingActor}
-//     />
-//   )
-
-//   await act(() => {
-//     billingActor.send({
-//       type: BillingTransition.Update,
-//       apiToken: 'aosetuhsatuh',
-//     })
-//   })
-
-//   // The result should be the same as Pro users.
-//   await expect(queryByTestId('infinity')).toBeVisible()
-//   await expect(queryByTestId('billing-remaining-progress-bar-inline')).toBe(
-//     null
-//   )
-// })
+	const token = 'does not matter'
+	const billing = await getBillingInfo(token)
+	if (isErr(billing)) throw billing
+	expect(billing.credits).toBe(Infinity)
+	expect(billing.allowance).toBeUndefined()
+})
