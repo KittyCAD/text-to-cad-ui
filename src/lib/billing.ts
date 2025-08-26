@@ -9,14 +9,15 @@ export function isErr<T>(value: ExcludeErr<T> | Error): value is Error {
 	return value instanceof Error
 }
 
+/**
+ * Adapted from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/lib/crossPlatformFetch.ts
+ */
+
 const headers = (token?: string): HeadersInit => ({
 	'Content-Type': 'application/json',
 	...(token ? { Authorization: `Bearer ${token}` } : {})
 })
 
-/**
- * Adapted from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/lib/crossPlatformFetch.ts
- */
 async function fetchOrError<T>(
 	url: string,
 	options?: RequestInit,

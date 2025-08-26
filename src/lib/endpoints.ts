@@ -39,4 +39,4 @@ export const endpoints = {
 
 export type PromptResponse = Models['TextToCad_type']
 
-export type ListResponse = Models['TextToCadResultsPage_type']
+export type ListResponse = Models['TextToCadResponseResultsPage_type']

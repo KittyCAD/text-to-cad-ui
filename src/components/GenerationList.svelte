@@ -49,7 +49,7 @@
 			return
 		}
 
-		const nextBatchPayload = (await response.json()) as Models['TextToCadResultsPage_type']
+		const nextBatchPayload = (await response.json()) as Models['TextToCadResponseResultsPage_type']
 
 		// If we see that one of fetched generations has an id that matches one of the
 		// generations in the store, we know we can stop fetching
@@ -72,7 +72,7 @@
 		}
 	}
 
-	function updateFetchedGenerations(payload: Models['TextToCadResultsPage_type']): boolean {
+	function updateFetchedGenerations(payload: Models['TextToCadResponseResultsPage_type']): boolean {
 		const nextBatch = payload?.items ?? []
 		let shouldKeepFetching = true
 		fetchedGenerations.update((g) => {
