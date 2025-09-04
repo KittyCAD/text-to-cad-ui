@@ -2,11 +2,13 @@ import { DOMAIN, PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts.js'
 import { AUTH_COOKIE_NAME } from '$lib/cookies.js'
 import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
-import { redirect } from '@sveltejs/kit'
+import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
-import { getBillingInfo, isErr } from '$lib/billing'
+import { getBillingInfo, BillingError } from '$lib/billing'
 
-export const load = async ({ cookies, request, url, fetch }) => {
+export const load = async (args: ServerLoadEvent) => {
+  const { cookies, request, url, fetch } = args
+
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
 		signOut()
 	}
@@ -25,8 +27,8 @@ export const load = async ({ cookies, request, url, fetch }) => {
 			Authorization: `Bearer ${token}`
 		}
 	})
-		.then((res) => res.json())
-		.catch((e) => {
+		.then((res: Response) => res.json())
+		.catch((e: any) => {
 			// If the user had a token but there was an error fetching the user,
 			//delete the token, because it was likely revoked or expired
 			console.error('Error fetching user:', e)
@@ -48,8 +50,8 @@ export const load = async ({ cookies, request, url, fetch }) => {
 		}
 
 		const billing = await getBillingInfo(token)
-		if (isErr(billing)) {
-			console.error('Error fetching billing info:', billing)
+		if (BillingError.from(billing)) {
+			console.error('Error fetching billing info:', billing.error)
 			return {
 				user: currentUser,
 				token: token

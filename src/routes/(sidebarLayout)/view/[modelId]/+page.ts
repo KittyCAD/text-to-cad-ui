@@ -1,13 +1,20 @@
 import { endpoints } from '$lib/endpoints.js'
 import type { Models } from '@kittycad/lib/types'
-import { error, redirect } from '@sveltejs/kit'
+import { error, redirect, type ServerLoadEvent } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params, parent, fetch }) {
+export async function load({ params, parent, fetch }: ServerLoadEvent) {
 	const data = await parent()
 
 	if (!data.token) {
 		throw redirect(301, '/')
+	}
+
+	if (!params.modelId) {
+  	throw error(
+    	400,
+    	'Missing modelId'
+  	)
 	}
 
 	const response = await fetch(endpoints.view(params.modelId), {

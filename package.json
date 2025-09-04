@@ -11,6 +11,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"fmt": "prettier --plugin-search-dir . --write .",
+		"tsc": "tsc",
 		"test:e2e": "playwright test",
 		"test:unit": "vitest"
 	},
@@ -43,7 +44,7 @@
 		"svelte-check": "^3.4.3",
 		"tailwindcss": "^3.3.3",
 		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
+		"typescript": "^5.9.2",
 		"vite": "^5.0.3",
 		"vite-plugin-mkcert": "^1.16.0",
 		"vitest": "1.6.1",
