@@ -7,7 +7,6 @@
 	import { getApiErrorMessage } from '$lib/errors'
 	import { toasts } from '$lib/toast'
 	import ArrowRight from './Icons/ArrowRight.svelte'
-	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'
 	import { paths } from '$lib/paths'
 	import { goto } from '$app/navigation'

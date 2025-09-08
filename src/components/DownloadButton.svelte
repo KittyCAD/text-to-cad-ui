@@ -7,6 +7,9 @@
 	import { tick } from 'svelte'
 	import { getApiErrorMessage } from '$lib/errors'
 	import { toasts } from '$lib/toast'
+	import { file, type FileExportFormat } from '@kittycad/lib'
+	import { createZooClient } from '$lib/zooClient'
+	import { page } from '$app/stores'
 
 	export let prompt: string = ''
 	export let outputs: Record<string, string>
@@ -49,35 +52,31 @@
 
 		if (outputs[`source.${currentOutput}`]) {
 			outputData = outputs[`source.${currentOutput}`]
-			} else {
-					try {
-						const { file, type FileExportFormat } = await import('@kittycad/lib')
-						const { createZooClient } = await import('$lib/zooClient')
-						const { page } = await import('$app/stores')
-						const token = (page as any).get()?.data?.token ?? undefined
-						const client = createZooClient({ token })
-						const body = await base64ToBlob(outputs['source.gltf']).text()
-						const responseData = await file.create_file_conversion({
-							client,
-							output_format: currentOutput as FileExportFormat,
-							src_format: 'gltf',
-							body
-						})
+		} else {
+			try {
+				const client = createZooClient({ token: $page.data.token })
+				const body = await base64ToBlob(outputs['source.gltf']).text()
+				const responseData = await file.create_file_conversion({
+					client,
+					output_format: currentOutput as FileExportFormat,
+					src_format: 'gltf',
+					body
+				})
 
-						if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
-							outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
-							outputData = outputs[`source.${currentOutput}`]
-						} else {
-							status = 'failed'
-							toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
-							return
-						}
-					} catch (e) {
-						status = 'failed'
-						toasts.add(getApiErrorMessage(e, 'Failed to convert file'), 'error')
-						return
-					}
+				if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
+					outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
+					outputData = outputs[`source.${currentOutput}`]
+				} else {
+					status = 'failed'
+					toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+					return
+				}
+			} catch (e) {
+				status = 'failed'
+				toasts.add(getApiErrorMessage(e, 'Failed to convert file'), 'error')
+				return
 			}
+		}
 		status = outputData ? 'ready' : 'failed'
 
 		if (outputData) {

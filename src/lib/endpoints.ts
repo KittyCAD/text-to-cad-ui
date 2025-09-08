@@ -12,6 +12,4 @@ export const CADMIMETypes = {
 	step: 'application/STEP'
 } as Record<CADFormat, string>
 
-export const endpoints = {
-	localConvert: (output_format: CADFormat) => `/api/convert/${output_format}`
-}
+// Intentionally empty of network endpoints; API calls are handled by @kittycad/lib
