@@ -17,10 +17,19 @@
 	let pagesToFetch = PAGES_AHEAD_TO_FETCH
 	let scrolledPercentage = 0
 	let fetchPromise: Promise<void>
+	let pager: ReturnType<typeof ml.list_text_to_cad_models_for_user_pager> | null = null
 
 	onMount(() => {
-		fetchPromise =
-			$nextPageTokens[$nextPageTokens.length - 1] === null ? Promise.resolve() : fetchData()
+		const client = createZooClient({ token: $page.data.token })
+		pager = ml.list_text_to_cad_models_for_user_pager({
+			client,
+			limit: ITEMS_PER_PAGE,
+			page_token: '',
+			sort_by: 'created_at_descending',
+			no_models: true,
+			conversation_id: undefined as any
+		})
+		fetchPromise = fetchData()
 	})
 
 	// Reset the pages to fetch counter if the user scrolls
@@ -35,49 +44,27 @@
 	}
 
 	async function fetchData() {
-		// If we're at the end of the list, don't fetch more
-		if ($nextPageTokens[$nextPageTokens.length - 1] === null) return
-
-		const client = createZooClient({ token: $page.data.token })
-		let nextBatchPayload: TextToCadResponseResultsPage
+		if (!pager) return
 		try {
-			nextBatchPayload = await ml.list_text_to_cad_models_for_user({
-				client,
-				limit: ITEMS_PER_PAGE,
-				page_token: $nextPageTokens[$nextPageTokens.length - 1] || '',
-				sort_by: 'created_at_descending',
-				no_models: true,
-				conversation_id: undefined as any
-			})
+			if (!pager.hasNext()) {
+				$nextPageTokens = [...$nextPageTokens, null]
+				pagesToFetch = 0
+				return
+			}
+			const nextBatch = await pager.next()
+			const shouldContinue = updateFetchedGenerations(nextBatch)
+			$nextPageTokens = [...$nextPageTokens, pager.hasNext() ? 'next' : null]
+			pagesToFetch = shouldContinue && pager.hasNext() ? pagesToFetch - 1 : 0
+			if (pagesToFetch > 0) {
+				return fetchData()
+			}
 		} catch (e) {
 			error = 'Failed to fetch your creations'
 			toasts.add(getApiErrorMessage(e, error), 'error')
-			return
-		}
-
-		// If we see that one of fetched generations has an id that matches one of the
-		// generations in the store, we know we can stop fetching
-		const hasNoDuplicateGenerations = updateFetchedGenerations(nextBatchPayload)
-
-		if (nextBatchPayload?.next_page === null) {
-			$nextPageTokens = [...$nextPageTokens, null]
-			pagesToFetch = 0
-		} else if (hasNoDuplicateGenerations) {
-			$nextPageTokens = [...$nextPageTokens, nextBatchPayload?.next_page ?? null]
-			pagesToFetch = pagesToFetch - 1
-		} else {
-			pagesToFetch = 0
-		}
-
-		// If we have more pages to fetch, fetch them
-		// and "keep the promise alive"
-		if (pagesToFetch > 0) {
-			return fetchData()
 		}
 	}
 
-	function updateFetchedGenerations(payload: TextToCadResponseResultsPage): boolean {
-		const nextBatch = payload?.items ?? []
+	function updateFetchedGenerations(nextBatch: TextToCadResponse[]): boolean {
 		let shouldKeepFetching = true
 		fetchedGenerations.update((g) => {
 			// By putting the new generations first, we ensure that the newest versions of any
