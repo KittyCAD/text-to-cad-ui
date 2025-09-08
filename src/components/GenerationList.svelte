@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TextToCadResponse, TextToCadResponseResultsPage } from '@kittycad/lib'
+	import type { TextToCadResponse, Uuid } from '@kittycad/lib'
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { page } from '$app/stores'
@@ -28,7 +28,7 @@
 			page_token: '',
 			sort_by: 'created_at_descending',
 			no_models: true,
-			conversation_id: undefined as any
+			conversation_id: '' as unknown as Uuid
 		})
 		fetchPromise = fetchData()
 	})
