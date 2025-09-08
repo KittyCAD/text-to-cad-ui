@@ -37,7 +37,12 @@
 		})
 
 		if (!response.ok) {
-			error = 'Failed to submit prompt'
+			const errorBody = await response.json()
+			if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
+				error = errorBody.message
+			} else {
+				error = 'Failed to submit prompt'
+			}
 			return
 		}
 
