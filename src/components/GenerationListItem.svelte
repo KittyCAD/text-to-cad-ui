@@ -13,7 +13,7 @@
 	} from '$lib/stores'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { MODEL_POLLING_INTERVAL } from '$lib/consts'
-	import type { Models } from '@kittycad/lib/types'
+	import type { TextToCadResponse } from '@kittycad/lib'
 
 	export let data: GenerationWithSource
 	let poller: ReturnType<typeof setInterval> | undefined
@@ -25,16 +25,9 @@
 	function updateGenerationItem(newItem: GenerationWithSource) {
 		const store = newItem.source === 'local' ? localGenerations : fetchedGenerations
 		store.update((g) => {
-			const itemNoModels: Models['TextToCad_type'] = {
-				...newItem,
-				outputs: {
-					'source.gltf': '',
-					'source.stl': ''
-				}
-			}
-			const foundIndex = g.findIndex((item) => item.id === itemNoModels.id)
+			const foundIndex = g.findIndex((item) => item.id === newItem.id)
 
-			return [...g.slice(0, foundIndex), itemNoModels, ...g.slice(foundIndex + 1)]
+			return [...g.slice(0, foundIndex), newItem, ...g.slice(foundIndex + 1)]
 		})
 	}
 
@@ -49,7 +42,7 @@
 		const res = await fetch(endpoints.viewNoModels(id), {
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + $page.data.token }
 		})
-		const newResponse: Models['TextToCad_type'] = await res.json().catch((err) => {
+		const newResponse: TextToCadResponse = await res.json().catch((err) => {
 			console.error(err)
 			error = { message: 'Failed to poll for generation status', status: res.status }
 		})
@@ -71,7 +64,7 @@
 	class={'generation-item group' +
 		($page.url.pathname.includes(data.id) ? ' current pointer-events-none' : '')}
 >
-	<span class="text">{data.prompt.trim()}</span>
+	<span class="text">{(data.prompt ?? '').trim()}</span>
 	<div class="group-hover:hidden group-focus:hidden">
 		{#if data.status === 'completed'}
 			<Checkmark

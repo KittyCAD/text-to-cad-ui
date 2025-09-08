@@ -8,7 +8,7 @@
 	import { tick } from 'svelte'
 
 	export let prompt: string = ''
-	export let outputs: PromptResponse['outputs']
+	export let outputs: Record<string, string>
 	export let className: string = ''
 	export let code: string = ''
 	let link: HTMLAnchorElement
@@ -62,8 +62,13 @@
 				return
 			}
 
-			outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
-			outputData = outputs[`source.${currentOutput}`]
+			if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
+				outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
+				outputData = outputs[`source.${currentOutput}`]
+			} else {
+				status = 'failed'
+				return
+			}
 		}
 		status = outputData ? 'ready' : 'failed'
 

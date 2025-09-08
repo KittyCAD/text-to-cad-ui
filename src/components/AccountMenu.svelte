@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib/types'
+	import type { User } from '@kittycad/lib'
 	import { paths } from '$lib/paths'
 	import Person from './Icons/Person.svelte'
 	import CaretDown from './Icons/CaretDown.svelte'
 	import Link from './Icons/Link.svelte'
 
-	export let user: Models['User_type']
+	export let user: User
 	let open = false
 	let shouldDisplayImage = Boolean(user?.image && user.image !== '')
 	let shouldDisplayInitial =

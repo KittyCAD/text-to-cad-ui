@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib/types'
+	import type { TextToCadResponse, TextToCadResponseResultsPage } from '@kittycad/lib'
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { endpoints } from '$lib/endpoints'
@@ -49,7 +49,7 @@
 			return
 		}
 
-		const nextBatchPayload = (await response.json()) as Models['TextToCadResultsPage_type']
+		const nextBatchPayload = (await response.json()) as TextToCadResponseResultsPage
 
 		// If we see that one of fetched generations has an id that matches one of the
 		// generations in the store, we know we can stop fetching
@@ -72,7 +72,7 @@
 		}
 	}
 
-	function updateFetchedGenerations(payload: Models['TextToCadResultsPage_type']): boolean {
+	function updateFetchedGenerations(payload: TextToCadResponseResultsPage): boolean {
 		const nextBatch = payload?.items ?? []
 		let shouldKeepFetching = true
 		fetchedGenerations.update((g) => {
@@ -81,7 +81,7 @@
 			const newGenerations = [...nextBatch, ...g]
 			const newGenerationsDeduplicated = Array.from(
 				new Set(newGenerations.map((item) => item.id))
-			).map((id) => newGenerations.find((item) => item.id === id)) as Models['TextToCad_type'][]
+			).map((id) => newGenerations.find((item) => item.id === id)) as TextToCadResponse[]
 
 			shouldKeepFetching =
 				newGenerationsDeduplicated.length !== g.length &&

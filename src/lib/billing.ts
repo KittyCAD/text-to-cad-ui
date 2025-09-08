@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib/types'
+import type { CustomerBalance, Org, ZooProductSubscriptions } from '@kittycad/lib'
 import { env } from '$lib/env'
 
 // Stolen from modeling-app, need to see what we do with those
@@ -9,8 +9,8 @@ enum Tier {
 	Unknown = 'unknown'
 }
 
-type OrgOrError = Models['Org_type'] | number | Error
-type SubscriptionsOrError = Models['ZooProductSubscriptions_type'] | number | Error
+type OrgOrError = Org | number | Error
+type SubscriptionsOrError = ZooProductSubscriptions | number | Error
 type TierBasedOn = {
 	orgOrError: OrgOrError
 	subscriptionsOrError: SubscriptionsOrError
@@ -22,10 +22,10 @@ export function isErr<T>(value: ExcludeErr<T> | Error): value is Error {
 }
 
 const toTierFrom = (args: TierBasedOn): Tier => {
-	if (typeof args.orgOrError !== 'number' && !('error_code' in args.orgOrError)) {
+	if (typeof args.orgOrError !== 'number' && !isErr(args.orgOrError)) {
 		return Tier.Organization
 	} else if (typeof args.subscriptionsOrError !== 'number' && !isErr(args.subscriptionsOrError)) {
-		const subscriptions: Models['ZooProductSubscriptions_type'] = args.subscriptionsOrError
+		const subscriptions: ZooProductSubscriptions = args.subscriptionsOrError
 		if (subscriptions?.modeling_app?.name === 'pro') {
 			return Tier.Pro
 		} else {
@@ -40,7 +40,7 @@ const toTierFrom = (args: TierBasedOn): Tier => {
  * Copied logic from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/machines/billingMachine.ts#L91
  */
 export async function getBillingInfo(token: string) {
-	const billingOrError: Models['CustomerBalance_type'] | number | Error = await fetch(
+	const billingOrError: CustomerBalance | number | Error = await fetch(
 		`${env.VITE_API_BASE_URL}/user/payment/balance`,
 		{
 			method: 'GET',
@@ -63,9 +63,9 @@ export async function getBillingInfo(token: string) {
 		return billingOrError
 	}
 
-	const billing: Models['CustomerBalance_type'] = billingOrError
+	const billing: CustomerBalance = billingOrError
 
-	const subscriptionsOrError: Models['ZooProductSubscriptions_type'] | number | Error = await fetch(
+	const subscriptionsOrError: ZooProductSubscriptions | number | Error = await fetch(
 		`${env.VITE_API_BASE_URL}/user/payment/subscriptions`,
 		{
 			method: 'GET',
@@ -88,16 +88,13 @@ export async function getBillingInfo(token: string) {
 		return subscriptionsOrError
 	}
 
-	const orgOrError: Models['Org_type'] | number | Error = await fetch(
-		`${env.VITE_API_BASE_URL}/org`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
+	const orgOrError: Org | number | Error = await fetch(`${env.VITE_API_BASE_URL}/org`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
 		}
-	)
+	})
 		.then((res) => res.json())
 		.catch((e) => {
 			console.error('Error fetching org:', e)

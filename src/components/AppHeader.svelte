@@ -1,5 +1,5 @@
 <script lang="ts" type="module">
-	import type { Models } from '@kittycad/lib/types'
+	import type { User } from '@kittycad/lib'
 	import AccountMenu from 'components/AccountMenu.svelte'
 	import { APP_NAME } from '$lib/consts'
 	import { paths } from '$lib/paths'
@@ -7,7 +7,7 @@
 	import Plus from 'components/Icons/Plus.svelte'
 	import { page } from '$app/stores'
 
-	export let user: Models['User_type']
+	export let user: User
 </script>
 
 <header id="app-header" data-testid="app-header">

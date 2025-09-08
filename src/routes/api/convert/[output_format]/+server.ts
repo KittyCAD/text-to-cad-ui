@@ -1,11 +1,11 @@
 import { CADMIMETypes, endpoints } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import type { Models } from '@kittycad/lib/types'
+import type { FileConversion, FileExportFormat } from '@kittycad/lib'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { env } from '$lib/env'
 
-export type ConvertResponse = Models['FileConversion_type'] & {
+export type ConvertResponse = FileConversion & {
 	statusCode: number
 }
 
@@ -21,19 +21,16 @@ export const POST: RequestHandler = async ({ cookies, fetch, request, params }) 
 		throw error(422, 'Invalid output format.')
 	}
 
-	const response = await fetch(
-		endpoints.convert(params.output_format as Models['FileExportFormat_type']),
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/octect-stream',
-				Authorization: `Bearer ${token}`
-			},
-			body
-		}
-	)
+	const response = await fetch(endpoints.convert(params.output_format as FileExportFormat), {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/octect-stream',
+			Authorization: `Bearer ${token}`
+		},
+		body
+	})
 
-	const data = (await response.json()) as Models['FileConversion_type']
+	const data = (await response.json()) as FileConversion
 
 	return json({
 		statusCode: response.status,

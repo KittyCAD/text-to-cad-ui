@@ -1,5 +1,5 @@
 import { endpoints } from '$lib/endpoints.js'
-import type { Models } from '@kittycad/lib/types'
+import type { TextToCad } from '@kittycad/lib'
 import { error, redirect } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
@@ -28,5 +28,5 @@ export async function load({ params, parent, fetch }) {
 		throw error(response.status, 'Failed to fetch model')
 	}
 
-	return (await response.json()) as Models['TextToCad_type']
+	return (await response.json()) as TextToCad
 }

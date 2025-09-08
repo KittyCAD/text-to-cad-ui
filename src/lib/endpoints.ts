@@ -1,8 +1,14 @@
-import type { Models } from '@kittycad/lib/types'
+import type {
+	FileExportFormat,
+	CreatedAtSortMode,
+	TextToCadResponseResultsPage,
+	MlFeedback,
+	TextToCad
+} from '@kittycad/lib'
 import { ITEMS_PER_PAGE } from './consts'
 import { env } from '$lib/env'
 
-export type CADFormat = Models['FileExportFormat_type']
+export type CADFormat = FileExportFormat
 
 export const CADMIMETypes = {
 	fbx: 'application/octet-stream', // FBX is not supported by MIME Type
@@ -17,13 +23,13 @@ export const CADMIMETypes = {
 interface ListParams {
 	limit?: number
 	page_token?: string
-	sort_by?: Models['CreatedAtSortMode_type']
+	sort_by?: CreatedAtSortMode
 }
 
 export const endpoints = {
 	convert: (output_format: CADFormat = 'obj') =>
 		`${env.VITE_API_BASE_URL}/file/conversion/gltf/${output_format}`,
-	feedback: (id: string, feedback: Models['TextToCad_type']['feedback']) =>
+	feedback: (id: string, feedback: MlFeedback) =>
 		`${env.VITE_API_BASE_URL}/user/text-to-cad/${id}?feedback=${feedback}`,
 	list: ({ limit = ITEMS_PER_PAGE, page_token }: ListParams) =>
 		`${env.VITE_API_BASE_URL}/user/text-to-cad?no_models=true&limit=${limit}${
@@ -37,6 +43,6 @@ export const endpoints = {
 	localFeedback: `/api/submit-feedback`
 }
 
-export type PromptResponse = Models['TextToCad_type']
+export type PromptResponse = TextToCad
 
-export type ListResponse = Models['TextToCadResultsPage_type']
+export type ListResponse = TextToCadResponseResultsPage

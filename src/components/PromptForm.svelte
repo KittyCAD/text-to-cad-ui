@@ -1,7 +1,7 @@
 <script lang="ts">
 	import autosize from 'svelte-autosize'
 	import { page } from '$app/stores'
-	import type { Models } from '@kittycad/lib/types'
+	import type { FileExportFormat, TextToCadResponse } from '@kittycad/lib'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'
@@ -26,7 +26,7 @@
 	}
 
 	const submitPrompt = async (prompt: string) => {
-		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
+		const OUTPUT_FORMAT: FileExportFormat = 'gltf'
 		const response = await fetch(endpoints.prompt(OUTPUT_FORMAT), {
 			method: 'POST',
 			headers: {
@@ -48,7 +48,7 @@
 
 		const responseData = (await response
 			.json()
-			.catch((e) => console.error('failed to parse response data', e))) as Models['TextToCad_type']
+			.catch((e) => console.error('failed to parse response data', e))) as TextToCadResponse
 
 		if (responseData) {
 			$localGenerations = [responseData, ...$localGenerations]
