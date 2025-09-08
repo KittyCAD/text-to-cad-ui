@@ -25,7 +25,6 @@
 		pager = ml.list_text_to_cad_models_for_user_pager({
 			client,
 			limit: ITEMS_PER_PAGE,
-			page_token: '',
 			sort_by: 'created_at_descending',
 			no_models: true
 		} as unknown as Parameters<typeof ml.list_text_to_cad_models_for_user_pager>[0])
