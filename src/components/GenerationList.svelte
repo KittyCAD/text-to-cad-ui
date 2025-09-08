@@ -2,13 +2,16 @@
 	import type { TextToCadResponse, TextToCadResponseResultsPage } from '@kittycad/lib'
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
-	import { endpoints } from '$lib/endpoints'
 	import { page } from '$app/stores'
 	import { fetchedGenerations, generations, nextPageTokens } from '$lib/stores'
 	import { sortTimeBuckets } from '$lib/time'
 	import Spinner from 'components/Icons/Spinner.svelte'
-	import { PAGES_AHEAD_TO_FETCH } from '$lib/consts'
+	import { PAGES_AHEAD_TO_FETCH, ITEMS_PER_PAGE } from '$lib/consts'
 	import { onMount } from 'svelte'
+	import { ml } from '@kittycad/lib'
+	import { createZooClient } from '$lib/zooClient'
+	import { toasts } from '$lib/toast'
+	import { getApiErrorMessage } from '$lib/errors'
 
 	let error: string | null = null
 	let pagesToFetch = PAGES_AHEAD_TO_FETCH
@@ -35,21 +38,22 @@
 		// If we're at the end of the list, don't fetch more
 		if ($nextPageTokens[$nextPageTokens.length - 1] === null) return
 
-		const response = await fetch(
-			endpoints.list({ page_token: $nextPageTokens[$nextPageTokens.length - 1] }),
-			{
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + $page.data.token
-				}
-			}
-		)
-		if (!response.ok) {
+		const client = createZooClient({ token: $page.data.token })
+		let nextBatchPayload: TextToCadResponseResultsPage
+		try {
+			nextBatchPayload = await ml.list_text_to_cad_models_for_user({
+				client,
+				limit: ITEMS_PER_PAGE,
+				page_token: $nextPageTokens[$nextPageTokens.length - 1] || '',
+				sort_by: 'created_at_descending',
+				no_models: true,
+				conversation_id: undefined as any
+			})
+		} catch (e) {
 			error = 'Failed to fetch your creations'
+			toasts.add(getApiErrorMessage(e, error), 'error')
 			return
 		}
-
-		const nextBatchPayload = (await response.json()) as TextToCadResponseResultsPage
 
 		// If we see that one of fetched generations has an id that matches one of the
 		// generations in the store, we know we can stop fetching

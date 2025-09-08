@@ -1,7 +1,9 @@
-import { CADMIMETypes, endpoints } from '$lib/endpoints'
+import { CADMIMETypes } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import type { FileConversion, FileExportFormat } from '@kittycad/lib'
+import { file } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { env } from '$lib/env'
 
@@ -21,19 +23,16 @@ export const POST: RequestHandler = async ({ cookies, fetch, request, params }) 
 		throw error(422, 'Invalid output format.')
 	}
 
-	const response = await fetch(endpoints.convert(params.output_format as FileExportFormat), {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/octect-stream',
-			Authorization: `Bearer ${token}`
-		},
-		body
-	})
-
-	const data = (await response.json()) as FileConversion
-
-	return json({
-		statusCode: response.status,
-		...data
-	} satisfies ConvertResponse)
+		try {
+			const client = createZooClient({ token, fetch })
+			const data = await file.create_file_conversion({
+				client,
+				output_format: params.output_format as FileExportFormat,
+				src_format: 'gltf',
+				body
+			})
+			return json({ statusCode: 200, ...data } satisfies ConvertResponse)
+		} catch (e) {
+			throw error(502, 'Conversion failed')
+		}
 }

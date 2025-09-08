@@ -2,6 +2,10 @@
 	import autosize from 'svelte-autosize'
 	import { page } from '$app/stores'
 	import type { FileExportFormat, TextToCad } from '@kittycad/lib'
+	import { ml } from '@kittycad/lib'
+	import { createZooClient } from '$lib/zooClient'
+	import { getApiErrorMessage } from '$lib/errors'
+	import { toasts } from '$lib/toast'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'
@@ -27,28 +31,20 @@
 
 	const submitPrompt = async (prompt: string) => {
 		const OUTPUT_FORMAT: FileExportFormat = 'gltf'
-		const response = await fetch(endpoints.prompt(OUTPUT_FORMAT), {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + token
-			},
-			body: JSON.stringify({ prompt })
-		})
-
-		if (!response.ok) {
-			const errorBody = await response.json()
-			if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
-				error = errorBody.message
-			} else {
-				error = 'Failed to submit prompt'
-			}
+		let responseData: TextToCad | undefined
+		try {
+			const client = createZooClient({ token })
+			responseData = await ml.create_text_to_cad({
+				client,
+				output_format: OUTPUT_FORMAT,
+				kcl: true,
+				body: { prompt }
+			})
+		} catch (e: unknown) {
+			const msg = getApiErrorMessage(e, 'Failed to submit prompt')
+			toasts.add(msg, 'error')
 			return
 		}
-
-		const responseData = (await response
-			.json()
-			.catch((e) => console.error('failed to parse response data', e))) as TextToCad
 
 		if (responseData) {
 			const responseWithType = { type: 'text_to_cad', ...responseData } as const
@@ -68,6 +64,7 @@
 		form.reset()
 
 		showSuccessMessage = true
+		toasts.add('Prompt submitted successfully', 'success', 2500)
 
 		isCoolingDown = true
 		setTimeout(() => {

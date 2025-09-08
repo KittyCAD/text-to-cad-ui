@@ -1,5 +1,6 @@
-import type { CustomerBalance, Org, ZooProductSubscriptions } from '@kittycad/lib'
-import { env } from '$lib/env'
+import type { CustomerBalance, UserOrgInfo, ZooProductSubscriptions } from '@kittycad/lib'
+import { payments, orgs } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
 
 // Stolen from modeling-app, need to see what we do with those
 enum Tier {
@@ -9,7 +10,7 @@ enum Tier {
 	Unknown = 'unknown'
 }
 
-type OrgOrError = Org | number | Error
+type OrgOrError = UserOrgInfo | Error
 type SubscriptionsOrError = ZooProductSubscriptions | number | Error
 type TierBasedOn = {
 	orgOrError: OrgOrError
@@ -40,19 +41,12 @@ const toTierFrom = (args: TierBasedOn): Tier => {
  * Copied logic from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/machines/billingMachine.ts#L91
  */
 export async function getBillingInfo(token: string) {
-	const billingOrError: CustomerBalance | number | Error = await fetch(
-		`${env.VITE_API_BASE_URL}/user/payment/balance`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
-		}
-	)
-		.then((res) => res.json())
+	const client = createZooClient({ token })
+	const billingOrError: CustomerBalance | Error = await payments
+		.get_payment_balance_for_user({ client, include_total_due: false })
 		.catch((e) => {
 			console.error('Error fetching balance:', e)
+			return e as Error
 		})
 
 	if (typeof billingOrError === 'number') {
@@ -65,19 +59,11 @@ export async function getBillingInfo(token: string) {
 
 	const billing: CustomerBalance = billingOrError
 
-	const subscriptionsOrError: ZooProductSubscriptions | number | Error = await fetch(
-		`${env.VITE_API_BASE_URL}/user/payment/subscriptions`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`
-			}
-		}
-	)
-		.then((res) => res.json())
+	const subscriptionsOrError: ZooProductSubscriptions | Error = await payments
+		.get_user_subscription({ client })
 		.catch((e) => {
 			console.error('Error fetching subscriptions:', e)
+			return e as Error
 		})
 
 	if (typeof subscriptionsOrError === 'number') {
@@ -88,16 +74,11 @@ export async function getBillingInfo(token: string) {
 		return subscriptionsOrError
 	}
 
-	const orgOrError: Org | number | Error = await fetch(`${env.VITE_API_BASE_URL}/org`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
-	})
-		.then((res) => res.json())
+	const orgOrError: UserOrgInfo | Error = await orgs
+		.get_user_org({ client })
 		.catch((e) => {
 			console.error('Error fetching org:', e)
+			return e as Error
 		})
 
 	const tier = toTierFrom({
@@ -115,9 +96,10 @@ export async function getBillingInfo(token: string) {
 			credits = Infinity
 			break
 		case Tier.Free:
-			// TS too dumb Tier.Free has the same logic
-			if (typeof subscriptionsOrError !== 'number' && !isErr(subscriptionsOrError)) {
-				allowance = Number(subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits)
+			if (!isErr(subscriptionsOrError)) {
+				allowance = Number(
+					subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits
+				)
 			}
 			break
 		case Tier.Unknown:

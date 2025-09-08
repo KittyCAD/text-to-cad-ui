@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-	import { endpoints } from '$lib/endpoints'
-	import { page } from '$app/stores'
+		import { page } from '$app/stores'
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 	import Close from 'components/Icons/Close.svelte'
 	import Spinner from 'components/Icons/Spinner.svelte'
@@ -39,20 +38,24 @@
 	}
 
 	const doPoll = (id: string) => async () => {
-		const res = await fetch(endpoints.viewNoModels(id), {
-			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + $page.data.token }
-		})
-		const newResponse: TextToCadResponse = await res.json().catch((err) => {
-			console.error(err)
-			error = { message: 'Failed to poll for generation status', status: res.status }
-		})
+		try {
+			const client = { token: $page.data.token }
+			const newResponse: TextToCadResponse = await (await import('@kittycad/lib')).ml.get_text_to_cad_model_for_user({
+				client,
+				id
+			})
+			let newItem = Object.assign({}, data, newResponse, { source: data.source })
 
-		let newItem = Object.assign({}, data, newResponse, { source: data.source })
-
-		if (newResponse && isSettled(newItem.status)) {
-			console.log('clearing the poller!')
-			clearInterval(poller)
-			updateGenerationItem(newItem)
+			if (newResponse && isSettled(newItem.status)) {
+				console.log('clearing the poller!')
+				clearInterval(poller)
+				updateGenerationItem(newItem)
+			}
+		} catch (e: unknown) {
+			error = { message: 'Failed to poll for generation status', status: 500 }
+			const { toasts } = await import('$lib/toast')
+			const { getApiErrorMessage } = await import('$lib/errors')
+			toasts.add(getApiErrorMessage(e, error.message), 'error')
 		}
 	}
 

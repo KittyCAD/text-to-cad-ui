@@ -5,6 +5,8 @@ import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect } from '@sveltejs/kit'
 import { env } from '$lib/env'
 import { getBillingInfo, isErr } from '$lib/billing'
+import { users } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
 
 export const load = async ({ cookies, request, url, fetch }) => {
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
@@ -18,17 +20,9 @@ export const load = async ({ cookies, request, url, fetch }) => {
 		signOut()
 	}
 
-	const currentUser = await fetch(env.VITE_API_BASE_URL + '/user', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
-	})
-		.then((res) => res.json())
+	const currentUser = await users
+		.get_user_self({ client: createZooClient({ token, fetch }) })
 		.catch((e) => {
-			// If the user had a token but there was an error fetching the user,
-			//delete the token, because it was likely revoked or expired
 			console.error('Error fetching user:', e)
 			signOut()
 		})

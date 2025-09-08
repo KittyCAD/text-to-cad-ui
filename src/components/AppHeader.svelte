@@ -7,7 +7,7 @@
 	import Plus from 'components/Icons/Plus.svelte'
 	import { page } from '$app/stores'
 
-	export let user: User
+	export let user: User | undefined
 </script>
 
 <header id="app-header" data-testid="app-header">

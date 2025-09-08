@@ -6,6 +6,8 @@
 	import LoadingIndicator from './LoadingIndicator.svelte'
 	import { onNavigate } from '$app/navigation'
 	import { tick } from 'svelte'
+	import { getApiErrorMessage } from '$lib/errors'
+	import { toasts } from '$lib/toast'
 
 	export let prompt: string = ''
 	export let outputs: Record<string, string>
@@ -48,28 +50,36 @@
 
 		if (outputs[`source.${currentOutput}`]) {
 			outputData = outputs[`source.${currentOutput}`]
-		} else {
-			const response = await fetch(endpoints.localConvert(currentOutput), {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/octet-stream' },
-				credentials: 'include',
-				body: base64ToBlob(outputs['source.gltf']) // we always have gLTF
-			})
-
-			const responseData = (await response.json()) as ConvertResponse
-			if (!response.ok || !responseData || !responseData.statusCode.toString().startsWith('2')) {
-				status = 'failed'
-				return
-			}
-
-			if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
-				outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
-				outputData = outputs[`source.${currentOutput}`]
 			} else {
-				status = 'failed'
-				return
+				try {
+					const response = await fetch(endpoints.localConvert(currentOutput), {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/octet-stream' },
+						credentials: 'include',
+						body: base64ToBlob(outputs['source.gltf']) // we always have gLTF
+					})
+
+					const responseData = (await response.json()) as ConvertResponse
+					if (!response.ok || !responseData || !responseData.statusCode.toString().startsWith('2')) {
+						status = 'failed'
+						toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+						return
+					}
+
+					if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
+						outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
+						outputData = outputs[`source.${currentOutput}`]
+					} else {
+						status = 'failed'
+						toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+						return
+					}
+				} catch (e) {
+					status = 'failed'
+					toasts.add(getApiErrorMessage(e, 'Failed to convert file'), 'error')
+					return
+				}
 			}
-		}
 		status = outputData ? 'ready' : 'failed'
 
 		if (outputData) {
