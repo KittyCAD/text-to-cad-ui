@@ -2,7 +2,7 @@ import { CADMIMETypes } from '$lib/endpoints'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import type { FileConversion, FileExportFormat } from '@kittycad/lib'
-import { file } from '@kittycad/lib'
+import { file, ApiError } from '@kittycad/lib'
 import { createZooClient } from '$lib/zooClient'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import { env } from '$lib/env'
@@ -33,6 +33,12 @@ export const POST: RequestHandler = async ({ cookies, fetch, request, params }) 
 			})
 			return json({ statusCode: 200, ...data } satisfies ConvertResponse)
 		} catch (e) {
-			throw error(502, 'Conversion failed')
+			if (e instanceof ApiError) {
+				return json(
+					{ statusCode: e.status, message: e.body?.message || e.message },
+					{ status: e.status }
+				)
+			}
+			throw error(502, (e as Error)?.message || 'Conversion failed')
 		}
 }

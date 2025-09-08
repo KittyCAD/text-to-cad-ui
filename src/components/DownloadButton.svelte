@@ -62,7 +62,8 @@
 					const responseData = (await response.json()) as ConvertResponse
 					if (!response.ok || !responseData || !responseData.statusCode.toString().startsWith('2')) {
 						status = 'failed'
-						toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+						const anyData = responseData as unknown as { message?: string }
+						toasts.add(anyData?.message || getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
 						return
 					}
 
@@ -71,7 +72,8 @@
 						outputData = outputs[`source.${currentOutput}`]
 					} else {
 						status = 'failed'
-						toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+						const anyData = responseData as unknown as { message?: string }
+						toasts.add(anyData?.message || getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
 						return
 					}
 				} catch (e) {
