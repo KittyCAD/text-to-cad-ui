@@ -3,7 +3,7 @@
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { page } from '$app/stores'
-	import { fetchedGenerations, generations, nextPageTokens } from '$lib/stores'
+	import { fetchedGenerations, generations } from '$lib/stores'
 	import { sortTimeBuckets } from '$lib/time'
 	import Spinner from 'components/Icons/Spinner.svelte'
 	import { PAGES_AHEAD_TO_FETCH, ITEMS_PER_PAGE } from '$lib/consts'
@@ -18,6 +18,7 @@
 	let scrolledPercentage = 0
 	let fetchPromise: Promise<void>
 	let pager: ReturnType<typeof ml.list_text_to_cad_models_for_user_pager> | null = null
+	let hasNext = true
 
 	onMount(() => {
 		const client = createZooClient({ token: $page.data.token })
@@ -47,14 +48,14 @@
 		if (!pager) return
 		try {
 			if (!pager.hasNext()) {
-				$nextPageTokens = [...$nextPageTokens, null]
+				hasNext = false
 				pagesToFetch = 0
 				return
 			}
 			const nextBatch = await pager.next()
 			const shouldContinue = updateFetchedGenerations(nextBatch)
-			$nextPageTokens = [...$nextPageTokens, pager.hasNext() ? 'next' : null]
-			pagesToFetch = shouldContinue && pager.hasNext() ? pagesToFetch - 1 : 0
+			hasNext = pager.hasNext()
+			pagesToFetch = shouldContinue && hasNext ? pagesToFetch - 1 : 0
 			if (pagesToFetch > 0) {
 				return fetchData()
 			}
@@ -112,7 +113,7 @@
 				<Spinner class="w-5 h-5 animate-spin inline-block mr-2" />
 			</p>
 		{:then}
-			{#if $nextPageTokens[$nextPageTokens.length - 1] === null}
+			{#if !hasNext}
 				<p class="text-chalkboard-100 dark:text-chalkboard-30 text-sm m-2 py-6 border-t">
 					You've reached the end of your creations 🎉
 				</p>
