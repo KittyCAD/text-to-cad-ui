@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CADMIMETypes, type CADFormat, type PromptResponse, endpoints } from '$lib/endpoints'
+	import { CADMIMETypes, type CADFormat, endpoints } from '$lib/endpoints'
 	import { base64ToBlob } from '$lib/base64ToBlob'
 	import type { ConvertResponse } from '../routes/api/convert/[output_format]/+server'
 	import { toKebabCase } from '$lib/toKebabCase'

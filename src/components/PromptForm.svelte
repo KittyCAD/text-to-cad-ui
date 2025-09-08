@@ -1,7 +1,7 @@
 <script lang="ts">
 	import autosize from 'svelte-autosize'
 	import { page } from '$app/stores'
-	import type { FileExportFormat, TextToCadResponse } from '@kittycad/lib'
+	import type { FileExportFormat, TextToCad } from '@kittycad/lib'
 	import ArrowRight from './Icons/ArrowRight.svelte'
 	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'
@@ -48,11 +48,12 @@
 
 		const responseData = (await response
 			.json()
-			.catch((e) => console.error('failed to parse response data', e))) as TextToCadResponse
+			.catch((e) => console.error('failed to parse response data', e))) as TextToCad
 
 		if (responseData) {
-			$localGenerations = [responseData, ...$localGenerations]
-			$unreadGenerations = [responseData.id, ...$unreadGenerations]
+			const responseWithType = { type: 'text_to_cad', ...responseData } as const
+			$localGenerations = [responseWithType, ...$localGenerations]
+			$unreadGenerations = [responseWithType.id, ...$unreadGenerations]
 		}
 
 		goto(paths.VIEW(responseData.id))
