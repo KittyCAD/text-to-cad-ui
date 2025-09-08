@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TextToCadResponse, Uuid } from '@kittycad/lib'
+	import type { TextToCadResponse } from '@kittycad/lib'
 	import type { UIEventHandler } from 'svelte/elements'
 	import GenerationListItem from './GenerationListItem.svelte'
 	import { page } from '$app/stores'
@@ -27,9 +27,8 @@
 			limit: ITEMS_PER_PAGE,
 			page_token: '',
 			sort_by: 'created_at_descending',
-			no_models: true,
-			conversation_id: '' as unknown as Uuid
-		})
+			no_models: true
+		} as unknown as Parameters<typeof ml.list_text_to_cad_models_for_user_pager>[0])
 		fetchPromise = fetchData()
 	})
 
