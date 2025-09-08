@@ -1,4 +1,4 @@
-import type { PromptResponse } from '$lib/endpoints'
+import type { TextToCad } from '@kittycad/lib'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { AUTH_COOKIE_NAME } from '$lib/cookies'
@@ -8,7 +8,7 @@ import { createZooClient } from '$lib/zooClient'
 
 export type PromptLoadResponse = {
 	status: number
-	body?: PromptResponse
+	body?: TextToCad
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
