@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { CADMIMETypes, type CADFormat, endpoints } from '$lib/endpoints'
+	import { CADMIMETypes, type CADFormat } from '$lib/endpoints'
 	import { base64ToBlob } from '$lib/base64ToBlob'
-	import type { ConvertResponse } from '../routes/api/convert/[output_format]/+server'
 	import { toKebabCase } from '$lib/toKebabCase'
 	import LoadingIndicator from './LoadingIndicator.svelte'
 	import { onNavigate } from '$app/navigation'
@@ -51,36 +50,33 @@
 		if (outputs[`source.${currentOutput}`]) {
 			outputData = outputs[`source.${currentOutput}`]
 			} else {
-				try {
-					const response = await fetch(endpoints.localConvert(currentOutput), {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/octet-stream' },
-						credentials: 'include',
-						body: base64ToBlob(outputs['source.gltf']) // we always have gLTF
-					})
+					try {
+						const { file, type FileExportFormat } = await import('@kittycad/lib')
+						const { createZooClient } = await import('$lib/zooClient')
+						const { page } = await import('$app/stores')
+						const token = (page as any).get()?.data?.token ?? undefined
+						const client = createZooClient({ token })
+						const body = await base64ToBlob(outputs['source.gltf']).text()
+						const responseData = await file.create_file_conversion({
+							client,
+							output_format: currentOutput as FileExportFormat,
+							src_format: 'gltf',
+							body
+						})
 
-					const responseData = (await response.json()) as ConvertResponse
-					if (!response.ok || !responseData || !responseData.statusCode.toString().startsWith('2')) {
+						if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
+							outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
+							outputData = outputs[`source.${currentOutput}`]
+						} else {
+							status = 'failed'
+							toasts.add(getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+							return
+						}
+					} catch (e) {
 						status = 'failed'
-						const anyData = responseData as unknown as { message?: string }
-						toasts.add(anyData?.message || getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
+						toasts.add(getApiErrorMessage(e, 'Failed to convert file'), 'error')
 						return
 					}
-
-					if (responseData.outputs && responseData.outputs[`source.${currentOutput}`]) {
-						outputs[`source.${currentOutput}`] = responseData.outputs[`source.${currentOutput}`]
-						outputData = outputs[`source.${currentOutput}`]
-					} else {
-						status = 'failed'
-						const anyData = responseData as unknown as { message?: string }
-						toasts.add(anyData?.message || getApiErrorMessage(undefined, 'Failed to convert file'), 'error')
-						return
-					}
-				} catch (e) {
-					status = 'failed'
-					toasts.add(getApiErrorMessage(e, 'Failed to convert file'), 'error')
-					return
-				}
 			}
 		status = outputData ? 'ready' : 'failed'
 

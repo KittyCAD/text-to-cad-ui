@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-		import { page } from '$app/stores'
+	import { page } from '$app/stores'
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 	import Close from 'components/Icons/Close.svelte'
 	import Spinner from 'components/Icons/Spinner.svelte'
@@ -40,7 +40,9 @@
 	const doPoll = (id: string) => async () => {
 		try {
 			const client = { token: $page.data.token }
-			const newResponse: TextToCadResponse = await (await import('@kittycad/lib')).ml.get_text_to_cad_model_for_user({
+			const newResponse: TextToCadResponse = await (
+				await import('@kittycad/lib')
+			).ml.get_text_to_cad_model_for_user({
 				client,
 				id
 			})

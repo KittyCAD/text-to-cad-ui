@@ -50,19 +50,19 @@
 			/>
 			{#if shouldDisplayInitial}
 				{#if user}
-				<span
-					class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
-					data-testid="initial"
-				>
-					{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
-				</span>
+					<span
+						class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
+						data-testid="initial"
+					>
+						{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
+					</span>
 				{:else}
-				<span
-					class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
-					data-testid="initial"
-				>
-					?
-				</span>
+					<span
+						class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
+						data-testid="initial"
+					>
+						?
+					</span>
 				{/if}
 			{:else if !shouldDisplayImage}
 				<Person

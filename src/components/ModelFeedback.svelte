@@ -1,26 +1,26 @@
 <script lang="ts">
-  import ThumbsUp from './ThumbsUp.svelte'
-  import type { MlFeedback } from '@kittycad/lib'
-  import { ml } from '@kittycad/lib'
-  import { page } from '$app/stores'
-  import { createZooClient } from '$lib/zooClient'
-  import { toasts } from '$lib/toast'
-  import { getApiErrorMessage } from '$lib/errors'
+	import ThumbsUp from './ThumbsUp.svelte'
+	import type { MlFeedback } from '@kittycad/lib'
+	import { ml } from '@kittycad/lib'
+	import { page } from '$app/stores'
+	import { createZooClient } from '$lib/zooClient'
+	import { toasts } from '$lib/toast'
+	import { getApiErrorMessage } from '$lib/errors'
 
-  export let modelId: string
-  export let feedback: MlFeedback | undefined
+	export let modelId: string
+	export let feedback: MlFeedback | undefined
 
-  const giveFeedback = (newFeedback: MlFeedback) => async () => {
-    if (feedback === newFeedback) return
-    try {
-      const client = createZooClient({ token: $page.data.token })
-      await ml.create_text_to_cad_model_feedback({ client, id: modelId, feedback: newFeedback })
-      feedback = newFeedback
-      toasts.add('Thanks for the feedback!', 'success', 2000)
-    } catch (e) {
-      toasts.add(getApiErrorMessage(e, 'Failed to submit feedback'), 'error')
-    }
-  }
+	const giveFeedback = (newFeedback: MlFeedback) => async () => {
+		if (feedback === newFeedback) return
+		try {
+			const client = createZooClient({ token: $page.data.token })
+			await ml.create_text_to_cad_model_feedback({ client, id: modelId, feedback: newFeedback })
+			feedback = newFeedback
+			toasts.add('Thanks for the feedback!', 'success', 2000)
+		} catch (e) {
+			toasts.add(getApiErrorMessage(e, 'Failed to submit feedback'), 'error')
+		}
+	}
 </script>
 
 <div class="flex gap-2 justify-evenly items-center font-mono p-2">

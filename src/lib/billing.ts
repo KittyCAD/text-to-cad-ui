@@ -74,12 +74,10 @@ export async function getBillingInfo(token: string) {
 		return subscriptionsOrError
 	}
 
-	const orgOrError: UserOrgInfo | Error = await orgs
-		.get_user_org({ client })
-		.catch((e) => {
-			console.error('Error fetching org:', e)
-			return e as Error
-		})
+	const orgOrError: UserOrgInfo | Error = await orgs.get_user_org({ client }).catch((e) => {
+		console.error('Error fetching org:', e)
+		return e as Error
+	})
 
 	const tier = toTierFrom({
 		orgOrError,
@@ -97,9 +95,7 @@ export async function getBillingInfo(token: string) {
 			break
 		case Tier.Free:
 			if (!isErr(subscriptionsOrError)) {
-				allowance = Number(
-					subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits
-				)
+				allowance = Number(subscriptionsOrError?.modeling_app?.monthly_pay_as_you_go_api_credits)
 			}
 			break
 		case Tier.Unknown:
