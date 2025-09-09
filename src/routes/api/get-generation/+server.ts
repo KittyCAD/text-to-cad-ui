@@ -1,5 +1,5 @@
-import { AUTH_COOKIE_NAME } from '$lib/cookies'
 import type { TextToCadResponse } from '@kittycad/lib'
+import { getCookieName } from '$lib/cookies'
 import { error, json, type RequestHandler } from '@sveltejs/kit'
 import { env } from '$lib/env'
 import { ml } from '@kittycad/lib'
@@ -11,7 +11,7 @@ export type LoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token = env.MODE === 'production' ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_API_TOKEN
+	const token = env.MODE === 'production' ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
 
 	const body = await request.json()
 

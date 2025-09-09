@@ -36,12 +36,13 @@
 			<div
 				class="w-full flex items-center justify-start md:col-span-3 text-lg md:text-4xl font-mono border py-4 px-2 md:px-6"
 			>
-				<div
+				<a
+					href={paths.SIGN_IN($page.url.origin.concat(paths.SUCCESS))}
 					class="typing-animation block text-chalkboard-70 dark:text-chalkboard-50"
 					style={`--steps: ${examples[0].prompt.length}`}
 				>
 					<div class="block w-fit">{examples[0].prompt}&nbsp;</div>
-				</div>
+				</a>
 			</div>
 			<div class="md:col-span-3 flex flex-col md:flex-row items-center border border-t-0">
 				<p class="flex-1 pl-2 md:pl-4 py-2 text-chalkboard-80 dark:text-chalkboard-30">
