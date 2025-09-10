@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib/types'
+import type { User } from '@kittycad/lib'
 
 const mockUserKeys = ['mockUserMissingPayment', 'mockUserFailedPayment'] as const
 export type MockUserMethod = (typeof mockUserKeys)[number]
@@ -7,17 +7,17 @@ type MockMethods<T extends string, M> = {
 	[K in T]: (input: M) => M
 }
 
-const mockUserMissingPayment = (user: Models['User_type']): Models['User_type'] => ({
+const mockUserMissingPayment = (user: User): User => ({
 	...user,
 	block: 'missing_payment_method'
 })
 
-const mockUserFailedPayment = (user: Models['User_type']): Models['User_type'] => ({
+const mockUserFailedPayment = (user: User): User => ({
 	...user,
 	block: 'payment_method_failed'
 })
 
-export const hooksUserMocks: MockMethods<MockUserMethod, Models['User_type']> = {
+export const hooksUserMocks: MockMethods<MockUserMethod, User> = {
 	mockUserMissingPayment,
 	mockUserFailedPayment
 }

@@ -16,8 +16,8 @@
 			Text-to-CAD <span class="text-green">Generator</span>
 		</h1>
 		<div>
-			<PromptForm bind:input token={data.token} disabled={data.user.block} />
-			{#if data.user.block}
+			<PromptForm bind:input token={data.token} disabled={Boolean(data.user?.block)} />
+			{#if data.user?.block}
 				<div class="mt-4">
 					<BlockedMessage blockedReason={data.user.block} />
 				</div>

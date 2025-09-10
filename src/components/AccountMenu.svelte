@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Models } from '@kittycad/lib/types'
+	import type { User } from '@kittycad/lib'
 	import { paths } from '$lib/paths'
 	import Person from './Icons/Person.svelte'
 	import CaretDown from './Icons/CaretDown.svelte'
 	import Link from './Icons/Link.svelte'
 
-	export let user: Models['User_type']
+	export let user: User | undefined
 	let open = false
 	let shouldDisplayImage = Boolean(user?.image && user.image !== '')
 	let shouldDisplayInitial =
@@ -49,12 +49,21 @@
 				referrerpolicy="no-referrer"
 			/>
 			{#if shouldDisplayInitial}
-				<span
-					class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
-					data-testid="initial"
-				>
-					{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
-				</span>
+				{#if user}
+					<span
+						class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
+						data-testid="initial"
+					>
+						{user.name?.[0] || user.first_name?.[0] || user.email?.[0]}
+					</span>
+				{:else}
+					<span
+						class="uppercase w-5 h-5 font-bold text-xl leading-[1] pt-0.5 text-center text-chalkboard-10 dark:text-chalkboard-110"
+						data-testid="initial"
+					>
+						?
+					</span>
+				{/if}
 			{:else if !shouldDisplayImage}
 				<Person
 					data-testid="person-icon"

@@ -1,4 +1,4 @@
-import type { Models } from '@kittycad/lib/types'
+import type { TextToCadResponse } from '@kittycad/lib'
 import { derived, writable, type Readable } from 'svelte/store'
 import groupBy from 'object.groupby'
 import { PERSIST_KEY_GENERATIONS, PERSIST_KEY_UNREAD, PERSIST_KEY_VERSION } from './consts'
@@ -13,7 +13,7 @@ if (browser && localStorage.getItem(PERSIST_KEY_VERSION) !== PERSIST_KEY_VERSION
 	localStorage.setItem(PERSIST_KEY_VERSION, PERSIST_KEY_VERSION)
 }
 
-export const localGenerations = writable<Models['TextToCad_type'][]>([])
+export const localGenerations = writable<TextToCadResponse[]>([])
 export const unreadGenerations = writable<string[]>(
 	browser ? JSON.parse(localStorage.getItem(PERSIST_KEY_UNREAD) ?? '[]') : []
 )
@@ -22,11 +22,11 @@ unreadGenerations.subscribe((value) => {
 		localStorage.setItem(PERSIST_KEY_UNREAD, JSON.stringify(value))
 	}
 })
-export const fetchedGenerations = writable<Models['TextToCad_type'][]>(
+export const fetchedGenerations = writable<TextToCadResponse[]>(
 	browser ? JSON.parse(localStorage.getItem(PERSIST_KEY_GENERATIONS) ?? '[]') : []
 )
 
-export type GenerationWithSource = Models['TextToCad_type'] & { source: 'local' | 'fetched' }
+export type GenerationWithSource = TextToCadResponse & { source: 'local' | 'fetched' }
 
 export const combinedGenerations = derived(
 	[localGenerations, fetchedGenerations],
@@ -96,11 +96,6 @@ combinedGenerations.subscribe((value) => {
 export const generations = derived([combinedGenerations], ([$combinedGenerations]) => {
 	return groupBy($combinedGenerations, ({ created_at }) => bucketByTime(created_at))
 })
-
-const NEXT_PAGE_TOKENS_KEY = 'nextPageTokens'
-export const nextPageTokensInitial = fromLocalStorage<string[]>(NEXT_PAGE_TOKENS_KEY, [])
-export const nextPageTokens = writable(nextPageTokensInitial)
-toLocalStorage(nextPageTokens, NEXT_PAGE_TOKENS_KEY)
 
 type UserSettings = {
 	autoRotateModels: boolean

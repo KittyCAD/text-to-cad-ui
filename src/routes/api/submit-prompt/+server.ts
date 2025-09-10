@@ -1,12 +1,14 @@
-import { endpoints, type PromptResponse } from '$lib/endpoints'
+import type { TextToCad } from '@kittycad/lib'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { getCookieName } from '$lib/cookies'
 import { env } from '$lib/env'
+import { ml } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
 
 export type PromptLoadResponse = {
 	status: number
-	body?: PromptResponse
+	body?: TextToCad
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
@@ -16,20 +18,13 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 	const body = await request.json()
 	if (!body?.prompt) throw error(422, 'Please include a model ID under the "prompt" key.')
 
-	const response = await fetch(endpoints.prompt(), {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		},
-		body: JSON.stringify({
-			prompt: body.prompt
-		})
+	const client = createZooClient({ token, fetch })
+	const data = await ml.create_text_to_cad({
+		client,
+		output_format: 'gltf',
+		kcl: true,
+		body: { prompt: body.prompt }
 	})
-	const data = (await response.json()) as PromptResponse
 
-	return json({
-		status: response.status,
-		body: data
-	} satisfies PromptLoadResponse)
+	return json({ status: 200, body: data } satisfies PromptLoadResponse)
 }
