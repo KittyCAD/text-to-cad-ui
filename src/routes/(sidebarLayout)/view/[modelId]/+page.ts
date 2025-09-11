@@ -1,6 +1,7 @@
-import { endpoints } from '$lib/endpoints.js'
-import type { Models } from '@kittycad/lib/types'
-import { error, redirect, type ServerLoadEvent } from '@sveltejs/kit'
+import type { TextToCad } from '@kittycad/lib'
+import { ml } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
+import { error, redirect } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ params, parent, fetch }: ServerLoadEvent) {
@@ -10,30 +11,10 @@ export async function load({ params, parent, fetch }: ServerLoadEvent) {
 		throw redirect(301, '/')
 	}
 
-	if (!params.modelId) {
-  	throw error(
-    	400,
-    	'Missing modelId'
-  	)
+	try {
+		const client = createZooClient({ token: data.token, fetch })
+		return (await ml.get_text_to_cad_model_for_user({ client, id: params.modelId })) as TextToCad
+	} catch (e) {
+		throw error(500, 'Failed to fetch model')
 	}
-
-	const response = await fetch(endpoints.view(params.modelId), {
-		headers: {
-			Authorization: 'Bearer ' + data.token
-			// "Cache-Control": "max-age=604800, must-revalidate"
-		}
-	})
-
-	if (response.status >= 400 && response.status < 500) {
-		throw error(
-			response.status,
-			'Model could not be found or you do not have permission to view it'
-		)
-	}
-
-	if (!response.ok) {
-		throw error(response.status, 'Failed to fetch model')
-	}
-
-	return (await response.json()) as Models['TextToCad_type']
 }

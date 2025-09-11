@@ -1,21 +1,24 @@
 <script lang="ts">
-	import { endpoints, type PromptResponse } from '$lib/endpoints'
 	import ThumbsUp from './ThumbsUp.svelte'
+	import type { MlFeedback } from '@kittycad/lib'
+	import { ml } from '@kittycad/lib'
+	import { page } from '$app/stores'
+	import { createZooClient } from '$lib/zooClient'
+	import { toasts } from '$lib/toast'
+	import { getApiErrorMessage } from '$lib/errors'
 
 	export let modelId: string
-	export let feedback: PromptResponse['feedback']
+	export let feedback: MlFeedback | undefined
 
-	const giveFeedback = (newFeedback: PromptResponse['feedback']) => () => {
-		if (feedback !== newFeedback) {
-			fetch(endpoints.localFeedback, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				credentials: 'include',
-				body: JSON.stringify({ feedback: newFeedback, id: modelId })
-			}).catch((err) => console.error(err))
-
-			// Optimistically update the UI
+	const giveFeedback = (newFeedback: MlFeedback) => async () => {
+		if (feedback === newFeedback) return
+		try {
+			const client = createZooClient({ token: $page.data.token })
+			await ml.create_text_to_cad_model_feedback({ client, id: modelId, feedback: newFeedback })
 			feedback = newFeedback
+			toasts.add('Thanks for the feedback!', 'success', 2000)
+		} catch (e) {
+			toasts.add(getApiErrorMessage(e, 'Failed to submit feedback'), 'error')
 		}
 	}
 </script>

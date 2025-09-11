@@ -1,9 +1,12 @@
 <script lang="ts">
 	import autosize from 'svelte-autosize'
 	import { page } from '$app/stores'
-	import type { Models } from '@kittycad/lib/types'
+	import type { FileExportFormat, TextToCad } from '@kittycad/lib'
+	import { ml } from '@kittycad/lib'
+	import { createZooClient } from '$lib/zooClient'
+	import { getApiErrorMessage } from '$lib/errors'
+	import { toasts } from '$lib/toast'
 	import ArrowRight from './Icons/ArrowRight.svelte'
-	import { endpoints } from '$lib/endpoints'
 	import { localGenerations, unreadGenerations } from '$lib/stores'
 	import { paths } from '$lib/paths'
 	import { goto } from '$app/navigation'
@@ -26,28 +29,26 @@
 	}
 
 	const submitPrompt = async (prompt: string) => {
-		const OUTPUT_FORMAT: Models['FileExportFormat_type'] = 'gltf'
-		const response = await fetch(endpoints.prompt(OUTPUT_FORMAT), {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + token
-			},
-			body: JSON.stringify({ prompt })
-		})
-
-		if (!response.ok) {
-			error = 'Failed to submit prompt'
+		const OUTPUT_FORMAT: FileExportFormat = 'gltf'
+		let responseData: TextToCad | undefined
+		try {
+			const client = createZooClient({ token })
+			responseData = await ml.create_text_to_cad({
+				client,
+				output_format: OUTPUT_FORMAT,
+				kcl: true,
+				body: { prompt }
+			})
+		} catch (e: unknown) {
+			const msg = getApiErrorMessage(e, 'Failed to submit prompt')
+			toasts.add(msg, 'error')
 			return
 		}
 
-		const responseData = (await response
-			.json()
-			.catch((e) => console.error('failed to parse response data', e))) as Models['TextToCad_type']
-
 		if (responseData) {
-			$localGenerations = [responseData, ...$localGenerations]
-			$unreadGenerations = [responseData.id, ...$unreadGenerations]
+			const responseWithType = { type: 'text_to_cad', ...responseData } as const
+			$localGenerations = [responseWithType, ...$localGenerations]
+			$unreadGenerations = [responseWithType.id, ...$unreadGenerations]
 		}
 
 		goto(paths.VIEW(responseData.id))
@@ -62,6 +63,7 @@
 		form.reset()
 
 		showSuccessMessage = true
+		toasts.add('Prompt submitted successfully', 'success', 2500)
 
 		isCoolingDown = true
 		setTimeout(() => {

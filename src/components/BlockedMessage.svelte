@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { paths } from '$lib/paths'
-	import type { Models } from '@kittycad/lib/types'
+	import type { BlockReason } from '@kittycad/lib'
 
-	export let blockedReason: Models['User_type']['block']
+	export let blockedReason: BlockReason
 </script>
 
 <div class="p-4 text-xl text-blue border border-blue bg-blue/10 rounded">

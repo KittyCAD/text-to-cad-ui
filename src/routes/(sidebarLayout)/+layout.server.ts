@@ -1,39 +1,32 @@
 import { DOMAIN, PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts.js'
-import { AUTH_COOKIE_NAME } from '$lib/cookies.js'
+import { getCookieName } from '$lib/cookies.js'
 import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
-import { getBillingInfo, BillingError } from '$lib/billing'
+import { users } from '@kittycad/lib'
+import { createZooClient } from '$lib/zooClient'
+import { getBillingInfo, BillingError } from '@kittycad/lib'
 
 export const load = async (args: ServerLoadEvent) => {
-  const { cookies, request, url, fetch } = args
+	const { cookies, request, url, fetch } = args
 
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
 		signOut()
 	}
 
 	const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token = env.PROD ? cookies.get(AUTH_COOKIE_NAME) : env.VITE_API_TOKEN
+	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
 
 	if (!token) {
 		signOut()
 	}
 
-	const currentUser = await fetch(env.VITE_API_BASE_URL + '/user', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
+	const client = createZooClient({ token, fetch })
+	const currentUser = await users.get_user_self({ client }).catch((e) => {
+		console.error('Error fetching user:', e)
+		signOut()
 	})
-		.then((res: Response) => res.json())
-		.catch((e: any) => {
-			// If the user had a token but there was an error fetching the user,
-			//delete the token, because it was likely revoked or expired
-			console.error('Error fetching user:', e)
-			signOut()
-		})
 
 	if (!currentUser) {
 		signOut()
@@ -49,7 +42,7 @@ export const load = async (args: ServerLoadEvent) => {
 			}
 		}
 
-		const billing = await getBillingInfo(token)
+		const billing = await getBillingInfo(client)
 		if (BillingError.from(billing)) {
 			console.error('Error fetching billing info:', billing.error)
 			return {
@@ -70,7 +63,7 @@ export const load = async (args: ServerLoadEvent) => {
 	 * Shared sign out function
 	 */
 	function signOut() {
-		cookies.delete(AUTH_COOKIE_NAME, { domain: DOMAIN, path: '/' })
+		cookies.delete(getCookieName(), { domain: DOMAIN, path: '/' })
 		throw redirect(303, '/')
 	}
 }
