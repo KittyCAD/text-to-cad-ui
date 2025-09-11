@@ -6,7 +6,7 @@ import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
 import { users } from '@kittycad/lib'
 import { createZooClient } from '$lib/zooClient'
-import { getBillingInfo, BillingError } from '@kittycad/lib'
+import { extra } from '@kittycad/lib'
 
 export const load = async (args: ServerLoadEvent) => {
 	const { cookies, request, url, fetch } = args
@@ -42,8 +42,8 @@ export const load = async (args: ServerLoadEvent) => {
 			}
 		}
 
-		const billing = await getBillingInfo(client)
-		if (BillingError.from(billing)) {
+		const billing = await extra.getBillingInfo(client)
+		if (extra.BillingError.from(billing)) {
 			console.error('Error fetching billing info:', billing.error)
 			return {
 				user: currentUser,
