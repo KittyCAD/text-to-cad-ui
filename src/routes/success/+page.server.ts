@@ -1,6 +1,6 @@
 import { paths } from '$lib/paths'
-import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 
-export const load = async ({ url }: ServerLoadEvent) => {
+export const load = async ({ url }) => {
 	throw redirect(308, paths.DASHBOARD + (url.search || ''))
 }

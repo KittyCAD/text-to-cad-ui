@@ -1,6 +1,5 @@
 import { getCookieName } from '$lib/cookies.js'
 import { env } from '$lib/env'
-import { type ServerLoadEvent } from '@sveltejs/kit'
 
 /** @type {import('./$types').LayoutData} */
 export const load = async ({ locals, cookies }) => {

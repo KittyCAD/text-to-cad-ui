@@ -4,7 +4,7 @@ import { createZooClient } from '$lib/zooClient'
 import { error, redirect } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params, parent, fetch }: ServerLoadEvent) {
+export async function load({ params, parent, fetch }) {
 	const data = await parent()
 
 	if (!data.token) {

@@ -4,9 +4,8 @@ import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
-import { users } from '@kittycad/lib'
+import { users, extra } from '@kittycad/lib'
 import { createZooClient } from '$lib/zooClient'
-import { extra } from '@kittycad/lib'
 
 export const load = async (args: ServerLoadEvent) => {
 	const { cookies, request, url, fetch } = args
