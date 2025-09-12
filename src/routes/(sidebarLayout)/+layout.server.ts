@@ -4,7 +4,8 @@ import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
 import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
-import { users, extra } from '@kittycad/lib'
+import { users } from '@kittycad/lib'
+import { getBillingInfo, BillingError } from '@kittycad/react-shared'
 import { createZooClient } from '$lib/zooClient'
 
 export const load = async (args: ServerLoadEvent) => {
@@ -41,8 +42,8 @@ export const load = async (args: ServerLoadEvent) => {
 			}
 		}
 
-		const billing = await extra.getBillingInfo(client)
-		if (extra.BillingError.from(billing)) {
+		const billing = await getBillingInfo(client)
+		if (BillingError.from(billing)) {
 			console.error('Error fetching billing info:', billing.error)
 			return {
 				user: currentUser,
