@@ -2,13 +2,15 @@ import { DOMAIN, PLAYWRIGHT_MOCKING_HEADER } from '$lib/consts.js'
 import { getCookieName } from '$lib/cookies.js'
 import { hooksUserMocks, isUserMock } from '$lib/mocks.js'
 import { SIGN_OUT_PARAM } from '$lib/paths.js'
-import { redirect } from '@sveltejs/kit'
+import { redirect, type ServerLoadEvent } from '@sveltejs/kit'
 import { env } from '$lib/env'
-import { getBillingInfo, isErr } from '$lib/billing'
 import { users } from '@kittycad/lib'
+import { getBillingInfo, BillingError } from '@kittycad/react-shared'
 import { createZooClient } from '$lib/zooClient'
 
-export const load = async ({ cookies, request, url, fetch }) => {
+export const load = async (args: ServerLoadEvent) => {
+	const { cookies, request, url, fetch } = args
+
 	if (url.searchParams.get(SIGN_OUT_PARAM)) {
 		signOut()
 	}
@@ -20,12 +22,11 @@ export const load = async ({ cookies, request, url, fetch }) => {
 		signOut()
 	}
 
-	const currentUser = await users
-		.get_user_self({ client: createZooClient({ token, fetch }) })
-		.catch((e) => {
-			console.error('Error fetching user:', e)
-			signOut()
-		})
+	const client = createZooClient({ token, fetch })
+	const currentUser = await users.get_user_self({ client }).catch((e) => {
+		console.error('Error fetching user:', e)
+		signOut()
+	})
 
 	if (!currentUser) {
 		signOut()
@@ -41,9 +42,9 @@ export const load = async ({ cookies, request, url, fetch }) => {
 			}
 		}
 
-		const billing = await getBillingInfo(token)
-		if (isErr(billing)) {
-			console.error('Error fetching billing info:', billing)
+		const billing = await getBillingInfo(client)
+		if (BillingError.from(billing)) {
+			console.error('Error fetching billing info:', billing.error)
 			return {
 				user: currentUser,
 				token: token
@@ -53,7 +54,6 @@ export const load = async ({ cookies, request, url, fetch }) => {
 		return {
 			user: currentUser,
 			token: token,
-			tier: billing.tier,
 			credits: billing.credits,
 			allowance: billing.allowance
 		}
