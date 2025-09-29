@@ -10,6 +10,7 @@
 	import { combinedGenerations, unreadGenerations, userSettings } from '$lib/stores'
 	import { invalidateAll, onNavigate } from '$app/navigation'
 	import { navigating } from '$app/stores'
+	import { stringToBase64 } from '$lib/base64'
 	import Checkmark from 'components/Icons/Checkmark.svelte'
 
 	export let data: TextToCad
@@ -31,7 +32,7 @@
 
 	$: zooDesignStudioUrl = data.code
 		? `https://app.zoo.dev?ask-open-desktop=true&create-file=true&name=deeplinkscopy&code=${encodeURIComponent(
-				btoa(data.code)
+				stringToBase64(data.code)
 		  )}`
 		: ''
 </script>
