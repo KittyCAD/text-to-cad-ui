@@ -51,7 +51,9 @@
 					>Your Prompt</span
 				>
 				<span class="sr-only">: </span>
-				<span class="block">"{data.prompt.trim()}"</span>
+				<pre
+					class="font-sans block whitespace-pre-wrap max-h-[3.5lh] overflow-y-auto">{data.prompt.trim()}
+        </pre>
 			</h1>
 			{#if data.outputs}
 				<div class="grid grid-rows-2 justify-stretch self-stretch items-stretch">
