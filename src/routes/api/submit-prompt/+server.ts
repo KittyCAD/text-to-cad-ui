@@ -12,7 +12,7 @@ export type PromptLoadResponse = {
 }
 
 export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
-	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
+	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_ZOO_API_TOKEN
 	if (!token) throw error(401, 'You must be logged in to use this API.')
 
 	const body = await request.json()

@@ -16,7 +16,7 @@ export const load = async (args: ServerLoadEvent) => {
 	}
 
 	const mockRequestHeader = request.headers.get(PLAYWRIGHT_MOCKING_HEADER)
-	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_API_TOKEN
+	const token = env.PROD ? cookies.get(getCookieName()) : env.VITE_ZOO_API_TOKEN
 
 	if (!token) {
 		signOut()
