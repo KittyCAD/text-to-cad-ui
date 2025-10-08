@@ -15,7 +15,7 @@ const config: PlaywrightTestConfig = {
 		storageState: {
 			cookies: [
 				{
-					name: '__Secure-session-token-dev.dev.zoo.dev',
+					name: '__Secure-session-token-dev.zoo.dev',
 					value: process.env.VITE_API_TOKEN ?? '',
 					domain: 'localhost',
 					path: '/',
