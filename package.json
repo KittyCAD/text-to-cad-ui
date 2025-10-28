@@ -50,7 +50,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kittycad/lib": "^3.0.2",
+		"@kittycad/lib": "^3.1.5",
 		"@kittycad/react-shared": "^0.1.6",
 		"@threlte/core": "^6.1.0",
 		"@threlte/extras": "^7.3.0",
