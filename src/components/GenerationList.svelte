@@ -17,17 +17,17 @@
 	let pagesToFetch = PAGES_AHEAD_TO_FETCH
 	let scrolledPercentage = 0
 	let fetchPromise: Promise<void>
-	let pager: ReturnType<typeof ml.list_text_to_cad_models_for_user_pager> | null = null
+	let pager: ReturnType<typeof ml.list_text_to_cad_parts_for_user_pager> | null = null
 	let hasNext = true
 
 	onMount(() => {
 		const client = createZooClient({ token: $page.data.token })
-		pager = ml.list_text_to_cad_models_for_user_pager({
+		pager = ml.list_text_to_cad_parts_for_user_pager({
 			client,
 			limit: ITEMS_PER_PAGE,
 			sort_by: 'created_at_descending',
-			no_models: true
-		} as unknown as Parameters<typeof ml.list_text_to_cad_models_for_user_pager>[0])
+			no_parts: true
+		} as unknown as Parameters<typeof ml.list_text_to_cad_parts_for_user_pager>[0])
 		fetchPromise = fetchData()
 	})
 

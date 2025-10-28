@@ -19,6 +19,6 @@ export const POST: RequestHandler = async ({ cookies, fetch, request }) => {
 	if (!token) throw error(401, 'You must be logged in to use this API.')
 
 	const client = createZooClient({ token, fetch })
-	const data = await ml.get_text_to_cad_model_for_user({ client, id: body.id })
+	const data = await ml.get_text_to_cad_part_for_user({ client, id: body.id })
 	return json({ status: 200, body: data } satisfies LoadResponse)
 }

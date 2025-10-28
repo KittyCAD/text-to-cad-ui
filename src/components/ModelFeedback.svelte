@@ -14,7 +14,7 @@
 		if (feedback === newFeedback) return
 		try {
 			const client = createZooClient({ token: $page.data.token })
-			await ml.create_text_to_cad_model_feedback({ client, id: modelId, feedback: newFeedback })
+			await ml.create_text_to_cad_part_feedback({ client, id: modelId, feedback: newFeedback })
 			feedback = newFeedback
 			toasts.add('Thanks for the feedback!', 'success', 2000)
 		} catch (e) {

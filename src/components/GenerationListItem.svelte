@@ -42,7 +42,7 @@
 			const client = { token: $page.data.token }
 			const newResponse: TextToCadResponse = await (
 				await import('@kittycad/lib')
-			).ml.get_text_to_cad_model_for_user({
+			).ml.get_text_to_cad_part_for_user({
 				client,
 				id
 			})

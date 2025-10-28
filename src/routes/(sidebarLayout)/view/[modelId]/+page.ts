@@ -13,7 +13,7 @@ export async function load({ params, parent, fetch }) {
 
 	try {
 		const client = createZooClient({ token: data.token, fetch })
-		return (await ml.get_text_to_cad_model_for_user({ client, id: params.modelId })) as TextToCad
+		return (await ml.get_text_to_cad_part_for_user({ client, id: params.modelId })) as TextToCad
 	} catch (e) {
 		throw error(500, 'Failed to fetch model')
 	}
