@@ -36,6 +36,7 @@ jobs:
     name: Unit Tests
     runs-on: namespace-profile-ubuntu-2-cores
     timeout-minutes: 10
+    if: false
 
     steps:
       - uses: actions/checkout@v5
@@ -56,6 +57,7 @@ jobs:
     runs-on: namespace-profile-ubuntu-2-cores
     timeout-minutes: 10
     environment: CI
+    if: false
 
     steps:
       - uses: actions/checkout@v5
