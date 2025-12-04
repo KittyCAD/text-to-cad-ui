@@ -1,5 +1,5 @@
-import { mockHooksCall } from './testUtils'
-import { test, expect } from '@playwright/test'
+// import { mockHooksCall } from './testUtils'
+// import { test, expect } from '@playwright/test'
 
 // test('Shows banner if user is blocked for missing payment', async ({ context }) => {
 // 	await mockHooksCall(context, 'mockUserMissingPayment')

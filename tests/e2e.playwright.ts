@@ -1,5 +1,5 @@
-import { ITEMS_PER_PAGE, PAGES_AHEAD_TO_FETCH } from '../src/lib/consts'
-import { expect, test } from '@playwright/test'
+// import { ITEMS_PER_PAGE, PAGES_AHEAD_TO_FETCH } from '../src/lib/consts'
+// import { expect, test } from '@playwright/test'
 
 // test('User can generate from prompt and open in Zoo Design Studio', async ({ page }) => {
 // 	test.setTimeout(120_000)
