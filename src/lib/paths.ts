@@ -11,7 +11,6 @@ export const paths = {
 		SITE + '/signin/?callbackUrl=' + encodeURIComponent(callbackUrl),
 	HOME: '/',
 	SUCCESS: '/success',
-	DASHBOARD: '/dashboard',
 	VIEW: (viewId: string) => `/view/${viewId}`,
 	SIGN_OUT: `/?${SIGN_OUT_PARAM}=true`,
 	ZOO_SITE: SITE,
