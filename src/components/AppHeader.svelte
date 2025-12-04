@@ -18,7 +18,7 @@
 	<div class="item-slot py-1 ml-auto">
 		<a
 			href={paths.DASHBOARD}
-			class={'new-prompt ' + ($page.url.pathname === paths.DASHBOARD ? ' opacity-0' : '')}
+			class={'new-prompt ' + ($page.url.pathname === paths.HOME ? ' opacity-0' : '')}
 		>
 			<span class="sr-only md:not-sr-only">New prompt</span>
 			<Plus class="w-6 h-6 md:w-5 md:h-5" />
