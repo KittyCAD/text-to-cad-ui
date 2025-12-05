@@ -8,27 +8,40 @@ updates:
   directory: /
   schedule:
     interval: weekly
-    day: monday
+    day: saturday
     time: '03:00'
     timezone: America/Los_Angeles
   open-pull-requests-limit: 5
   groups:
     security:
       applies-to: security-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
-      - major
       - minor
       - patch
+    security-major:
+      applies-to: security-updates
+      exclude-patterns:
+      - kittycad*
+      update-types:
+      - major
     patch:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - patch
     major:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - major
     minor:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - minor
       - patch
@@ -36,27 +49,42 @@ updates:
   directory: /
   schedule:
     interval: weekly
-    day: monday
+    day: saturday
     time: '03:00'
     timezone: America/Los_Angeles
   open-pull-requests-limit: 5
   groups:
     security:
       applies-to: security-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
-      - major
       - minor
       - patch
+    security-major:
+      applies-to: security-updates
+      exclude-patterns:
+      - kittycad*
+      update-types:
+      - major
     patch:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - patch
     major:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - major
     minor:
       applies-to: version-updates
+      exclude-patterns:
+      - kittycad*
       update-types:
       - minor
       - patch
+  cooldown:
+    default-days: 7
