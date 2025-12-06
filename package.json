@@ -15,10 +15,10 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.28.1",
+		"@playwright/test": "^1.57.0",
 		"@sveltejs/adapter-vercel": "^5.10.3",
 		"@sveltejs/kit": "^2.22.2",
-		"@sveltejs/vite-plugin-svelte": "^3.0.2",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@testing-library/jest-dom": "^6.2.0",
 		"@testing-library/svelte": "^4.0.5",
 		"@types/node": "^24.0.4",
@@ -27,7 +27,7 @@
 		"@types/three": "^0.160.0",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
-		"@vitest/ui": "^1.6.1",
+		"@vitest/ui": "^4.0.15",
 		"autoprefixer": "^10.4.16",
 		"dotenv": "^16.3.1",
 		"eslint": "^8.28.0",
@@ -43,9 +43,9 @@
 		"tailwindcss": "^3.3.3",
 		"tslib": "^2.4.1",
 		"typescript": "^5.9.3",
-		"vite": "^5.0.3",
+		"vite": "^7.2.6",
 		"vite-plugin-mkcert": "^1.17.9",
-		"vitest": "1.6.1",
+		"vitest": "4.0.15",
 		"vitest-dom": "^0.1.1"
 	},
 	"type": "module",
